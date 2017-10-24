@@ -1,0 +1,32 @@
+{
+  "apps": [{
+    "name": "koler-server",
+    "script": "./app.js",
+    "error_file"      : "../logs/server-err.log",
+    "out_file"        : "../logs/server-out.log",
+    "merge_logs"      : true,
+    "log_date_format" : "YYYY-MM-DD HH:mm Z",
+    "cwd": "./server",
+    "watch": [
+      "app.js",
+      "controllers"
+    ],
+    "watch_options": {
+      "followSymlinks": false
+    }
+  },{
+    "name": "koler-app",
+    "script": "./build/dev-server.js",
+    "error_file"      : "./logs/app-err.log",
+    "out_file"        : "./logs/app-out.log",
+    "merge_logs"      : true,
+    "log_date_format" : "YYYY-MM-DD HH:mm Z",
+    "cwd": "./",
+    "ignore_watch" : [
+      "node_modules"
+    ],
+    "watch_options": {
+      "followSymlinks": false
+    }
+  }]
+}
