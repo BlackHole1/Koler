@@ -5,7 +5,7 @@ const controller = require('./controller')
 let app = new Koa()
 
 app.use(async (ctx, next) => {
-  ctx.set('Access-Control-Allow-Origin', 'http://localhost:8080')
+  ctx.set('Access-Control-Allow-Origin', '*')
   ctx.set('Access-Control-Allow-Methods', 'GET, POST')
   await next()
 })
@@ -14,6 +14,7 @@ app.use(bodyParser())
 app.use(controller())
 
 app.use(async (ctx, next) => {
+  ctx.status = 404
   ctx.response.body = `<h1>404 error!</h1>`
 })
 

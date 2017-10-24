@@ -37,7 +37,9 @@ const actions = {
         })
       }
     }).catch(error => {
-      console.log(error)
+      if (error.response.status === 404) {
+        alert('请确保后端服务器路由正常，请联系管理员进行修补')
+      }
     })
   }
 }

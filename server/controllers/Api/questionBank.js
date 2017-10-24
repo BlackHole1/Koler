@@ -39,7 +39,7 @@ let questionBank = async(ctx, next) => {
 
 module.exports = {
   'method': 'get',
-  'path': '/Api/questionBank',
+  'path': 'qusestionBank',
   'component': questionBank,
   'data': questionBank
 }

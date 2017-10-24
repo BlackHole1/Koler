@@ -10,7 +10,7 @@ let info = async(ctx, next) => {
 
 module.exports = {
   'method': 'get',
-  'path': '/Api/subject/:name',
+  'path': 'subject/:name',
   'component': info,
   'data': data
 }
