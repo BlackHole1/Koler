@@ -19,12 +19,13 @@
   "scripts": {
     "dev": "pm2 start pm2.json && pm2 logs",
     "start": "npm run dev",
-    "stop": "pm2 stop koler-app koler-server && pm2 delete koler-app koler-server",
+    "stop": "pm2 stop koler-app koler-server && pm2 delete koler-app koler-server && node build/deletePm2Logs.js",
     "build": "node build/build.js",
     "lint": "eslint --ext .js,.vue src"
   },
   "dependencies": {
     "axios": "^0.16.2",
+    "delete": "^1.1.0",
     "element-ui": "^1.4.6",
     "koa": "^2.3.0",
     "koa-bodyparser": "^4.2.0",
