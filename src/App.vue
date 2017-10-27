@@ -11,6 +11,14 @@ export default {
 </script>
 
 <style>
+  html {
+    height:100%;
+    width:100%;
+    background-image: url(/static/loginBackground.jpg);
+    background-repeat: no-repeat;
+    overflow: hidden;
+    background-size:cover;
+  }
   body{
     margin: 0;
     font-family: "Helvetica Neue",Helvetica,"PingFang SC","Hiragino Sans GB","Microsoft YaHei","微软雅黑",Arial,sans-serif;
