@@ -20,6 +20,7 @@
 </template>
 
 <script>
+  const qs = require('qs')
   export default {
     data () {
       let checkUser = (rule, value, callback) => {
@@ -65,9 +66,18 @@
       submitForm (formName) {
         this.$refs[formName].validate((valid) => {
           if (valid) {
-            // const user = this.loginForm.user
-            // const pass = this.loginForm.pass
-            // this.$http.post()
+            const user = this.loginForm.user
+            const pass = this.loginForm.pass
+            this.$http.post(`/Api/checkLogin`, qs.stringify({
+              user: user,
+              pass: pass
+            }))
+            .then(resp => {
+              console.log(resp)
+            })
+            .catch(err => {
+              console.log(err)
+            })
           }
         })
       },

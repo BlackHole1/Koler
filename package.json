@@ -28,11 +28,12 @@
     "delete": "^1.1.0",
     "element-ui": "^1.4.6",
     "koa": "^2.3.0",
-    "koa-bodyparser": "^4.2.0",
+    "koa-body": "^2.5.0",
     "koa-router": "^7.2.1",
     "less": "^2.7.2",
     "less-loader": "^4.0.5",
     "pm2": "^2.7.2",
+    "qs": "^6.5.1",
     "vue": "^2.4.2",
     "vue-router": "^2.7.0",
     "vuex": "^2.4.1"

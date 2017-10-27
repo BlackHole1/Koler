@@ -1,5 +1,5 @@
 import * as types from '../mutation-types'
-import axios from 'axios'
+import Vue from 'vue'
 
 const state = {
   questionBank: '' // 题库数据
@@ -25,22 +25,19 @@ const getters = {
 
 const actions = {
   getQuestionBankList ({commit, state}) {
-    axios.get('http://localhost:5020/Api/questionBank').then(resp => {
-      let data = resp.data
-      if (data.count === 0) {
-        commit(types.DATA_QUESTIONBANK, {
-          data: null
-        })
-      } else {
-        commit(types.DATA_QUESTIONBANK, {
-          data: data
-        })
-      }
-    }).catch(error => {
-      if (error.response.status === 404) {
-        alert('请确保后端服务器路由正常，请联系管理员进行修补')
-      }
-    })
+    new Vue().$http.get('/Api/questionBank')
+      .then(resp => {
+        let data = resp.data
+        if (data.count === 0) {
+          commit(types.DATA_QUESTIONBANK, {
+            data: null
+          })
+        } else {
+          commit(types.DATA_QUESTIONBANK, {
+            data: data
+          })
+        }
+      })
   }
 }
 

@@ -1,5 +1,5 @@
 import * as types from '../mutation-types'
-import axios from 'axios'
+import Vue from 'vue'
 
 const state = {
   /* 右侧边栏的模式，不同模式显示不同的数据。
@@ -32,9 +32,9 @@ const getters = {
 const actions = {
   getInfoBymodel ({commit, state}, data) {
     const url = (data.subjectName === '')
-    ? `http://localhost:5020/Api/${data.model}`
-    : `http://localhost:5020/Api/${data.model}/${data.subjectName}`
-    axios.get(url).then(resp => {
+    ? `/Api/${data.model}`
+    : `/Api/${data.model}/${data.subjectName}`
+    new Vue().$http.get(url).then(resp => {
       let content = resp.data
       commit(types.DATA_NAVMODEL, {
         data: data.model
@@ -43,8 +43,6 @@ const actions = {
         model: data.model + 'Data',
         data: content
       })
-    }).catch(error => {
-      console.log(error)
     })
   }
 }

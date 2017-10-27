@@ -9,6 +9,7 @@
     "cwd": "./server",
     "watch": [
       "app.js",
+      "controller.js",
       "controllers"
     ],
     "watch_options": {

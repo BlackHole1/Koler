@@ -1,16 +1,24 @@
 const Koa = require('koa')
-const bodyParser = require('koa-bodyparser')
+const koaBody = require('koa-body')
 const controller = require('./controller')
+const constant = require('../src/commons/configConstant')
 
 let app = new Koa()
 
+app.use(koaBody())
+
 app.use(async (ctx, next) => {
-  ctx.set('Access-Control-Allow-Origin', '*')
-  ctx.set('Access-Control-Allow-Methods', 'GET, POST')
+  ctx.set('Access-Control-Allow-Origin', constant.clientAddress)
+  ctx.set('Access-Control-Allow-Methods', 'GET, POST, OPTIONS')
+  ctx.status = 200
   await next()
 })
 
-app.use(bodyParser())
+app.use(async (ctx, next) => {
+  ctx.body = ctx.request.body
+  await next()
+})
+
 app.use(controller())
 
 app.use(async (ctx, next) => {
