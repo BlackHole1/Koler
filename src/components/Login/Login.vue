@@ -25,7 +25,7 @@
     data () {
       let checkUser = (rule, value, callback) => {
         if (!value) {
-          return callback(new Error('请输入账号'))
+          return callback(new Error('请输入邮箱'))
         }
         let matchingTimes = 0
         const email = this.loginForm.email
@@ -38,7 +38,7 @@
         if (email.length === matchingTimes) {
           callback()
         } else {
-          return callback(new Error('账号不规范'))
+          return callback(new Error('邮箱不规范'))
         }
       }
       let checkPass = (rule, value, callback) => {
