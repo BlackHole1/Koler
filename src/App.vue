@@ -27,7 +27,12 @@ export default {
 </style>
 <script>
 export default {
-  name: 'app'
+  name: 'app',
+  created () {
+    if (this.$router.history.current.name === 'Login') {
+      // 前端判断操作
+    }
+  }
 }
 </script>
 

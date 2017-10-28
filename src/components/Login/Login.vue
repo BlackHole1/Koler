@@ -74,6 +74,7 @@
             }))
             .then(resp => {
               const data = resp.data
+              this.$store.dispatch((data.state) ? 'addToken' : 'delToken', data.token)
               this.$message[data.state ? 'success' : 'warning'](data.data)
             })
             .catch(err => {
