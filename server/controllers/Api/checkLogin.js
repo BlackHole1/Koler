@@ -18,7 +18,7 @@ let info = async(ctx, next) => {
     })
     data = {
       state: true,
-      data: '登录成功！三秒后跳转到主页',
+      data: '登录成功！',
       token: token
     }
   } else {

@@ -1,7 +1,7 @@
 import * as types from '../mutation-types'
 
 const state = {
-  token: sessionStorage.getItem('Koler-token')
+  token: ''
 }
 
 const getters = {
@@ -21,9 +21,11 @@ const actions = {
 
 const mutations = {
   [types.ADD_TOKEN] (state, token) {  // 添加token
+    state.token = token
     sessionStorage.setItem('Koler-token', token)
   },
   [types.DEL_TOKEN] (state) { // 删除token
+    state.token = ''
     sessionStorage.setItem('Koler-token', '')
   }
 }

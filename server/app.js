@@ -11,6 +11,7 @@ app.use(koaBody())
 app.use(async (ctx, next) => {  // 同意指定域名的跨域请求
   ctx.set('Access-Control-Allow-Origin', constant.clientAddress)
   ctx.set('Access-Control-Allow-Methods', 'GET, POST, OPTIONS')
+  ctx.set('Access-Control-Allow-Headers', 'Authorization')
   ctx.status = 200
   await next()
 })
@@ -26,9 +27,7 @@ app.use(async (ctx, next) => {  // 检测jwt，判断用户是否登录
     category: 'jwt'
   }
   if (authorization === '') { // 如果Authorization为空
-    jwtState = {
-      data: `no token detected in http header 'Authorization', 没有检测到头部信息里有Authorization字段`
-    }
+    jwtState.data = `no token detected in http header 'Authorization', 没有检测到头部信息里有Authorization字段`
   }
   const token = authorization.split(' ')[1]
   /* eslint-disable */  // 此处可能存在eslint的bug，导致eslint报错，需要临时关闭下
@@ -37,13 +36,9 @@ app.use(async (ctx, next) => {  // 检测jwt，判断用户是否登录
   }, (err,decoded) => {
     if (err) {
       if ('TokenExpiredError' === err.name) {
-        jwtState= {
-          data: 'the token is expired, 令牌过期'
-        }
+        jwtState.data = 'the token is expired, 令牌过期'
       }
-      jwtState = {
-        data: 'invalid token, tolen无效'
-      }
+      jwtState.data = 'invalid token, token无效'
     } else {
       jwtState.state = true
     }
@@ -64,7 +59,6 @@ app.use(async (ctx, next) => {  // 方便后面控制层取参数
 app.use(controller()) // 遍历控制层的文件并加入到路由里
 
 app.use(async (ctx, next) => {  // 如果到最后没都没有返回内容，则判定找不到页面
-  ctx.status = 404
   ctx.response.body = `<h1>404 error!</h1>`
 })
 

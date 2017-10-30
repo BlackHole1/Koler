@@ -76,6 +76,7 @@
               const data = resp.data
               this.$store.dispatch((data.state) ? 'addToken' : 'delToken', data.token)
               this.$message[data.state ? 'success' : 'warning'](data.data)
+              data.state ? this.$router.push('/') : ''
             })
             .catch(err => {
               this.$message.error('连接后端API失败，请F12查看详细信息')

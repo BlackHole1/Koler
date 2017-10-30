@@ -27,19 +27,6 @@ export default {
 </style>
 <script>
 export default {
-  name: 'app',
-  created () {
-    if (this.$router.history.current.name === 'Login') {
-      // 前端判断操作
-    }
-  }
+  name: 'app'
 }
 </script>
-
-<style>
-  body{
-    margin: 0;
-    font-family: "Helvetica Neue",Helvetica,"PingFang SC","Hiragino Sans GB","Microsoft YaHei","微软雅黑",Arial,sans-serif;
-    color: #1f2f3d;
-  }
-</style>
