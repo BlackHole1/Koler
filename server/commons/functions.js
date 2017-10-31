@@ -21,7 +21,7 @@ const fun = {
     }
     return this.md5(arguments[0])
   },
-  integrateJudge (...arrays) {
+  allEqual (...arrays) {
     const result = []
     for (let i = 0; i < arrays.length; i++) {
       if (!this.isArray(arrays[i])) throw new Error(`arguments must be a Array`)

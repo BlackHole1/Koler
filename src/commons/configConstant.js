@@ -10,6 +10,6 @@ module.exports = {
 
   jwt: {
     algorithm: 'HS512',  // jwt加密算法
-    secret: '_jwtKey_'  // 只是起到了定位作用，为了保持每人的key都是不一样的，服务启动时会进行自我检测，如果是_jwtKey_则将替换成随机字符串
+    secret: '_jwtKey_'  // 此处请随便写一些字符串代替，请不要使用原始的_jwtKey_值
   }
 }
