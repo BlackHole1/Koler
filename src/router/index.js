@@ -15,8 +15,8 @@ export default new Router({
       component: Main,
       children: [
         {
-          path: 'questionBank/:name/:num',
-          name: 'QuestionBank',
+          path: 'problemsWarehouse/:name/:num',
+          name: 'ProblemsWarehouse',
           component: Subject
         }
       ]

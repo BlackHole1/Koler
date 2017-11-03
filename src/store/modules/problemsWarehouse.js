@@ -2,15 +2,15 @@ import * as types from '../mutation-types'
 import Vue from 'vue'
 
 const state = {
-  questionBank: '' // 题库数据
+  problemsWarehouse: '' // 题库数据
 }
 
 const getters = {
   getDetailsByName: state => (name) => {
-    if (state.questionBank.names.includes(name)) {
+    if (state.problemsWarehouse.names.includes(name)) {
       return {
         state: true,
-        data: state.questionBank[name].details
+        data: state.problemsWarehouse[name].details
       }
     }
     return {
@@ -18,22 +18,22 @@ const getters = {
       data: {}
     }
   },
-  getQuestionBankInfo: state => {
-    return state.questionBank
+  getProblemsWarehouseInfo: state => {
+    return state.problemsWarehouse
   }
 }
 
 const actions = {
-  getQuestionBankList ({commit, state}) {
-    new Vue().$http.get('/Api/questionBank')
+  getProblemsWarehouseList ({commit, state}) {
+    new Vue().$http.get('/Api/problemsWarehouse')
       .then(resp => {
         let data = resp.data
         if (data.count === 0) {
-          commit(types.DATA_QUESTIONBANK, {
+          commit(types.DATA_PROBLEMSWAREHOUSE, {
             data: null
           })
         } else {
-          commit(types.DATA_QUESTIONBANK, {
+          commit(types.DATA_PROBLEMSWAREHOUSE, {
             data: data
           })
         }
@@ -42,8 +42,8 @@ const actions = {
 }
 
 const mutations = {
-  [types.DATA_QUESTIONBANK] (state, payload) {
-    state.questionBank = payload.data
+  [types.DATA_PROBLEMSWAREHOUSE] (state, payload) {
+    state.problemsWarehouse = payload.data
   }
 }
 

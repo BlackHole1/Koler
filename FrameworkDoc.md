@@ -17,7 +17,7 @@ Koler
   │  └─server-out.log # Koa project error log
   ├─server/ # Koa back-end source
   │  ├─controllers/ # Controllers
-  │  │  ├─questionBank.js # Question-bank info
+  │  │  ├─problemsWarehouse.js # problems-warehouse info
   │  │  ├─subject.js  # Subject info
   │  │  └─userInfo.js # User info
   │  ├─app.js # Koa entry file
@@ -52,7 +52,7 @@ Koler
   │  ├─store/ # Vuex shared state info
   │  │  ├─modules/
   │  │  │  ├─navRight.js  # Right-navigation's shared state info
-  │  │  │  └─questionBank.js # question-bank's shared state info
+  │  │  │  └─problemsWarehouse.js # problems-warehouse's shared state info
   │  │  ├─actions.js  # common actions
   │  │  ├─getters.js  # common getters
   │  │  ├─mutations.js  # common mutations

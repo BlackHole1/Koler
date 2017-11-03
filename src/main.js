@@ -31,6 +31,7 @@ new Vue({
   methods: {
     checkLogin () {
       this.$http.defaults.headers.common['Authorization'] = 'Bearer ' + sessionStorage.getItem('Koler-token')
+      this.$http.defaults.headers.common['Accept'] = 'application/json'
       let currentRouter = this.$router.history.current.name
       if (currentRouter === 'Login') {
         this.sendCheckLoginResp().then(() => {

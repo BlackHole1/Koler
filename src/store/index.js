@@ -3,7 +3,7 @@ import Vuex from 'vuex'
 import * as actions from './actions'
 import * as getters from './getters'
 import login from './modules/login'
-import questionBank from './modules/questionBank'
+import problemsWarehouse from './modules/problemsWarehouse'
 import navRight from './modules/navRight'
 
 Vue.use(Vuex)
@@ -13,7 +13,7 @@ export default new Vuex.Store({
   getters,
   modules: {
     login,
-    questionBank,
+    problemsWarehouse,
     navRight
   }
 })

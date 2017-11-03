@@ -68,7 +68,7 @@
           if (valid) {
             const email = this.loginForm.email
             const pass = this.loginForm.pass
-            this.$http.post(`/Api/checkLogin`, qs.stringify({
+            this.$http.post(`/Api/sign`, qs.stringify({
               email: email,
               pass: pass
             }))

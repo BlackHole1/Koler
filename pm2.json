@@ -9,8 +9,9 @@
     "cwd": "./server",
     "watch": [
       "app.js",
-      "controller.js",
-      "controllers"
+      "controller",
+      "lib",
+      "router"
     ],
     "watch_options": {
       "followSymlinks": false

@@ -36,6 +36,8 @@
     "less-loader": "^4.0.5",
     "pm2": "^2.7.2",
     "qs": "^6.5.1",
+    "restify": "^6.2.3",
+    "restify-cors-middleware": "^1.0.1",
     "vue": "^2.4.2",
     "vue-router": "^2.7.0",
     "vuex": "^2.4.1"

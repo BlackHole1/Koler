@@ -17,7 +17,7 @@ Koler
   │  └─server-out.log # Koa项目输出日志
   ├─server/ # Koa后端代码
   │  ├─controllers/ # 逻辑层
-  │  │  ├─questionBank.js # 题库信息
+  │  │  ├─problemsWarehouse.js # 题库信息
   │  │  ├─subject.js  # 题目信息
   │  │  └─userInfo.js # 用户信息
   │  ├─app.js # Koa入口文件
@@ -52,7 +52,7 @@ Koler
   │  ├─store/ # Vuex共享状态信息
   │  │  ├─modules/
   │  │  │  ├─navRight.js  # 右侧导航栏的共享状态信息
-  │  │  │  └─questionBank.js # 题库的共享状态信息
+  │  │  │  └─problemsWarehouse.js # 题库的共享状态信息
   │  │  ├─actions.js  # 公共的actions
   │  │  ├─getters.js  # 公共的getters
   │  │  ├─mutations.js  # 公共的mutations

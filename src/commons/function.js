@@ -3,7 +3,7 @@ const fun = {
     const routerName = self.$router.history.current.name
     const model = (routerName === 'Main')
       ? 'userInfo'
-      : (routerName === 'QuestionBank')
+      : (routerName === 'problemsWarehouse')
       ? 'subject'
       : (routerName === 'Exam')
       ? 'exem'

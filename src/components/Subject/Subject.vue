@@ -57,7 +57,7 @@ export default {
     const name = (this.name = this.$route.params.name)
     const num = (this.num = this.$route.params.num)
     if (this.getDetailsByName(this.name).state) {
-      let data = this.getQuestionBankInfo[name].details
+      let data = this.getProblemsWarehouseInfo[name].details
       this.details = num === 'all' ? data : data.slice(0, num)
       this.state = true
     } else {
@@ -65,7 +65,7 @@ export default {
     }
   },
   computed: {
-    ...mapGetters(['getDetailsByName', 'getQuestionBankInfo'])
+    ...mapGetters(['getDetailsByName', 'getProblemsWarehouseInfo'])
   }
 }
 </script>
