@@ -2,7 +2,7 @@ const fun = {
   navRightModeltoggle: (self) => {
     const routerName = self.$router.history.current.name
     const model = (routerName === 'Main')
-      ? 'userInfo'
+      ? 'user'
       : (routerName === 'problemsWarehouse')
       ? 'subject'
       : (routerName === 'Exam')

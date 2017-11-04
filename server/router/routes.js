@@ -4,7 +4,7 @@ const sign = require('../controller/sign')
 
 const routes = {
   testLogin: {
-    get: sign.login
+    get: sign.check
   },
   'Api': {
     'problemsWarehouse': {
