@@ -1,22 +1,22 @@
 <template>
   <div class="nav-right">
     <div class="main">
-      <div class="userInfo" v-if="getModel === 'userInfo'">
+      <div class="userInfo" v-if="getModel === 'user'">
         <div class="header">
-          <img :src="getUserInfo.avatar_url" alt="用户头像">
-          <span class="name">{{getUserInfo.name}}</span>
+          <img :src="getUser.avatar_url" alt="用户头像">
+          <span class="name">{{getUser.name}}</span>
         </div>
         <span class="type">
-          所属类别：{{getUserInfo.type}}
+          所属类别：{{getUser.type}}
         </span>
         <span class="upper">
-          上级类别：{{getUserInfo.upper}}
+          上级类别：{{getUser.upper}}
         </span>
         <span class="upper_name">
-          上级用户：{{getUserInfo.upper_name}}
+          上级用户：{{getUser.upper_name}}
         </span>
         <span class="created_date">
-          创建时间：{{getUserInfo.created_date}}
+          创建时间：{{getUser.created_date}}
         </span>
       </div>
       <div class="subject" v-if="getModel === 'subject'">
@@ -51,7 +51,7 @@ export default {
   computed: {
     ...mapGetters([
       'getModel',
-      'getUserInfo',
+      'getUser',
       'getSubject',
       'getExam'
     ])

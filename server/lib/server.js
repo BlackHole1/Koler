@@ -46,7 +46,6 @@ server.use(function (req, res, next) {
     }
   })
   /* esint-enable */
-  console.log(jwtState)
   if (jwtState.state) {
     return next()
   } else {

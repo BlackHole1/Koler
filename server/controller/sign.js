@@ -32,7 +32,6 @@ const resource = {
     res.send(data)
   },
   check: (req, res, next) => {
-    console.log(1)
     res.contentType = 'json'
     res.send({
       'state': true,

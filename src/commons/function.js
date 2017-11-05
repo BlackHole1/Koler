@@ -3,11 +3,11 @@ const fun = {
     const routerName = self.$router.history.current.name
     const model = (routerName === 'Main')
       ? 'user'
-      : (routerName === 'problemsWarehouse')
+      : (routerName === 'ProblemsWarehouse')
       ? 'subject'
       : (routerName === 'Exam')
       ? 'exem'
-      : 'userInfo'
+      : 'user'
     const subjectName = (model === 'subject')
       ? self.$router.history.current.params.name
       : ''

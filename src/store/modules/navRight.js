@@ -3,13 +3,13 @@ import Vue from 'vue'
 
 const state = {
   /* 右侧边栏的模式，不同模式显示不同的数据。
-      userInfo => 主页默认数据（用户头像、名称、当前身份、上一级管理者的身份及名字）
+      user => 主页默认数据（用户头像、名称、当前身份、上一级管理者的身份及名字）
       subject => 题库数据（共有多少题、类型导航、）
       exam => 考试数据（完成多少题、有多少题没有完成、还剩多少时间）
  */
   model: '',
   // 存放各模式的数据信息
-  userInfoData: '',
+  userData: '',
   subjectData: '',
   examData: ''
 }
@@ -18,8 +18,8 @@ const getters = {
   getModel: state => {
     return state.model
   },
-  getUserInfo: state => {
-    return state.userInfoData
+  getUser: state => {
+    return state.userData
   },
   getSubject: state => {
     return state.subjectData
