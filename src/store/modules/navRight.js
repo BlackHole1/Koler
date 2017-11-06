@@ -30,19 +30,24 @@ const getters = {
 }
 
 const actions = {
-  getInfoBymodel ({commit, state}, data) {
-    const url = (data.subjectName === '')
-    ? `/Api/${data.model}`
-    : `/Api/${data.model}/${data.subjectName}`
-    new Vue().$http.get(url).then(resp => {
-      let content = resp.data
-      commit(types.DATA_NAVMODEL, {
-        data: data.model
+  async getInfoBymodel ({commit, state}, data) {
+    let content = {}
+    if (data.model === 'user') {
+      await new Vue().$http.get('/Api/user').then(resp => {
+        content = resp.data
       })
-      commit(types.DATA_NAVRIGHTMODEL, {
-        model: data.model + 'Data',
-        data: content
-      })
+    } else {
+      const subjectInfo = this.getters.getProblemsWarehouseInfo[data.subjectName] // 当前题目的详细信息
+      content.practiceNumber = subjectInfo.practiceNumber // 练习次数
+      content.average = subjectInfo.average // 练习平均分
+      content.count = subjectInfo.details.length // 共多少道题目
+    }
+    commit(types.DATA_NAVMODEL, {
+      data: data.model
+    })
+    commit(types.DATA_NAVRIGHTMODEL, {
+      model: data.model + 'Data',
+      data: content
     })
   }
 }

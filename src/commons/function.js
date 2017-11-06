@@ -8,12 +8,9 @@ const fun = {
       : (routerName === 'Exam')
       ? 'exem'
       : 'user'
-    const subjectName = (model === 'subject')
-      ? self.$router.history.current.params.name
-      : ''
     self.$store.dispatch('getInfoBymodel', {
       model: model,
-      subjectName: subjectName
+      subjectName: (self.$router.history.current.params.name) ? self.$router.history.current.params.name : ''
     })
   }
 }
