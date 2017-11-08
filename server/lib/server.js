@@ -28,7 +28,7 @@ server.use(function (req, res, next) {
     state: false,
     category: 'jwt'
   }
-  if (authorization === '' || authorization.split(' ').length < 1) { // 如果Authorization为空
+  if (authorization === '' || authorization.indexOf(' ') === -1) { // 如果Authorization为空、不规范
     jwtState.data = `no token detected in http header 'Authorization', 没有检测到头部信息里有Authorization字段`
   }
   const token = authorization.split(' ')[1]
