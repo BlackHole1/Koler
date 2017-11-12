@@ -91,5 +91,8 @@ export default {
       padding: 10px 0;
       border-bottom: 1px solid #d3dce6;
     }
+    & > div, span:last-of-type{
+      border-bottom: none;
+    }
   }
 </style>
