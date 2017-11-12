@@ -7,11 +7,11 @@ const common = {
   isArray: (arr) => {
     return Object.prototype.toString.call(arr) === '[object Array]'
   },
-  md5 (str) {
+  md5 (str) { // 单个字符串md5加密
     if (str) return crypto.createHash('md5').update(str, 'utf-8').digest('hex')
     return str
   },
-  md5s () {
+  md5s () { // 多字符串md5加密
     let md5Text = []
     if (arguments.length > 1) {
       for (let i = 0; i < arguments.length; i++) {

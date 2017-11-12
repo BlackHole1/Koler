@@ -7,7 +7,7 @@ const server = restify.createServer({
   name: 'Koler'
 })
 
-const cors = corsMiddleware({
+const cors = corsMiddleware({ // 解决跨域问题
   preflightMaxAge: 25,
   origins: [constant.clientAddress],
   allowHeaders: ['Authorization']
@@ -19,8 +19,8 @@ server.use(cors.actual)
 server.use(restify.plugins.queryParser())
 server.use(restify.plugins.bodyParser())
 
-server.use(function (req, res, next) {
-  if (req.path() === '/Api/sign') {
+server.use(function (req, res, next) {  // 请求hook，每次请求查看是否有登录
+  if (req.path() === '/Api/sign') { // 跳过注册页面
     return next()
   }
   const authorization = req.header('Authorization')
