@@ -1,5 +1,8 @@
+// const M = require('../model')
 const resource = {
   getInfo: (req, res, next) => {
+    // let UserModel = M('user')
+    
     const data = {
       'id': 5,
       'name': '小明',
