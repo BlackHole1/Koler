@@ -23,7 +23,7 @@ const common = {
     }
     return this.md5(arguments[0])
   },
-  jwt (authorization, done, fail) {
+  jwt (authorization, done, fail) { // jwt验证及返回解码后的数据
     let jwtState = {
       state: false,
       category: 'jwt'

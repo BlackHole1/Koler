@@ -1,18 +1,25 @@
-// const M = require('../model')
+const M = require('../model')
+const common = require('../lib/common')
+
 const resource = {
   getInfo: (req, res, next) => {
-    // let UserModel = M('user')
-    
-    const data = {
-      'id': 5,
-      'name': '小明',
-      'avatar_url': 'https://avatars0.githubusercontent.com/u/8198408?v=4',
-      'type': 'Student',
-      'upper': 'Teacher',
-      'upper_name': 'Boss',
-      'created_date': '2015-07-18 11:20:32'
-    }
-    res.send(data)
+    res.contentType = 'json'
+    const info = {}
+    common.jwt(req.header('Authorization'), (jwtState) => {
+      let UserModel = M('user')
+      UserModel.findByName(jwtState.data.data.name, (error, data) => {
+        if (error) {
+          info.state = false
+          info.data = error
+        } else {
+          info.state = true
+          info.data = data
+        }
+        res.send(data)
+      })
+    }, (jwtState) => {
+      res.send(jwtState.data)
+    })
   }
 }
 

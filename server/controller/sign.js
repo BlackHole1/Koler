@@ -4,15 +4,15 @@ const common = require('../lib/common')
 const constant = require('../../src/commons/configConstant')
 const M = require('../model')
 
-let data
+let info
 const resource = {
   login: (req, res, next) => {
     if (empty(req.body.email) || empty(req.body.pass)) {
-      data = {
+      info = {
         state: false,
         data: '账号或密码错误'
       }
-      res.send(data)
+      res.send(info)
       return false
     }
 
@@ -23,13 +23,13 @@ const resource = {
       password: vPass
     }, (error, data) => {
       if (error) {
-        data = {
+        info = {
           state: false,
           data: '数据库查询错误'
         }
       } else {
         if (empty(data)) {
-          data = {
+          info = {
             state: false,
             data: '账号密码错误'
           }
@@ -38,19 +38,19 @@ const resource = {
             exp: Math.floor(Date.now() / 1000) + 24 * 60 * 60, // 1 天
             data: {
               uid: 1,
-              name: 'admin'
+              name: data.name
             }
           }, constant.jwt.secret, {
             algorithm: constant.jwt.algorithm
           })
-          data = {
+          info = {
             state: true,
             data: '登录成功！',
             token: token
           }
         }
       }
-      res.send(data)
+      res.send(info)
     })
   },
   check: (req, res, next) => {
