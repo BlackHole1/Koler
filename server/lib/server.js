@@ -32,13 +32,13 @@ server.use(function (req, res, next) {  // 请求hook，每次请求查看是否
     jwtState.data = `no token detected in http header 'Authorization', 没有检测到头部信息里有Authorization字段`
   } else {
     const token = authorization.split(' ')[1]
-    /* eslint-disable */  // 此处可能存在eslint的bug，导致eslint报错，需要临时关闭下
     jwt.verify(token, constant.jwt.secret, {  // 检测token是否符合规范
       algorithms: [constant.jwt.algorithm]
-    }, (err,decoded) => {
+    }, (err, decoded) => {
       if (err) {
-        if ('TokenExpiredError' === err.name) {
+        if (err.name === 'TokenExpiredError') {
           jwtState.data = 'the token is expired, 令牌过期'
+          return false
         }
         jwtState.data = 'invalid token, token无效'
       } else {
@@ -46,7 +46,6 @@ server.use(function (req, res, next) {  // 请求hook，每次请求查看是否
       }
     })
   }
-  /* esint-enable */
   if (jwtState.state) {
     return next()
   } else {
