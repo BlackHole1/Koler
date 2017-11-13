@@ -23,7 +23,7 @@ const common = {
     }
     return this.md5(arguments[0])
   },
-  jwt (authorization) {
+  jwt (authorization, done, fail) {
     let jwtState = {
       state: false,
       category: 'jwt'
@@ -46,7 +46,11 @@ const common = {
         }
       })
     }
-    return jwtState
+    if (jwtState.state) {
+      done(jwtState)
+    } else {
+      fail(jwtState)
+    }
   }
 }
 
