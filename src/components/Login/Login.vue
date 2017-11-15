@@ -22,6 +22,13 @@
 <script>
   const qs = require('qs')
   export default {
+    created () {
+      if (this.$router.history.current.name === 'Logout') {
+        this.$store.dispatch('delToken')
+        this.$router.push('/Login')
+        this.$message.success('您已成功退出登录')
+      }
+    },
     data () {
       let checkUser = (rule, value, callback) => {
         if (!value) {

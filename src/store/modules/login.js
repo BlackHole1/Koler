@@ -14,7 +14,7 @@ const actions = {
   addToken ({commit, state}, token) {
     commit(types.ADD_TOKEN, token)
   },
-  delToken ({commit, state}, token) {
+  delToken ({commit, state}) {
     commit(types.DEL_TOKEN)
   }
 }

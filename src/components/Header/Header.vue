@@ -4,7 +4,7 @@
       <el-menu-item index="/" class="nav-left">我的题库</el-menu-item>
       <el-submenu index="2" class="nav-right">
         <template slot="title">账号</template>
-        <el-menu-item index="2-1">退出</el-menu-item>
+        <el-menu-item index="/login/out">退出</el-menu-item>
       </el-submenu>
     </el-menu>
   </div>
