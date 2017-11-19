@@ -5,7 +5,8 @@ const resource = {
   getInfo: (req, res, next) => {
     res.contentType = 'json'
     const info = {}
-    common.jwt(req.header('Authorization'), (jwtState) => {
+    const jwtState = common.jwt(req.header('Authorization'))
+    if (jwtState.state) {
       let UserModel = M('user')
       UserModel.findByName(jwtState.data.data.name, (error, data) => {
         if (error) {
@@ -17,9 +18,9 @@ const resource = {
         }
         res.send(data)
       })
-    }, (jwtState) => {
+    } else {
       res.send(jwtState.data)
-    })
+    }
   }
 }
 
