@@ -23,12 +23,13 @@ server.use(function (req, res, next) {  // 请求hook，每次请求查看是否
   if (req.path() === '/Api/sign') { // 跳过注册页面
     return next()
   }
-  common.jwt(req.header('Authorization'), () => {
+  const jwtState = common.jwt(req.header('Authorization'))
+  if (jwtState.state) {
     return next()
-  }, (jwtState) => {
+  } else {
     res.contentType = 'json'
     res.send(jwtState)
-  })
+  }
 })
 
 module.exports = server
