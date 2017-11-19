@@ -1,5 +1,7 @@
+const mongoose = require('../../lib/mongoose')
 const dateFormat = require('dateformat')
-module.exports = {
+
+const problemsWarehouse = new mongoose.Schema({
   user: String, // 所属哪个用户
   name: String, // 所属哪个题库
   practiceNumber: Number, // 练习的次数
@@ -22,4 +24,6 @@ module.exports = {
     type: String,
     default: dateFormat(new Date(), `yyyy-mm-dd HH:MM:ss`)
   }
-}
+})
+
+module.exports = problemsWarehouse
