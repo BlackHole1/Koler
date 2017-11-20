@@ -12,7 +12,7 @@ export default {}
   .jumbotron{
     display: block;
     padding: 48px 60px;
-    background-color: #d3dce6;
+    background-color:rgba(255, 255, 255, 0.9215686274509803);
     border-top-left-radius: 4px;
     border-top-right-radius: 4px;
     border-bottom-left-radius: 4px;

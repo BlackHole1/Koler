@@ -3,11 +3,11 @@
     <div class="main">
       <div class="form">
         <el-form :model="loginForm" :rules="rules" ref="loginForm" label-width="100px" class="demo-ruleForm">
-        <el-form-item label="邮箱" prop="email">
-          <el-input type="text" v-model="loginForm.email" auto-complete="off"></el-input>
+        <el-form-item label="" prop="email">
+          <el-input type="text" v-model="loginForm.email" auto-complete="off" placeholder="邮箱"></el-input>
         </el-form-item>
-        <el-form-item label="密码" prop="pass">
-          <el-input type="password" v-model="loginForm.pass" auto-complete="off"></el-input>
+        <el-form-item label="" prop="pass">
+          <el-input type="password" v-model="loginForm.pass" auto-complete="off" placeholder="密码"></el-input>
         </el-form-item>
         <el-form-item style="text-align: center;">
           <el-button type="primary" @click="submitForm('loginForm')">登录</el-button>
@@ -109,9 +109,9 @@
   margin: auto;
   width: 20%;
   height: 233px;
-  border: 1px solid rgba(234, 238, 251, 0.48);
-  background-color: rgba(234, 238, 251, 0.48);
-  border-radius: 4px;
+  border: 1px solid rgba(255, 255, 255, 0.9215686274509803);
+  background-color: rgba(255, 255, 255, 0.9215686274509803);
+  border-radius: 10px;
 }
 .form{
   display: block;
@@ -119,3 +119,8 @@
 }
 </style>
 
+<style>
+.el-form-item__content {
+  margin-left: 61px !important;
+}
+</style>

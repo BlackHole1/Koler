@@ -63,7 +63,7 @@ export default {
   .main {
     width: auto;
     height: auto;
-    background-color: #ffffff - 5;
+    background-color: rgba(255, 255, 255, 0.9215686274509803);
     border: 1px solid #d3dce6;
     border-radius: 4px;
     box-shadow: 0 2px 4px 0 rgba(0,0,0,.12), 0 0 6px 0 rgba(0,0,0,.04);

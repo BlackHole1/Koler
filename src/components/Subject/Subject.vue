@@ -72,6 +72,7 @@ export default {
 
 <style lang="less" scoped>
 .box-card {
+  background-color: rgba(255, 255, 255, 0.9215686274509803);
   margin-bottom: 20px;
   &:last-child {
     margin-bottom: 0;
