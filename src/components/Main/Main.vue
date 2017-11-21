@@ -69,9 +69,17 @@ export default {
     },
     toggleDialog () {
       this.dialog = !this.dialog
+      this.PWName = ''
     },
     createPW () {
-      // 提交代码
+      this.$http.post('/Api/problemsWarehouse', {
+        name: this.PWName
+      })
+      .then((res) => {
+        const data = res.data
+        this.$message[data.state ? 'success' : 'error'](data.data)
+        this.toggleDialog()
+      })
     }
   },
   computed: {

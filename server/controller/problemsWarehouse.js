@@ -33,10 +33,10 @@ const resource = {
       state: false,
       data: ''
     }
-    if (empty(req.bofy.name)) {
+    if (empty(req.body.name)) {
       result.data = '请输入要创建的题库名称'
     }
-    const name = req.bofy.name
+    const name = req.body.name
     let PWMolde = M('problemsWarehouse')
     const PWEntity = new PWMolde({
       user: common.jwt(req.header('Authorization')).data.data.name,
