@@ -2,19 +2,19 @@ const M = require('../model')
 const common = require('../lib/common')
 
 const resource = {
-  getInfo: (req, res, next) => {
+  getinfo: (req, res, next) => {
     res.contentType = 'json'
-    const info = {}
+    const result = {}
     const jwtState = common.jwt(req.header('Authorization'))
     if (jwtState.state) {
       let UserModel = M('user')
       UserModel.findByName(jwtState.data.data.name, (error, data) => {
         if (error) {
-          info.state = false
-          info.data = error
+          result.state = false
+          result.data = error
         } else {
-          info.state = true
-          info.data = data
+          result.state = true
+          result.data = data
         }
         res.send(data)
       })

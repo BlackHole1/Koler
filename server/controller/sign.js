@@ -4,7 +4,7 @@ const common = require('../lib/common')
 const constant = require('../../src/commons/configConstant')
 const M = require('../model')
 
-let info
+let result
 const resource = {
   login: (req, res, next) => {
     if (empty(req.body.email) || empty(req.body.pass)) {
