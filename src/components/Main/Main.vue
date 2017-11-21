@@ -8,7 +8,7 @@
         <v-jumbotron>
           <h1>Sorry</h1>
           <p>您还没有创建任何的题目</p>
-          <el-button type="primary" size="large">点我创建</el-button>
+          <el-button type="primary" size="large" @click="toggleDialog()">点我创建</el-button>
         </v-jumbotron>
       </el-col>
     </el-row>
@@ -18,9 +18,10 @@
         <!-- 判断是否已经进入到题库里 -->
         <!-- 如果没有，则显示题库标题 -->
         <v-jumbotron v-if="!this.$route.params.name">
-          <h1>题库列表</h1>
-          <p>以下是您创建的题库</p>
-            <el-button type="primary" size="large" icon="document" v-for="name in getProblemsWarehouseInfo.names" :key="name.id" @click="showProblemsWarehouse">{{name}}</el-button>
+          <p>
+            <el-button type="text" style="font-size: 16px;" @click="toggleDialog()">创建题库</el-button>
+          </p>
+          <el-button type="primary" size="large" icon="document" v-for="name in getProblemsWarehouseInfo.names" :key="name.id" @click="showProblemsWarehouse">{{name}}</el-button>
         </v-jumbotron>
         <!-- 如果有，则说明已经进入到router里，则显示router对应的组件 -->
         <router-view v-else></router-view>
@@ -31,6 +32,16 @@
         <v-nav-right ></v-nav-right>
       </el-col>
     </el-row>
+    <el-dialog
+      title="创建题库"
+      :visible.sync="dialog"
+      width="22%">
+      <el-input placeholder="题库名称" v-model="PWName"></el-input>
+      <span slot="footer" class="dialog-footer">
+        <el-button @click="toggleDialog()">取 消</el-button>
+        <el-button type="primary" @click="createPW()">确 定</el-button>
+      </span>
+    </el-dialog>
   </div>
 </template>
 
@@ -44,11 +55,23 @@ export default {
   created () {
     this.$store.dispatch('getProblemsWarehouseList')
   },
+  data () {
+    return {
+      dialog: false,
+      PWName: ''
+    }
+  },
   methods: {
     showProblemsWarehouse (e) {
       this.$router.push({
         path: `ProblemsWarehouse/${e.target.innerText}/all`
       })
+    },
+    toggleDialog () {
+      this.dialog = !this.dialog
+    },
+    createPW () {
+      // 提交代码
     }
   },
   computed: {
