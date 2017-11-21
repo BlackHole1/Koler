@@ -8,11 +8,11 @@ let result
 const resource = {
   login: (req, res, next) => {
     if (empty(req.body.email) || empty(req.body.pass)) {
-      info = {
+      result = {
         state: false,
         data: '账号或密码错误'
       }
-      res.send(info)
+      res.send(result)
       return false
     }
 
@@ -23,13 +23,13 @@ const resource = {
       password: vPass
     }, (error, data) => {
       if (error) {
-        info = {
+        result = {
           state: false,
           data: '数据库查询错误'
         }
       } else {
         if (empty(data)) {
-          info = {
+          result = {
             state: false,
             data: '账号密码错误'
           }
@@ -43,14 +43,14 @@ const resource = {
           }, constant.jwt.secret, {
             algorithm: constant.jwt.algorithm
           })
-          info = {
+          result = {
             state: true,
             data: '登录成功！',
             token: token
           }
         }
       }
-      res.send(info)
+      res.send(result)
     })
   },
   check: (req, res, next) => {
