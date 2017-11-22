@@ -8,7 +8,8 @@ const routes = {
   },
   'Api': {
     'problemsWarehouse': {
-      'get': problemsWarehouse.getInfo
+      'get': problemsWarehouse.getInfo,
+      'post': problemsWarehouse.addPW
     },
     'user': {
       'get': user.getInfo
