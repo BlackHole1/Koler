@@ -6,7 +6,7 @@ const resource = {
   getInfo: (req, res, next) => {
     let result = {}
     let PWMolde = M('problemsWarehouse')
-    PWMolde.findByUserAndName('root', function (err, data) {
+    PWMolde.findByEmailAndName(common.jwt(req.header('Authorization')).data.data.email, function (err, data) {
       if (err) {
         result = err
       } else {
@@ -38,21 +38,28 @@ const resource = {
     }
     const name = req.body.name
     let PWMolde = M('problemsWarehouse')
-    const PWEntity = new PWMolde({
-      user: common.jwt(req.header('Authorization')).data.data.name,
-      name: name,
-      practiceNumber: 0,
-      average: 0,
-      details: []
-    })
-    PWEntity.save(function (err) {
-      if (err) {
-        result.data = err
+    PWMolde.findByName(name, function (err, data) {
+      if (err || data.length > 0) {
+        result.data = !(err) ? '题库名称已被使用' : err
+        res.send(result)
       } else {
-        result.state = true
-        result.data = '创建题库成功'
+        const PWEntity = new PWMolde({
+          email: common.jwt(req.header('Authorization')).data.data.email,
+          name: name,
+          practiceNumber: 0,
+          average: 0,
+          details: []
+        })
+        PWEntity.save(function (err) {
+          if (err) {
+            result.data = err
+          } else {
+            result.state = true
+            result.data = '创建题库成功'
+          }
+          res.send(result)
+        })
       }
-      res.send(result)
     })
   }
 }

@@ -37,8 +37,8 @@ const resource = {
           const token = jwt.sign({
             exp: Math.floor(Date.now() / 1000) + 24 * 60 * 60, // 1 天
             data: {
-              uid: 1,
-              name: data.name
+              name: data.name,
+              email: req.body.email
             }
           }, constant.jwt.secret, {
             algorithm: constant.jwt.algorithm

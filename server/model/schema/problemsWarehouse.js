@@ -2,7 +2,7 @@ const mongoose = require('../../lib/mongoose')
 const dateFormat = require('dateformat')
 
 const problemsWarehouse = new mongoose.Schema({
-  user: String, // 所属哪个用户
+  email: String, // 所属哪个邮箱
   name: String, // 所属哪个题库
   practiceNumber: Number, // 练习的次数
   average: Number,  // 平均分
