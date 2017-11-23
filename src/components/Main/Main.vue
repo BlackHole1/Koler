@@ -84,6 +84,9 @@ export default {
         const data = res.data
         this.$message[data.state ? 'success' : 'error'](data.data)
         this.toggleDialog()
+        if (data.state) {
+          this.$store.dispatch('getProblemsWarehouseList')
+        }
       })
     }
   },

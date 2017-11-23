@@ -2,7 +2,7 @@ const M = require('../model')
 const common = require('../lib/common')
 
 const resource = {
-  getinfo: (req, res, next) => {
+  getInfo: (req, res, next) => {
     res.contentType = 'json'
     const result = {}
     const jwtState = common.jwt(req.header('Authorization'))
