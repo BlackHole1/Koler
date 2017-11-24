@@ -6,7 +6,7 @@ const resource = {
   getInfo: (req, res, next) => {
     let result = {}
     let PWMolde = M('problemsWarehouse')
-    PWMolde.findByEmailAndName(common.jwt(req.header('Authorization')).data.data.email, function (err, data) {
+    PWMolde.findByEmail(common.jwt(req.header('Authorization')).data.data.email, function (err, data) {
       if (err) {
         result = err
       } else {
@@ -38,8 +38,8 @@ const resource = {
     }
     const name = req.body.name
     let PWMolde = M('problemsWarehouse')
-    PWMolde.findByName(name, function (err, data) {
-      if (err || data.length > 0) {
+    PWMolde.findByEmailAndName(common.jwt(req.header('Authorization')).data.data.email, name, function (err, data) {
+      if (err || data.length === 1) {
         result.data = !(err) ? '题库名称已被使用' : err
         res.send(result)
       } else {
@@ -57,6 +57,33 @@ const resource = {
             result.state = true
             result.data = '创建题库成功'
           }
+          res.send(result)
+        })
+      }
+    })
+  },
+  delPW: (req, res, next) => {
+    const result = {
+      state: false,
+      data: ''
+    }
+    if (empty(req.query.name)) {
+      result.data = '请输入要创建的题库名称'
+    }
+    const name = req.query.name
+    const email = common.jwt(req.header('Authorization')).data.data.email
+    let PWMolde = M('problemsWarehouse')
+    PWMolde.findByEmailAndName(email, name, function (err, data) {
+      if (err || data.length !== 1) {
+        result.data = !(err) ? '找不到此题库' : err
+        res.send(result)
+      } else {
+        PWMolde.remove({
+          email: email,
+          name: name
+        }, function (err) {
+          result.state = !(err)
+          result.data = (err) ? '删除失败' : '删除成功'
           res.send(result)
         })
       }

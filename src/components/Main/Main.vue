@@ -19,8 +19,8 @@
         <!-- 如果没有，则显示题库标题 -->
         <v-jumbotron v-if="!this.$route.params.name">
           <div class="pw-operation">
-            <el-button type="text" style="font-size: 16px;" @click="toggleDialog()">创建题库</el-button>
-            <el-button type="text" style="font-size: 16px;" @click="toggleDialog()">删除题库</el-button>
+            <el-button type="text" style="font-size: 16px;" @click="toggleDialog('create')">创建题库</el-button>
+            <el-button type="text" style="font-size: 16px;" @click="toggleDialog('delete')">删除题库</el-button>
           </div>
           <el-button type="primary" size="large" icon="document" class="pw-button" v-for="name in getProblemsWarehouseInfo.names" :key="name.id" @click="showProblemsWarehouse">{{name}}</el-button>
           <span style="clear: both;"></span>
@@ -35,13 +35,13 @@
       </el-col>
     </el-row>
     <el-dialog
-      title="创建题库"
-      :visible.sync="dialog"
+      :title="dialog.title"
+      :visible.sync="dialog.state"
       width="22%">
-      <el-input placeholder="题库名称" v-model="PWName"></el-input>
+      <el-input :placeholder="dialog.placeholder" v-model="PWName"></el-input>
       <span slot="footer" class="dialog-footer">
         <el-button @click="toggleDialog()">取 消</el-button>
-        <el-button type="primary" @click="createPW()" :loading="loading">确 定</el-button>
+        <el-button type="primary" @click="PWOperation(dialog.model)" :loading="loading">确 定</el-button>
       </span>
     </el-dialog>
   </div>
@@ -59,7 +59,12 @@ export default {
   },
   data () {
     return {
-      dialog: false,
+      dialog: {
+        state: false,
+        model: '',
+        title: '',
+        placeholder: ''
+      },
       loading: false,
       PWName: ''
     }
@@ -70,13 +75,26 @@ export default {
         path: `ProblemsWarehouse/${e.target.innerText}/all`
       })
     },
-    toggleDialog () {
-      this.dialog = !this.dialog
+    toggleDialog (model) {
+      const dialog = this.dialog
+      dialog.state = !dialog.state
+      this.loading = false
       this.PWName = ''
+      if (model) {
+        dialog.model = model
+        if (model === 'create') {
+          dialog.title = '创建题库'
+          dialog.placeholder = '题库名称'
+        } else if (model === 'delete') {
+          dialog.title = '删除题库'
+          dialog.placeholder = '将要删除的题库名称'
+        }
+      }
     },
-    createPW () {
+    PWOperation (model) {
+      const method = (model === 'create') ? 'post' : 'delete'
       this.loading = true
-      this.$http.post('/Api/problemsWarehouse', {
+      this.$http[method](`/Api/problemsWarehouse/${(method === 'delete') ? '?name=' + this.PWName : ''}`, {
         name: this.PWName
       })
       .then((res) => {
