@@ -4,12 +4,17 @@
     <!-- 判断数据库里是否有数据 -->
     <!-- 如果没有数据 -->
     <el-row :gutter="20" class="row" v-if='!getProblemsWarehouseInfo'> 
-      <el-col :span="16" :offset="4">
+      <el-col :span="12" :offset="4">
         <v-jumbotron>
           <h1>Sorry</h1>
           <p>您还没有创建任何的题目</p>
-          <el-button type="primary" size="large" @click="toggleDialog()" :loading="loading">点我创建</el-button>
+          <el-button type="primary" size="large" @click="toggleDialog('create')" :loading="loading">点我创建</el-button>
         </v-jumbotron>
+      </el-col>
+      <el-col :span="1">
+      </el-col>
+      <el-col :span="5">
+        <v-nav-right ></v-nav-right>
       </el-col>
     </el-row>
     <!-- 如果数据里有数据 -->
