@@ -8,7 +8,7 @@
         <v-jumbotron>
           <h1>Sorry</h1>
           <p>您还没有创建任何的题目</p>
-          <el-button type="primary" size="large" @click="toggleDialog('create')" :loading="loading">点我创建</el-button>
+          <el-button type="primary" size="large" @click="toggleDialog('create')" :loading="dialog.loading">点我创建</el-button>
         </v-jumbotron>
       </el-col>
       <!-- 如果数据里有数据 -->
@@ -19,6 +19,7 @@
           <div class="pw-operation">
             <el-button type="text" style="font-size: 16px;" @click="toggleDialog('create')">创建题库</el-button>
             <el-button type="text" style="font-size: 16px;" @click="toggleDialog('delete')">删除题库</el-button>
+            <el-button type="text" style="font-size: 16px;" @click="toggleDialog('rename')">重命名题库</el-button>
           </div>
           <el-button type="primary" size="large" icon="document" class="pw-button" v-for="name in getProblemsWarehouseInfo.names" :key="name.id" @click="showProblemsWarehouse">{{name}}</el-button>
           <span style="clear: both;"></span>
@@ -37,10 +38,24 @@
       :title="dialog.title"
       :visible.sync="dialog.state"
       width="22%">
-      <el-input :placeholder="dialog.placeholder" v-model="PWName"></el-input>
+      <div v-if="dialog.model === 'rename'">
+        <el-select v-model="dialog.name" placeholder="请选择您要重命名的题库" style="width: 100%" :no-data-text="123">
+          <el-option
+            v-for="item in getProblemsWarehouseInfo.names"
+            :key="item"
+            :label="item"
+            :value="item">
+          </el-option>
+        </el-select>
+        <br><br>
+        <el-input placeholder="新名称" v-model="dialog.changeName"></el-input>
+      </div>
+      <div v-else>
+        <el-input :placeholder="dialog.placeholder" v-model="dialog.name"></el-input>
+      </div>
       <span slot="footer" class="dialog-footer">
         <el-button @click="toggleDialog()">取 消</el-button>
-        <el-button type="primary" @click="PWOperation(dialog.model)" :loading="loading">确 定</el-button>
+        <el-button type="primary" @click="PWOperation(dialog.model)" :loading="dialog.loading">确 定</el-button>
       </span>
     </el-dialog>
   </div>
@@ -59,13 +74,14 @@ export default {
   data () {
     return {
       dialog: {
-        state: false,
-        model: '',
-        title: '',
-        placeholder: ''
-      },
-      loading: false,
-      PWName: ''
+        state: false, // 弹框是否显示
+        model: '',  // 属于创建(create)还是删除(delete)还是重命名(rename)
+        title: '',  // 不同的model，不同的标题
+        placeholder: '',  // 不同的model，不同的提示文字
+        name: '', // 当前选择的题库名称
+        changeName: '',  // 修改后的题库名称
+        loading: false // 当点击确定后，禁止重复点击，并显示loading
+      }
     }
   },
   methods: {
@@ -77,27 +93,40 @@ export default {
     toggleDialog (model) {
       const dialog = this.dialog
       dialog.state = !dialog.state
-      this.loading = false
-      this.PWName = ''
+      dialog.loading = false
+      dialog.name = ''
+      dialog.changeName = ''
       if (model) {
         dialog.model = model
-        if (model === 'create') {
-          dialog.title = '创建题库'
-          dialog.placeholder = '题库名称'
-        } else if (model === 'delete') {
-          dialog.title = '删除题库'
-          dialog.placeholder = '将要删除的题库名称'
+        switch (model) {
+          case 'create':
+            dialog.title = '创建题库'
+            dialog.placeholder = '题库名称'
+            break
+          case 'delete':
+            dialog.title = '删除题库'
+            dialog.placeholder = '将要删除的题库名称'
+            break
+          case 'rename':
+            dialog.title = '重命名题库'
+            break
         }
       }
     },
     PWOperation (model) {
-      const method = (model === 'create') ? 'post' : 'delete'
-      this.loading = true
-      this.$http[method](`/Api/problemsWarehouse/${(method === 'delete') ? '?name=' + this.PWName : ''}`, {
-        name: this.PWName
+      const method = (model === 'create')
+        ? 'post'
+        : (model === 'delete')
+        ? 'delete'
+        : 'put'
+      const dialog = this.dialog
+      dialog.loading = true
+      this.$http[method](`/Api/problemsWarehouse/?name=${dialog.name}`, {
+        name: dialog.name,
+        changeName: dialog.changeName
       })
       .then((res) => {
-        this.loading = false
+        dialog.loading = false
         const data = res.data
         this.$message[data.state ? 'success' : 'error'](data.data)
         this.toggleDialog()

@@ -9,8 +9,9 @@ const routes = {
   'Api': {
     'problemsWarehouse': {
       'get': problemsWarehouse.getInfo,
-      'post': problemsWarehouse.addPW,
-      'del': problemsWarehouse.delPW
+      'post': problemsWarehouse.add,
+      'del': problemsWarehouse.del,
+      'put': problemsWarehouse.update
     },
     'user': {
       'get': user.getInfo
