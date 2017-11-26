@@ -9,8 +9,20 @@ const state = {
  */
   model: '',
   // 存放各模式的数据信息
-  userData: '',
-  subjectData: '',
+  userData: {
+    avatar_url: '',
+    created_date: '',
+    email: '',
+    name: '',
+    type: '',
+    upper: '',
+    upper_name: ''
+  },
+  subjectData: {
+    practiceNumber: '',
+    average: '',
+    count: ''
+  },
   examData: ''
 }
 
@@ -30,25 +42,32 @@ const getters = {
 }
 
 const actions = {
-  async getInfoBymodel ({commit, state}, data) {
+  getInfoBymodel ({commit, state}, data) {
+    const setState = () => {
+      commit(types.DATA_NAVMODEL, {
+        data: data.model
+      })
+      commit(types.DATA_NAVRIGHTMODEL, {
+        model: data.model + 'Data',
+        data: content
+      })
+    }
+
     let content = {}
     if (data.model === 'user') {
-      await new Vue().$http.get('/Api/user').then(resp => {
+      new Vue().$http.get('/Api/user').then(resp => {
         content = resp.data
+        setState()
       })
     } else {
-      const subjectInfo = this.getters.getProblemsWarehouseInfo[data.subjectName] // 当前题目的详细信息
-      content.practiceNumber = subjectInfo.practiceNumber // 练习次数
-      content.average = subjectInfo.average // 练习平均分
-      content.count = subjectInfo.details.length // 共多少道题目
+      this.dispatch('getProblemsWarehouseList', () => {
+        const subjectInfo = this.getters.getProblemsWarehouseInfo[data.subjectName] // 当前题目的详细信息
+        content.practiceNumber = subjectInfo.practiceNumber // 练习次数
+        content.average = subjectInfo.average // 练习平均分
+        content.count = subjectInfo.details.length // 共多少道题目
+        setState()
+      })
     }
-    commit(types.DATA_NAVMODEL, {
-      data: data.model
-    })
-    commit(types.DATA_NAVRIGHTMODEL, {
-      model: data.model + 'Data',
-      data: content
-    })
   }
 }
 

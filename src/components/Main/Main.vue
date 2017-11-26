@@ -12,7 +12,7 @@
         </v-jumbotron>
       </el-col>
       <!-- 如果数据里有数据 -->
-      <el-col :span="12" v-else>
+      <el-col :span="11" v-else>
         <!-- 判断是否已经进入到题库里 -->
         <!-- 如果没有，则显示题库标题 -->
         <v-jumbotron v-if="!this.$route.params.name">
@@ -30,7 +30,7 @@
       <!-- 无论如何都显示右侧用户信息 -->
       <el-col :span="1">
       </el-col>
-      <el-col :span="5">
+      <el-col :span="4">
         <v-nav-right ></v-nav-right>
       </el-col>
     </el-row>
@@ -39,7 +39,7 @@
       :visible.sync="dialog.state"
       width="22%">
       <div v-if="dialog.model === 'rename'">
-        <el-select v-model="dialog.name" placeholder="请选择您要重命名的题库" style="width: 100%" :no-data-text="123">
+        <el-select v-model="dialog.name" placeholder="请选择您要重命名的题库" style="width: 100%">
           <el-option
             v-for="item in getProblemsWarehouseInfo.names"
             :key="item"

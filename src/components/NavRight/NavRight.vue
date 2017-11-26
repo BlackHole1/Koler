@@ -20,6 +20,9 @@
         </span>
       </div>
       <div class="subject" v-if="getModel === 'subject'">
+        <div class="subject">
+          {{$router.history.current.params.name}}
+        </div>
         <div class="count">
           题目数量：{{getSubject.count}}
         </div>
@@ -86,7 +89,7 @@ export default {
         letter-spacing: 2px;
       }
     }
-    .type, .upper, .upper_name, .created_date, .count, .practice{
+    .type, .upper, .upper_name, .created_date, .count, .practice, .subject{
       display: block;
       padding: 10px 0;
       border-bottom: 1px solid #d3dce6;

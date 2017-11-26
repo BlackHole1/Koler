@@ -10,7 +10,7 @@
           <el-input type="password" v-model="loginForm.pass" auto-complete="off" placeholder="密码"></el-input>
         </el-form-item>
         <el-form-item style="text-align: center;">
-          <el-button type="primary" @click="submitForm('loginForm')">登录</el-button>
+          <el-button type="primary" @click="submitForm('loginForm')" :loading="loading">登录</el-button>
           <el-button @click="resetForm('loginForm')">重置</el-button>
         </el-form-item>
       </el-form>
@@ -55,6 +55,7 @@
         callback()
       }
       return {
+        loading: false,
         loginForm: {
           email: '',
           pass: ''
@@ -71,6 +72,7 @@
     },
     methods: {
       submitForm (formName) {
+        this.loading = true
         this.$refs[formName].validate((valid) => {
           if (valid) {
             const email = this.loginForm.email
@@ -80,20 +82,22 @@
               pass: pass
             }))
             .then(resp => {
+              this.loading = false
               const data = resp.data
               this.$store.dispatch((data.state) ? 'addToken' : 'delToken', data.token)
               this.$message[data.state ? 'success' : 'warning'](data.data)
               data.state ? this.$router.push('/') : ''
             })
-            .catch(err => {
-              this.$message.error('连接后端API失败，请F12查看详细信息')
-              console.log(err)
+            .catch(() => {
+              this.loading = false
+              this.$message.error('连接后端API失败，请确保后端服务器正常')
             })
           }
         })
       },
       resetForm (formName) {
         this.$refs[formName].resetFields()
+        this.loading = false
       }
     }
   }

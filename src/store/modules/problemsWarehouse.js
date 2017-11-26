@@ -24,7 +24,7 @@ const getters = {
 }
 
 const actions = {
-  getProblemsWarehouseList ({commit, state}) {
+  getProblemsWarehouseList ({commit, state}, cb) {
     new Vue().$http.get('/Api/problemsWarehouse')
       .then(resp => {
         let data = resp.data
@@ -37,6 +37,7 @@ const actions = {
             data: data
           })
         }
+        !(cb) ? '' : cb()
       })
   }
 }
