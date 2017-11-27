@@ -29,24 +29,16 @@
             </el-dropdown>
           </div>
           <div class="item">
-            <el-tooltip class="item" effect="dark" content="题目内容" placement="left">
-              <span style="line-height: 1.65">{{subject.content}}</span>
-            </el-tooltip>
+            <span style="line-height: 1.65">{{subject.content}}</span>
           </div>
           <div class="item">
-            <el-tooltip class="item" effect="dark" content="题目注释" placement="left">
-              <span class="note">{{subject.note}}</span>
-            </el-tooltip>
+            <span class="note">{{subject.note}}</span>
           </div>
           <div class="item">
-            <el-tooltip class="item" effect="dark" content="题目答案" placement="left">
-              <el-button class="answer">显示答案</el-button>
-            </el-tooltip>
+            <el-button class="answer">显示答案</el-button>
           </div>
           <div class="card-foot">
-            <el-tooltip class="item" effect="dark" content="题目分数" placement="left">
-              <b style="font-size:18px;color:#ff4949">{{subject.score}}</b>
-            </el-tooltip>
+            <b style="font-size:18px; color: #FA5555;">{{subject.score}}</b>
             <div class="tag">
               <el-tag class="tag-item" v-for="tag in subject.category" :key="tag">{{tag}}</el-tag>
             </div>
@@ -60,24 +52,24 @@
       :visible.sync="dialog.state"
       width="30%">
       <div v-if="dialog.model === 'create'">
-        <el-form :model="create" :rules="rules.create" ref="create" label-position="left" label-width="100px">
+        <el-form :model="create" :rules="rules.create" ref="create" label-position="top" label-width="100px">
           <el-form-item label="题目标题" prop="title">
             <el-input v-model="create.title"></el-input>
           </el-form-item>
           <el-form-item label="题目内容" prop="content">
             <el-input type="textarea" v-model="create.content"></el-input>
           </el-form-item>
-          <el-form-item label="题目备注">
+          <el-form-item label="题目备注" prop="note">
             <el-input type="textarea" v-model="create.note"></el-input>
           </el-form-item>
-          <el-form-item label="题目分值">
+          <el-form-item label="题目分值" prop="score">
             <el-input-number v-model="create.score" size="small" :min="1" :max="1000"></el-input-number>
           </el-form-item>
-          <el-form-item label="题目标签">
+          <el-form-item label="题目标签" prop="tags">
             <el-tag :key="tag" v-for="tag in create.tags" closable :disable-transitions="false" @close="handleClose(tag)">
               {{tag}}
             </el-tag>
-            <el-input class="input-new-tag" ref="saveTagInput" size="small"
+            <el-input class="input-new-tag" ref="saveTagInput" size="small" style="height: 38px;"
               :style="tagsMargin"
               v-show="create.inputVisible"
               v-model="create.inputValue"
@@ -201,13 +193,14 @@ export default {
         this.toggleDialog()
         if (data.state) {
           this.$store.dispatch('getProblemsWarehouseList', () => {
-            this.subjectInfo()  // 重新渲染组件，使之添加完成后就能看到刚刚添加的题目
+            // 重新渲染组件，使之看到最新的变化，无需刷新页面
+            this.subjectInfo()
             this.$store.dispatch('getInfoBymodel', {
               model: 'subject',
               subjectName: this.name
             })
           })
-          this.$refs[model].resetFields()
+          this.resetForm(model) // 当成功时重置表单，防止失败后，重新填写表单
         }
       })
     },
