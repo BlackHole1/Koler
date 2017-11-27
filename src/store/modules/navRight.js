@@ -62,9 +62,13 @@ const actions = {
     } else {
       this.dispatch('getProblemsWarehouseList', () => {
         const subjectInfo = this.getters.getProblemsWarehouseInfo[data.subjectName] // 当前题目的详细信息
-        content.practiceNumber = subjectInfo.practiceNumber // 练习次数
-        content.average = subjectInfo.average // 练习平均分
-        content.count = subjectInfo.details.length // 共多少道题目
+        if (subjectInfo === undefined) {
+          content = ''
+        } else {
+          content.practiceNumber = subjectInfo.practiceNumber // 练习次数
+          content.average = subjectInfo.average // 练习平均分
+          content.count = subjectInfo.details.length // 共多少道题目
+        }
         setState()
       })
     }

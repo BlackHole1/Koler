@@ -7,7 +7,7 @@
       <el-col :span="12" v-if='!getProblemsWarehouseInfo'>
         <v-jumbotron>
           <h1>Sorry</h1>
-          <p>您还没有创建任何的题目</p>
+          <p>您还没有创建任何的题库</p>
           <el-button type="primary" size="large" @click="toggleDialog('create')" :loading="dialog.loading">点我创建</el-button>
         </v-jumbotron>
       </el-col>

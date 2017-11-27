@@ -1,6 +1,11 @@
 <template>
   <div class="subject" v-if="state">
-    <el-card class="box-card" v-for="(subject, id) in details" :key="subject.id">
+    <v-jumbotron v-if="details.length === 0">
+      <h1>Sorry</h1>
+      <p>您还没有创建任何的题目</p>
+      <el-button type="primary" size="large">点我创建</el-button>
+    </v-jumbotron>
+    <el-card class="box-card" v-for="(subject, id) in details" :key="subject.id" v-else>
       <div slot="header" class="clearfix">
         <span style="line-height: 32px;font-size:20px;">
           <span>{{id+1}}、{{subject.name}}</span>
@@ -44,6 +49,7 @@
 
 <script>
 import { mapGetters } from 'vuex'
+import Jumbotron from '~/Jumbotron'
 export default {
   data () {
     return {
@@ -66,6 +72,9 @@ export default {
   },
   computed: {
     ...mapGetters(['getDetailsByName', 'getProblemsWarehouseInfo'])
+  },
+  components: {
+    'v-jumbotron': Jumbotron
   }
 }
 </script>
