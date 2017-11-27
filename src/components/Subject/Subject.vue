@@ -80,6 +80,7 @@ export default {
         this.details = num === 'all' ? data : data.slice(0, num)
         this.state = true
       } else {
+        this.$message.warning('不存在此题库，已返回首页')
         this.$router.push('/')
       }
     }
