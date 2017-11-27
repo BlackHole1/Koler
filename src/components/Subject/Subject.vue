@@ -3,7 +3,7 @@
     <v-jumbotron v-if="details.length === 0">
       <h1>Sorry</h1>
       <p>您还没有创建任何的题目</p>
-      <el-button type="primary" size="large">点我创建</el-button>
+      <el-button type="primary" size="large" @click="toggleDialog('create')">点我创建</el-button>
     </v-jumbotron>
     <el-card class="box-card" v-for="(subject, id) in details" :key="subject.id" v-else>
       <div slot="header" class="clearfix">
@@ -22,7 +22,7 @@
       </div>
       <div class="item">
         <el-tooltip class="item" effect="dark" content="题目内容" placement="left">
-          <span>{{subject.content}}</span>
+          <span style="line-height: 1.65">{{subject.content}}</span>
         </el-tooltip>
       </div>
       <div class="item">
@@ -44,6 +44,45 @@
         </div>
       </div>
     </el-card>
+    <el-dialog
+      :title="dialog.title"
+      :visible.sync="dialog.state"
+      width="22%">
+      <div v-if="dialog.model === 'create'">
+        <el-form :model="create" :rules="rules.create" ref="create" label-position="left" label-width="100px">
+          <el-form-item label="题目标题" prop="title">
+            <el-input v-model="create.title"></el-input>
+          </el-form-item>
+          <el-form-item label="题目内容" prop="content">
+            <el-input type="textarea" v-model="create.content"></el-input>
+          </el-form-item>
+          <el-form-item label="题目备注">
+            <el-input type="textarea" v-model="create.note"></el-input>
+          </el-form-item>
+          <el-form-item label="题目分值">
+            <el-input-number v-model="create.score" size="small" :min="1" :max="1000"></el-input-number>
+          </el-form-item>
+          <el-form-item label="题目标签">
+            <el-tag :key="tag" v-for="tag in create.tags" closable :disable-transitions="false" @close="handleClose(tag)">
+              {{tag}}
+            </el-tag>
+            <el-input class="input-new-tag" ref="saveTagInput" size="small"
+              :style="tagsMargin"
+              v-show="create.inputVisible"
+              v-model="create.inputValue"
+              @keyup.enter.native="handleInputConfirm"
+              @blur="handleInputConfirm">
+            </el-input>
+            <el-button v-show="!create.inputVisible" class="button-new-tag" size="small" @click="showInput()" :style="tagsMargin">+ 添加标签</el-button>
+          </el-form-item>
+        </el-form>
+      </div>
+      <span slot="footer" class="dialog-footer">
+        <el-button @click="toggleDialog()">取 消</el-button>
+        <el-button @click="resetForm(dialog.model)">重 置</el-button>
+        <el-button type="primary" @click="subjectOperation(dialog.model)" :loading="dialog.loading">确 定</el-button>
+      </span>
+    </el-dialog>
   </div>
 </template>
 
@@ -53,14 +92,37 @@ import Jumbotron from '~/Jumbotron'
 export default {
   data () {
     return {
-      name: '',
-      num: '',
-      state: false,
-      details: []
+      name: '', // 当前题库名称
+      num: '',  // 要显示题目的数量(all: 全部显示)
+      state: false, // 当前题库是否有题目，如果有题目则显示，没有则显示jumbotron
+      details: [],  // 题目详情信息
+      create: { // 创建题库
+        title: '', // 题目标题
+        content: '', // 题目内容
+        note: '', // 题目备注
+        score: '',  // 题目分值
+        tags: [],  // 题目标签
+        inputVisible: false, // tags里的input是否显示
+        inputValue: ''  // 添加新的tag时的值
+      },
+      dialog: {
+        state: false, // 弹窗是否显示
+        model: '',  // 当前选择的模式
+        title: '' // 不同模式，不同标题
+      },
+      rules: {
+        create: {
+          title: [{required: true, message: '请输入标题', trigger: 'blur'}],
+          content: [{required: true, message: '请输入题目内容', trigger: 'blur'}]
+        }
+      }
     }
   },
   created () {
     this.subjectInfo()
+  },
+  components: {
+    'v-jumbotron': Jumbotron
   },
   watch: {
     '$route': 'subjectInfo'
@@ -69,7 +131,10 @@ export default {
     ...mapGetters([
       'getDetailsByName',
       'getProblemsWarehouseInfo'
-    ])
+    ]),
+    tagsMargin () {
+      return (this.create.tags.length === 0) ? 'margin-left: 0;' : ''
+    }
   },
   methods: {
     subjectInfo () {
@@ -83,50 +148,135 @@ export default {
         this.$message.warning('不存在此题库，已返回首页')
         this.$router.push('/')
       }
+    },
+    toggleDialog (model) {
+      const dialog = this.dialog
+      dialog.state = !dialog.state
+      dialog.loading = false
+      if (model) {
+        dialog.model = model
+        switch (model) {
+          case 'create':
+            dialog.title = '创建题目'
+            break
+        }
+      }
+    },
+    sendSubjectData (model) {
+      let request = {}
+      switch (model) {
+        case 'create':
+          request = this.$http.post(`/Api/subject`, {
+            name: this.name,  // 当前题库
+            title: this.create.title,  // 题目标题
+            content: this.create.content,  // 题目内容
+            note: this.create.note, // 题目备注
+            score: this.create.score, // 题目分值
+            tags: this.create.tags  // 题目标签(类别)
+          })
+          break
+      }
+      return new Promise((resolve) => {
+        resolve(request)
+      })
+    },
+    subjectOperation (model) {
+      const dialog = this.dialog
+      dialog.loading = true
+      this.sendSubjectData(model).then((res) => {
+        dialog.loading = false
+        const data = res.data
+        this.$message[data.state ? 'success' : 'error'](data.data)
+        this.toggleDialog()
+        if (data.state) {
+          this.$store.dispatch('getProblemsWarehouseList', () => {
+            this.subjectInfo()  // 重新渲染组件，使之添加完成后就能看到刚刚添加的题目
+          })
+        }
+      })
+    },
+    resetForm (formName) {
+      this.$refs[formName].resetFields()
+    },
+    handleClose (tag) {
+      this.create.tags.splice(this.create.tags.indexOf(tag), 1)
+    },
+    showInput () {
+      this.create.inputVisible = true
+      this.$nextTick(_ => {
+        this.$refs.saveTagInput.$refs.input.focus()
+      })
+    },
+    handleInputConfirm () {
+      let inputValue = this.create.inputValue
+      if (inputValue) {
+        this.create.tags.push(inputValue)
+      }
+      this.create.inputVisible = false
+      this.create.inputValue = ''
     }
-  },
-  components: {
-    'v-jumbotron': Jumbotron
   }
 }
 </script>
 
 <style lang="less" scoped>
-.box-card {
-  background-color: rgba(255, 255, 255, 0.9215686274509803);
-  margin-bottom: 20px;
-  &:last-child {
-    margin-bottom: 0;
+  .box-card {
+    background-color: rgba(255, 255, 255, 0.9215686274509803);
+    margin-bottom: 20px;
+    &:last-child {
+      margin-bottom: 0;
+    }
   }
-}
 
-.item {
-  margin: 18px 0;
-  font-size: 18px;
-  i {
-    font-size: 16px;
+  .item {
+    margin: 18px 0;
+    font-size: 18px;
+    i {
+      font-size: 16px;
+    }
+    .answer {
+      font-size: 14px;
+    }
+    .note {
+      font-size: 16px;
+      color: #8391a5;
+    }
   }
-  .answer {
-    font-size: 14px;
-  }
-  .note {
-    font-size: 16px;
-    color: #8391a5;
-  }
-}
 
-.card-foot {
-  margin-top: 20px;
-  padding-top: 20px;
-  border-top: 1px solid #d1dbe5;
-  .tag {
-    float: right;
-    .tag-item {
-      margin-right: 10px;
-      &:last-child {
-        margin-right: 0;
+  .card-foot {
+    margin-top: 20px;
+    padding-top: 20px;
+    border-top: 1px solid #d1dbe5;
+    .tag {
+      float: right;
+      .tag-item {
+        margin-right: 10px;
+        &:last-child {
+          margin-right: 0;
+        }
       }
     }
   }
-}
+</style>
+
+<style>
+  textarea{
+    font-family: "Helvetica Neue",Helvetica,"PingFang SC","Hiragino Sans GB","Microsoft YaHei","\5FAE\8F6F\96C5\9ED1",Arial,sans-serif !important;
+    height: 150px;
+  }
+  .el-tag + .el-tag {
+    margin-left: 10px;
+  }
+  .button-new-tag {
+    margin-left: 10px;
+    height: 32px;
+    line-height: 30px;
+    padding-top: 0;
+    padding-bottom: 0;
+  }
+  .input-new-tag {
+    width: 90px;
+    margin-left: 10px;
+    vertical-align: bottom;
+  }
 </style>
