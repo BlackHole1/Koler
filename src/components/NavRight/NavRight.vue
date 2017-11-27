@@ -41,7 +41,7 @@
 import { mapGetters } from 'vuex'
 export default {
   created () {
-    this.fun.navRightModeltoggle(this)
+    this.checkModel()
   },
   watch: {
     '$route': 'checkModel'

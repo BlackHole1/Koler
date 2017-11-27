@@ -43,7 +43,7 @@ const getters = {
 
 const actions = {
   getInfoBymodel ({commit, state}, data) {
-    const setState = () => {
+    const setState = (content) => {
       commit(types.DATA_NAVMODEL, {
         data: data.model
       })
@@ -53,24 +53,34 @@ const actions = {
       })
     }
 
+    const setContent = (content, subjectInfo) => {
+      content.practiceNumber = subjectInfo.practiceNumber // 练习次数
+      content.average = subjectInfo.average // 练习平均分
+      content.count = subjectInfo.details.length // 共多少道题目
+    }
+
     let content = {}
     if (data.model === 'user') {
       new Vue().$http.get('/Api/user').then(resp => {
         content = resp.data
-        setState()
+        setState(content)
       })
     } else {
-      this.dispatch('getProblemsWarehouseList', () => {
-        const subjectInfo = this.getters.getProblemsWarehouseInfo[data.subjectName] // 当前题目的详细信息
-        if (subjectInfo === undefined) {
-          content = {}
-        } else {
-          content.practiceNumber = subjectInfo.practiceNumber // 练习次数
-          content.average = subjectInfo.average // 练习平均分
-          content.count = subjectInfo.details.length // 共多少道题目
-        }
-        setState()
-      })
+      const subjectInfo = this.getters.getProblemsWarehouseInfo[data.subjectName] // 当前题目的详细信息
+      if (subjectInfo || subjectInfo !== undefined) {
+        setContent(content, subjectInfo)
+        setState(content)
+      } else {
+        this.dispatch('getProblemsWarehouseList', () => {
+          const subjectInfo = this.getters.getProblemsWarehouseInfo[data.subjectName] // 当前题目的详细信息
+          if (subjectInfo === undefined) {
+            content = {}
+          } else {
+            setContent(content, subjectInfo)
+          }
+          setState(content)
+        })
+      }
     }
   }
 }

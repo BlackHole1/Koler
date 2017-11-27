@@ -7,7 +7,7 @@ const state = {
 
 const getters = {
   getDetailsByName: state => (name) => {
-    if (state.problemsWarehouse.names.includes(name)) {
+    if (state.problemsWarehouse.names && state.problemsWarehouse.names.includes(name)) {
       return {
         state: true,
         data: state.problemsWarehouse[name].details

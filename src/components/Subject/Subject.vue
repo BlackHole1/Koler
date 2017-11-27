@@ -5,49 +5,60 @@
       <p>您还没有创建任何的题目</p>
       <el-button type="primary" size="large" @click="toggleDialog('create')">点我创建</el-button>
     </v-jumbotron>
-    <el-card class="box-card" v-for="(subject, id) in details" :key="subject.id" v-else>
-      <div slot="header" class="clearfix">
-        <span style="line-height: 32px;font-size:20px;">
-          <span>{{id+1}}、{{subject.name}}</span>
-        </span>
-        <el-dropdown trigger="click" style="float: right;">
-          <el-button type="primary">
-            操作<i class="el-icon-caret-bottom el-icon--right"></i>
-          </el-button>
-          <el-dropdown-menu slot="dropdown">
-            <el-dropdown-item><i class="el-icon-edit el-icon--left"></i> 修 改</el-dropdown-item>
-            <el-dropdown-item><i class="el-icon-delete el-icon--left"></i> 删 除</el-dropdown-item>
-          </el-dropdown-menu>
-        </el-dropdown>
-      </div>
-      <div class="item">
-        <el-tooltip class="item" effect="dark" content="题目内容" placement="left">
-          <span style="line-height: 1.65">{{subject.content}}</span>
-        </el-tooltip>
-      </div>
-      <div class="item">
-        <el-tooltip class="item" effect="dark" content="题目注释" placement="left">
-          <span class="note">{{subject.note}}</span>
-        </el-tooltip>
-      </div>
-      <div class="item">
-        <el-tooltip class="item" effect="dark" content="题目答案" placement="left">
-          <el-button class="answer">显示答案</el-button>
-        </el-tooltip>
-      </div>
-      <div class="card-foot">
-        <el-tooltip class="item" effect="dark" content="题目分数" placement="left">
-          <b style="font-size:18px;color:#ff4949">{{subject.score}}</b>
-        </el-tooltip>
-        <div class="tag">
-          <el-tag class="tag-item" v-for="tag in subject.category" :key="tag">{{tag}}</el-tag>
+    <div v-else>
+      <v-jumbotron style="padding:10px 10px 10px 30px !important">
+        <div class="pw-operation">
+          <el-button type="text" style="font-size: 16px;" @click="toggleDialog('create')">创建题库</el-button>
         </div>
+      </v-jumbotron>
+      <br><br>
+      <div>
+        <el-card class="box-card" v-for="(subject, id) in details" :key="subject.id">
+          <div slot="header" class="clearfix">
+            <span style="line-height: 32px;font-size:20px;">
+              <span>{{id+1}}、{{subject.name}}</span>
+            </span>
+            <el-dropdown trigger="click" style="float: right;">
+              <el-button type="primary">
+                操作<i class="el-icon-caret-bottom el-icon--right"></i>
+              </el-button>
+              <el-dropdown-menu slot="dropdown">
+                <el-dropdown-item><i class="el-icon-edit el-icon--left"></i> 修 改</el-dropdown-item>
+                <el-dropdown-item><i class="el-icon-delete el-icon--left"></i> 删 除</el-dropdown-item>
+              </el-dropdown-menu>
+            </el-dropdown>
+          </div>
+          <div class="item">
+            <el-tooltip class="item" effect="dark" content="题目内容" placement="left">
+              <span style="line-height: 1.65">{{subject.content}}</span>
+            </el-tooltip>
+          </div>
+          <div class="item">
+            <el-tooltip class="item" effect="dark" content="题目注释" placement="left">
+              <span class="note">{{subject.note}}</span>
+            </el-tooltip>
+          </div>
+          <div class="item">
+            <el-tooltip class="item" effect="dark" content="题目答案" placement="left">
+              <el-button class="answer">显示答案</el-button>
+            </el-tooltip>
+          </div>
+          <div class="card-foot">
+            <el-tooltip class="item" effect="dark" content="题目分数" placement="left">
+              <b style="font-size:18px;color:#ff4949">{{subject.score}}</b>
+            </el-tooltip>
+            <div class="tag">
+              <el-tag class="tag-item" v-for="tag in subject.category" :key="tag">{{tag}}</el-tag>
+            </div>
+          </div>
+        </el-card>
+        <br><br><br>
       </div>
-    </el-card>
+    </div>
     <el-dialog
       :title="dialog.title"
       :visible.sync="dialog.state"
-      width="22%">
+      width="30%">
       <div v-if="dialog.model === 'create'">
         <el-form :model="create" :rules="rules.create" ref="create" label-position="left" label-width="100px">
           <el-form-item label="题目标题" prop="title">
@@ -191,7 +202,12 @@ export default {
         if (data.state) {
           this.$store.dispatch('getProblemsWarehouseList', () => {
             this.subjectInfo()  // 重新渲染组件，使之添加完成后就能看到刚刚添加的题目
+            this.$store.dispatch('getInfoBymodel', {
+              model: 'subject',
+              subjectName: this.name
+            })
           })
+          this.$refs[model].resetFields()
         }
       })
     },
