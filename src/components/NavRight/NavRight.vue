@@ -55,15 +55,9 @@ export default {
     ...mapGetters([
       'getModel',
       'getUser',
+      'getSubject',
       'getExam'
-    ]),
-    getSubject () {
-      if (this.$store.getters.getSubject === '') {
-        this.$router.push('/')
-        return false
-      }
-      return this.$store.getters.getSubject
-    }
+    ])
   }
 }
 </script>

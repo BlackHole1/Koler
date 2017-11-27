@@ -60,18 +60,29 @@ export default {
     }
   },
   created () {
-    const name = (this.name = this.$route.params.name)
-    const num = (this.num = this.$route.params.num)
-    if (this.getDetailsByName(this.name).state) {
-      let data = this.getProblemsWarehouseInfo[name].details
-      this.details = num === 'all' ? data : data.slice(0, num)
-      this.state = true
-    } else {
-      this.$router.push('/')
-    }
+    this.subjectInfo()
+  },
+  watch: {
+    '$route': 'subjectInfo'
   },
   computed: {
-    ...mapGetters(['getDetailsByName', 'getProblemsWarehouseInfo'])
+    ...mapGetters([
+      'getDetailsByName',
+      'getProblemsWarehouseInfo'
+    ])
+  },
+  methods: {
+    subjectInfo () {
+      const name = (this.name = this.$route.params.name)
+      const num = (this.num = this.$route.params.num)
+      if (this.getDetailsByName(this.name).state) {
+        let data = this.getProblemsWarehouseInfo[name].details
+        this.details = num === 'all' ? data : data.slice(0, num)
+        this.state = true
+      } else {
+        this.$router.push('/')
+      }
+    }
   },
   components: {
     'v-jumbotron': Jumbotron

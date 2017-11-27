@@ -63,7 +63,7 @@ const actions = {
       this.dispatch('getProblemsWarehouseList', () => {
         const subjectInfo = this.getters.getProblemsWarehouseInfo[data.subjectName] // 当前题目的详细信息
         if (subjectInfo === undefined) {
-          content = ''
+          content = {}
         } else {
           content.practiceNumber = subjectInfo.practiceNumber // 练习次数
           content.average = subjectInfo.average // 练习平均分
