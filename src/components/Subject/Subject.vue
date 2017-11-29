@@ -102,7 +102,6 @@
 import { mapGetters } from 'vuex'
 import Jumbotron from '~/Jumbotron'
 import markdownEditor from 'vue-simplemde/src/markdown-editor'
-
 import hljs from 'highlight.js'
 window.hljs = hljs
 
@@ -209,7 +208,6 @@ export default {
       let request = {}
       switch (model) {
         case 'create':
-          console.log()
           request = this.$http.post(`/Api/subject`, {
             name: this.name,  // 当前题库
             title: this.create.title,  // 题目标题
