@@ -35,7 +35,7 @@
             <span class="note">{{subject.note}}</span>
           </div>
           <div class="item">
-            <el-button class="answer">显示答案</el-button>
+            <el-button class="answer" @click="showAnswer(subject.answer)">显示答案</el-button>
           </div>
           <div class="card-foot">
             <b style="font-size:18px; color: #FA5555;">{{subject.score}}</b>
@@ -50,7 +50,7 @@
     <el-dialog
       :title="dialog.title"
       :visible.sync="dialog.state"
-      width="30%">
+      width="40%">
       <div v-if="dialog.model === 'create'">
         <el-form :model="create" :rules="rules.create" ref="create" label-position="top" label-width="100px">
           <el-form-item label="题目标题" prop="title">
@@ -61,6 +61,9 @@
           </el-form-item>
           <el-form-item label="题目备注" prop="note">
             <el-input type="textarea" v-model="create.note"></el-input>
+          </el-form-item>
+          <el-form-item label="题目答案" prop="answer">
+            <v-markdown v-model="create.answer" :configs="simplemdeConfigs" :highlight="true" preview-class="markdown-body"></v-markdown>
           </el-form-item>
           <el-form-item label="题目分值" prop="score">
             <el-input-number v-model="create.score" size="small" :min="1" :max="1000"></el-input-number>
@@ -86,12 +89,23 @@
         <el-button type="primary" @click="subjectOperation(dialog.model)" :loading="dialog.loading">确 定</el-button>
       </span>
     </el-dialog>
+    <el-dialog
+      title="题目答案"
+      :visible.sync="answerDialog.state"
+      width="40%">
+      <v-markdown v-model="answerDialog.data" v-if="answerDialog.state" :configs="answerSimplemdeConfigs" :highlight="true" ref="answerSimplemde" preview-class="markdown-body"></v-markdown>
+    </el-dialog>
   </div>
 </template>
 
 <script>
 import { mapGetters } from 'vuex'
 import Jumbotron from '~/Jumbotron'
+import markdownEditor from 'vue-simplemde/src/markdown-editor'
+
+import hljs from 'highlight.js'
+window.hljs = hljs
+
 export default {
   data () {
     return {
@@ -99,10 +113,20 @@ export default {
       num: '',  // 要显示题目的数量(all: 全部显示)
       state: false, // 当前题库是否有题目，如果有题目则显示，没有则显示jumbotron
       details: [],  // 题目详情信息
+      simplemdeConfigs: { // simplemde配置
+        spellChecker: false, // 禁用拼写检查
+        status: false // 禁用底部状态栏
+      },
+      answerSimplemdeConfigs: { // simplemde配置
+        spellChecker: false, // 禁用拼写检查
+        status: false, // 禁用底部状态栏
+        toolbar: false
+      },
       create: { // 创建题库
         title: '', // 题目标题
         content: '', // 题目内容
         note: '', // 题目备注
+        answer: '',
         score: '',  // 题目分值
         tags: [],  // 题目标签
         inputVisible: false, // tags里的input是否显示
@@ -112,6 +136,10 @@ export default {
         state: false, // 弹窗是否显示
         model: '',  // 当前选择的模式
         title: '' // 不同模式，不同标题
+      },
+      answerDialog: {
+        state: false,  // 是否显示答案
+        data: ''  // 显示id的答案
       },
       rules: {
         create: {
@@ -125,7 +153,8 @@ export default {
     this.subjectInfo()
   },
   components: {
-    'v-jumbotron': Jumbotron
+    'v-jumbotron': Jumbotron,
+    'v-markdown': markdownEditor
   },
   watch: {
     '$route': 'subjectInfo'
@@ -165,15 +194,28 @@ export default {
         }
       }
     },
+    showAnswer (data) {
+      const answerDialog = this.answerDialog
+      answerDialog.state = !answerDialog.state
+      answerDialog.data = data
+      this.$nextTick(() => {
+        const simplemde = this.$refs.answerSimplemde.simplemde
+        if (!simplemde.isPreviewActive()) {
+          this.$refs.answerSimplemde.simplemde.togglePreview()
+        }
+      })
+    },
     sendSubjectData (model) {
       let request = {}
       switch (model) {
         case 'create':
+          console.log()
           request = this.$http.post(`/Api/subject`, {
             name: this.name,  // 当前题库
             title: this.create.title,  // 题目标题
             content: this.create.content,  // 题目内容
             note: this.create.note, // 题目备注
+            answer: this.create.answer,
             score: this.create.score, // 题目分值
             tags: this.create.tags  // 题目标签(类别)
           })
@@ -200,7 +242,9 @@ export default {
               subjectName: this.name
             })
           })
-          this.resetForm(model) // 当成功时重置表单，防止失败后，重新填写表单
+          // 当成功时重置表单，防止失败后，重新填写表单
+          this.resetForm(model)
+          this[model].answer = ''
         }
       })
     },
@@ -268,7 +312,10 @@ export default {
   }
 </style>
 
-<style>
+<style lang="less">
+  @import '~simplemde/dist/simplemde.min.css';
+  @import '~github-markdown-css';
+  @import '~highlight.js/styles/atom-one-dark.css';
   textarea{
     font-family: "Helvetica Neue",Helvetica,"PingFang SC","Hiragino Sans GB","Microsoft YaHei","\5FAE\8F6F\96C5\9ED1",Arial,sans-serif !important;
     height: 150px;
@@ -287,5 +334,17 @@ export default {
     width: 90px;
     margin-left: 10px;
     vertical-align: bottom;
+  }
+  .markdown-editor {
+    .editor-toolbar{
+      line-height: normal;
+    }
+    .CodeMirror-line {
+      font-size: 16px;
+      line-height: normal;
+    }
+    .cm-comment {
+      background: none !important;
+    }
   }
 </style>

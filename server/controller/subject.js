@@ -12,7 +12,7 @@ const resource = {
       result.data = '值不能为空'
       res.send(result)
     } else {
-      const {name, title, content, score, tags, note} = req.body
+      const {name, title, content, score, tags, note, answer} = req.body
       const email = common.jwt(req.header('Authorization')).data.data.email
       let PWMolde = M('problemsWarehouse')
       PWMolde.findByEmailAndName(email, name, function (err, data) {
@@ -28,7 +28,7 @@ const resource = {
               details: {
                 name: title,
                 content: content,
-                answer: '123123',
+                answer: answer,
                 note: note,
                 category: tags,
                 score: score
