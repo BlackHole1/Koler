@@ -313,7 +313,7 @@ export default {
 <style lang="less">
   @import '~simplemde/dist/simplemde.min.css';
   @import '~github-markdown-css';
-  @import '~highlight.js/styles/atom-one-dark.css';
+  @import '~highlight.js/styles/github.css';
   textarea{
     font-family: "Helvetica Neue",Helvetica,"PingFang SC","Hiragino Sans GB","Microsoft YaHei","\5FAE\8F6F\96C5\9ED1",Arial,sans-serif !important;
     height: 150px;
@@ -343,6 +343,10 @@ export default {
     }
     .cm-comment {
       background: none !important;
+    }
+    pre code {
+      white-space: pre-wrap;
+      word-break: break-all;
     }
   }
 </style>
