@@ -1,12 +1,11 @@
 const M = require('../model')
 const empty = require('is-empty')
-const common = require('../lib/common')
 
 const resource = {
   getInfo: (req, res, next) => {
     let result = {}
     let PWMolde = M('problemsWarehouse')
-    PWMolde.findByEmail(common.jwt(req.header('Authorization')).data.data.email, function (err, data) {
+    PWMolde.findByEmail(req.$getInfo.email, function (err, data) {
       if (err) {
         result = err
       } else {
@@ -38,14 +37,15 @@ const resource = {
       res.send(result)
     } else {
       const name = req.body.name
+      const email = req.$getInfo.email
       let PWMolde = M('problemsWarehouse')
-      PWMolde.findByEmailAndName(common.jwt(req.header('Authorization')).data.data.email, name, function (err, data) {
+      PWMolde.findByEmailAndName(email, name, function (err, data) {
         if (err || data.length === 1) {
           result.data = !(err) ? '题库名称已被使用' : err
           res.send(result)
         } else {
           const PWEntity = new PWMolde({
-            email: common.jwt(req.header('Authorization')).data.data.email,
+            email: email,
             name: name,
             practiceNumber: 0,
             average: 0,
@@ -74,7 +74,7 @@ const resource = {
       res.send(result)
     } else {
       const name = req.query.name
-      const email = common.jwt(req.header('Authorization')).data.data.email
+      const email = req.$getInfo.email
       let PWMolde = M('problemsWarehouse')
       PWMolde.findByEmailAndName(email, name, function (err, data) {
         if (err || data.length !== 1) {
@@ -103,7 +103,7 @@ const resource = {
       res.send(result)
     } else {
       const {name, changeName} = req.body
-      const email = common.jwt(req.header('Authorization')).data.data.email
+      const email = req.$getInfo.email
       let PWMolde = M('problemsWarehouse')
       PWMolde.findByEmailAndName(email, name, function (err, data) {
         if (err || data.length !== 1) {

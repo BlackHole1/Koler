@@ -25,6 +25,7 @@ server.use(function (req, res, next) {  // 请求hook，每次请求查看是否
   }
   const jwtState = common.jwt(req.header('Authorization'))
   if (jwtState.state) {
+    req.$getInfo = jwtState.data.data
     return next()
   } else {
     res.contentType = 'json'

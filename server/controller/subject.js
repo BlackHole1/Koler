@@ -1,5 +1,4 @@
 const M = require('../model')
-const common = require('../lib/common')
 const empty = require('is-empty')
 
 const resource = {
@@ -13,7 +12,7 @@ const resource = {
       res.send(result)
     } else {
       const {name, title, content, score, tags, note, answer} = req.body
-      const email = common.jwt(req.header('Authorization')).data.data.email
+      const email = req.$getInfo.email
       let PWMolde = M('problemsWarehouse')
       PWMolde.findByEmailAndName(email, name, function (err, data) {
         if (err || data.length !== 1) {
@@ -55,7 +54,7 @@ const resource = {
       res.send(result)
     } else {
       const { name, id } = req.query
-      const email = common.jwt(req.header('Authorization')).data.data.email
+      const email = req.$getInfo.email
       let PWMolde = M('problemsWarehouse')
       PWMolde.findByEmailAndName(email, name, function (err, data) {
         if (err || data.length !== 1) {
