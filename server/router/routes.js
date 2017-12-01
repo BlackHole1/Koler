@@ -15,7 +15,8 @@ const routes = {
       'put': problemsWarehouse.update
     },
     'subject': {
-      'post': subject.add
+      'post': subject.add,
+      'del': subject.del
     },
     'user': {
       'get': user.getInfo

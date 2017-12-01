@@ -15,7 +15,6 @@ problemsWarehouseSchema.statics.findByEmailAndName = function (email, name, cb) 
     email: email,
     name: name
   }, {  // 不显示以下字段
-    '_id': 0,
     '__v': 0
   }, cb)
 }

@@ -18,15 +18,10 @@
             <span style="line-height: 32px;font-size:20px;">
               <span>{{id+1}}、{{subject.name}}</span>
             </span>
-            <el-dropdown trigger="click" style="float: right;">
-              <el-button type="primary">
-                操作<i class="el-icon-caret-bottom el-icon--right"></i>
-              </el-button>
-              <el-dropdown-menu slot="dropdown">
-                <el-dropdown-item><i class="el-icon-edit el-icon--left"></i> 修 改</el-dropdown-item>
-                <el-dropdown-item><i class="el-icon-delete el-icon--left"></i> 删 除</el-dropdown-item>
-              </el-dropdown-menu>
-            </el-dropdown>
+            <div style="float: right;">
+              <el-button type="primary"> 修 改 </el-button>
+              <el-button type="danger" @click="deleteSubject(subject._id)"> 删 除 </el-button>
+            </div>
           </div>
           <div class="item">
             <span style="line-height: 1.65">{{subject.content}}</span>
@@ -252,12 +247,6 @@ export default {
     handleClose (tag) {
       this.create.tags.splice(this.create.tags.indexOf(tag), 1)
     },
-    showInput () {
-      this.create.inputVisible = true
-      this.$nextTick(_ => {
-        this.$refs.saveTagInput.$refs.input.focus()
-      })
-    },
     handleInputConfirm () {
       let inputValue = this.create.inputValue
       if (inputValue) {
@@ -265,6 +254,38 @@ export default {
       }
       this.create.inputVisible = false
       this.create.inputValue = ''
+    },
+    showInput () {
+      this.create.inputVisible = true
+      this.$nextTick(_ => {
+        this.$refs.saveTagInput.$refs.input.focus()
+      })
+    },
+    deleteSubject (id) {
+      this.$confirm('此操作将永久删除该题目, 是否继续?', '删除题目', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(() => {
+        this.$http.delete(`/Api/subject/?name=${this.name}&id=${id}`)
+        .then((res) => {
+          const data = res.data
+          this.$message[data.state ? 'success' : 'error'](data.data)
+          this.$store.dispatch('getProblemsWarehouseList', () => {
+            // 重新渲染组件，使之看到最新的变化，无需刷新页面
+            this.subjectInfo()
+            this.$store.dispatch('getInfoBymodel', {
+              model: 'subject',
+              subjectName: this.name
+            })
+          })
+        })
+      }).catch(() => {
+        this.$message({
+          type: 'info',
+          message: '已取消删除'
+        })
+      })
     }
   }
 }
