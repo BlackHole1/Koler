@@ -6,37 +6,33 @@
       <el-button type="primary" size="large" @click="toggleDialog('create')">点我创建</el-button>
     </v-jumbotron>
     <div v-else>
-      <v-jumbotron style="padding:10px 10px 10px 30px !important">
+      <v-jumbotron class="create-subject">
         <div class="pw-operation">
-          <el-button type="text" style="font-size: 16px;" @click="toggleDialog('create')">创建题库</el-button>
+          <el-button type="text" @click="toggleDialog('create')">创建题库</el-button>
         </div>
       </v-jumbotron>
       <br><br>
       <div>
         <el-card class="box-card" v-for="(subject, id) in details" :key="subject.id">
           <div slot="header" class="clearfix">
-            <span style="line-height: 32px;font-size:20px;">
+            <span class="subject-header">
               <span>{{id+1}}、{{subject.name}}</span>
             </span>
-            <div style="float: right;">
-              <el-button type="primary"> 修 改 </el-button>
-              <el-button type="danger" @click="deleteSubject(subject._id)"> 删 除 </el-button>
+            <div class="subject-info">
+              <div class="tag">
+                <el-tag class="tag-item" v-for="tag in subject.category" :key="tag">{{tag}}</el-tag>
+              </div>
+              <b>分值：{{subject.score}}</b>
             </div>
           </div>
           <div class="item">
-            <span style="line-height: 1.65">{{subject.content}}</span>
-          </div>
-          <div class="item">
-            <span class="note">{{subject.note}}</span>
-          </div>
-          <div class="item">
-            <el-button class="answer" @click="showAnswer(subject.answer)">显示答案</el-button>
+            <v-markdown class="subject-content" :value="subject.content" :configs="subjectSimplemdeConfigs" :highlight="true" ref="subjectContent" preview-class="markdown-body"></v-markdown>
           </div>
           <div class="card-foot">
-            <b style="font-size:18px; color: #FA5555;">{{subject.score}}</b>
-            <div class="tag">
-              <el-tag class="tag-item" v-for="tag in subject.category" :key="tag">{{tag}}</el-tag>
-            </div>
+            <el-button type="info" class="note" @click="showAnswerOrNote('note', subject.note)"  size="small">显示备注</el-button>
+            <el-button type="info" class="answer" @click="showAnswerOrNote('answer', subject.answer)"  size="small">显示答案</el-button>
+            <el-button type="primary" size="small"> 修 改 </el-button>
+            <el-button type="danger" @click="deleteSubject(subject._id)"  size="small"> 删 除 </el-button>
           </div>
         </el-card>
         <br><br><br>
@@ -52,10 +48,10 @@
             <el-input v-model="create.title"></el-input>
           </el-form-item>
           <el-form-item label="题目内容" prop="content">
-            <el-input type="textarea" v-model="create.content"></el-input>
+            <v-markdown v-model="create.content" :configs="simplemdeConfigs" :highlight="true" preview-class="markdown-body"></v-markdown>
           </el-form-item>
           <el-form-item label="题目备注" prop="note">
-            <el-input type="textarea" v-model="create.note"></el-input>
+            <v-markdown v-model="create.note" :configs="simplemdeConfigs" :highlight="true" preview-class="markdown-body"></v-markdown>
           </el-form-item>
           <el-form-item label="题目答案" prop="answer">
             <v-markdown v-model="create.answer" :configs="simplemdeConfigs" :highlight="true" preview-class="markdown-body"></v-markdown>
@@ -88,7 +84,13 @@
       title="题目答案"
       :visible.sync="answerDialog.state"
       width="40%">
-      <v-markdown v-model="answerDialog.data" v-if="answerDialog.state" :configs="answerSimplemdeConfigs" :highlight="true" ref="answerSimplemde" preview-class="markdown-body"></v-markdown>
+      <v-markdown v-model="answerDialog.data" v-if="answerDialog.state" :configs="subjectSimplemdeConfigs" :highlight="true" ref="answerSimplemde" preview-class="markdown-body"></v-markdown>
+    </el-dialog>
+    <el-dialog
+      title="题目备注"
+      :visible.sync="noteDialog.state"
+      width="40%">
+      <v-markdown v-model="noteDialog.data" v-if="noteDialog.state" :configs="subjectSimplemdeConfigs" :highlight="true" ref="noteSimplemde" preview-class="markdown-body"></v-markdown>
     </el-dialog>
   </div>
 </template>
@@ -111,7 +113,7 @@ export default {
         spellChecker: false, // 禁用拼写检查
         status: false // 禁用底部状态栏
       },
-      answerSimplemdeConfigs: { // simplemde配置
+      subjectSimplemdeConfigs: { // simplemde配置
         spellChecker: false, // 禁用拼写检查
         status: false, // 禁用底部状态栏
         toolbar: false
@@ -132,6 +134,10 @@ export default {
         title: '' // 不同模式，不同标题
       },
       answerDialog: {
+        state: false,  // 是否显示备注
+        data: ''  // 显示id的答案
+      },
+      noteDialog: {
         state: false,  // 是否显示答案
         data: ''  // 显示id的答案
       },
@@ -145,6 +151,9 @@ export default {
   },
   created () {
     this.subjectInfo()
+  },
+  mounted () {
+    this.refreshSubjectContent()
   },
   components: {
     'v-jumbotron': Jumbotron,
@@ -175,6 +184,18 @@ export default {
         this.$router.push('/')
       }
     },
+    refreshSubjectContent () {
+      if (this.$refs.subjectContent !== undefined) {
+        this.$nextTick(() => {
+          this.$refs.subjectContent.forEach(content => {
+            const simplemde = content.simplemde
+            if (!simplemde.isPreviewActive()) {
+              simplemde.togglePreview()
+            }
+          })
+        })
+      }
+    },
     toggleDialog (model) {
       const dialog = this.dialog
       dialog.state = !dialog.state
@@ -188,14 +209,14 @@ export default {
         }
       }
     },
-    showAnswer (data) {
-      const answerDialog = this.answerDialog
-      answerDialog.state = !answerDialog.state
-      answerDialog.data = data
+    showAnswerOrNote (model, data) {
+      const answerOrNoteDialog = this[`${model}Dialog`]
+      answerOrNoteDialog.state = !answerOrNoteDialog.state
+      answerOrNoteDialog.data = data
       this.$nextTick(() => {
-        const simplemde = this.$refs.answerSimplemde.simplemde
+        const simplemde = this.$refs[`${model}Simplemde`].simplemde
         if (!simplemde.isPreviewActive()) {
-          this.$refs.answerSimplemde.simplemde.togglePreview()
+          this.$refs[`${model}Simplemde`].simplemde.togglePreview()
         }
       })
     },
@@ -230,6 +251,7 @@ export default {
           this.$store.dispatch('getProblemsWarehouseList', () => {
             // 重新渲染组件，使之看到最新的变化，无需刷新页面
             this.subjectInfo()
+            this.refreshSubjectContent()
             this.$store.dispatch('getInfoBymodel', {
               model: 'subject',
               subjectName: this.name
@@ -292,39 +314,62 @@ export default {
 </script>
 
 <style lang="less" scoped>
+  .create-subject {
+    padding:10px 10px 10px 30px !important;
+    button {
+      font-size: 16px;
+    }
+  }
   .box-card {
     background-color: rgba(255, 255, 255, 0.9215686274509803);
     margin-bottom: 20px;
     &:last-child {
       margin-bottom: 0;
     }
-  }
-
-  .item {
-    margin: 18px 0;
-    font-size: 18px;
-    i {
-      font-size: 16px;
+    .clearfix {
+      .subject-header {
+        line-height: 32px;
+        font-size:17px;
+      }
+      .subject-info {
+        float: right;
+        .tag {
+          display: inline-block;
+        }
+        b {
+          display: inline-block;
+          margin: 5px 0 0 50px;
+          font-size:16px;
+          color: #EB9E05;
+        }
+      }
     }
-    .answer {
-      font-size: 14px;
+    .item {
+      margin: 18px 0;
+      font-size: 18px;
+      &:first-of-type {
+        margin: 0;
+      }
+      .subject-content {
+        line-height: 1.65;
+        font-size: 16px;
+      }
     }
-    .note {
-      font-size: 16px;
-      color: #8391a5;
-    }
-  }
-
-  .card-foot {
-    margin-top: 20px;
-    padding-top: 20px;
-    border-top: 1px solid #d1dbe5;
-    .tag {
-      float: right;
-      .tag-item {
-        margin-right: 10px;
-        &:last-child {
-          margin-right: 0;
+    .card-foot {
+      text-align: right;
+      margin-top: 20px;
+      padding-top: 10px;
+      border-top: 1px solid #d1dbe5;
+      .answer, .note{
+        float: left;
+      }
+      .tag {
+        float: right;
+        .tag-item {
+          margin-right: 10px;
+          &:last-child {
+            margin-right: 0;
+          }
         }
       }
     }
@@ -354,6 +399,12 @@ export default {
     margin-left: 10px;
     vertical-align: bottom;
   }
+  .el-card__header {
+    padding: 10px 20px;
+  }
+  .el-card__body {
+    padding-bottom: 10px;
+  }
   .markdown-editor {
     .editor-toolbar{
       line-height: normal;
@@ -368,6 +419,23 @@ export default {
     pre code {
       white-space: pre-wrap;
       word-break: break-all;
+    }
+  }
+  .subject-content {
+    .CodeMirror-wrap {
+      min-height: auto;
+      border: none;
+      background-color: rgba(255, 255, 255, 0);
+      .CodeMirror-scroll {
+        min-height: auto;
+        .CodeMirror-code {
+          opacity: 0;
+        }
+      }
+      .markdown-body {
+        background-color: rgba(255, 255, 255, 0);
+        overflow: hidden;
+      }
     }
   }
 </style>
