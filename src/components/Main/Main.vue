@@ -67,6 +67,7 @@ import Header from '~/Header'
 import Jumbotron from '~/Jumbotron'
 import Subject from '~/Subject'
 import navRight from '~/NavRight'
+import common from '../../../common/function'
 export default {
   created () {
     this.$store.dispatch('getProblemsWarehouseList')
@@ -114,18 +115,52 @@ export default {
       }
     },
     PWOperation (model) {
-      const method = (model === 'create')
-        ? 'post'
-        : (model === 'delete')
-        ? 'delete'
-        : 'put'
       const dialog = this.dialog
       dialog.loading = true
-      this.$http[method](`/Api/problemsWarehouse/?name=${dialog.name}`, {
-        name: dialog.name,
-        changeName: dialog.changeName
-      })
-      .then((res) => {
+      let request = {
+        state: true,
+        data: ''
+      }
+      const ajaxPromise = (model) => {
+        switch (model) {
+          case 'create':
+            if (common.regx.noSpecialSymbols.test(dialog.name)) {
+              request.data = this.$http.post(`/Api/problemsWarehouse/`, {
+                name: dialog.name
+              })
+            } else {
+              request.state = false
+              request.data = '请确定您输入的题库名称里只包含字母、数字、中文'
+            }
+            break
+          case 'delete':
+            request.data = this.$http.delete(`/Api/problemsWarehouse/?name=${dialog.name}`)
+            break
+          case 'rename':
+            if (common.regx.noSpecialSymbols.test(dialog.changeName)) {
+              request.data = this.$http.put(`/Api/problemsWarehouse/`, {
+                name: dialog.name,
+                changeName: dialog.changeName
+              })
+            } else {
+              request.state = false
+              request.data = '请确定您重命名的题库名称里只包含字母、数字、中文'
+            }
+            break
+          default:
+            request.state = false
+            request.data = '选择的模式不正确'
+            break
+        }
+        return new Promise((resolve, reject) => {
+          if (request.state) {
+            resolve(request.data)
+          } else {
+            reject(request.data)
+          }
+        })
+      }
+      ajaxPromise(model).then(res => {
         dialog.loading = false
         const data = res.data
         this.$message[data.state ? 'success' : 'error'](data.data)
@@ -133,6 +168,9 @@ export default {
         if (data.state) {
           this.$store.dispatch('getProblemsWarehouseList')
         }
+      }).catch(data => {
+        dialog.loading = false
+        this.$message.error(data)
       })
     }
   },
