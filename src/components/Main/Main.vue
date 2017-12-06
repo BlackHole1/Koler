@@ -51,7 +51,7 @@
         <el-input placeholder="新名称" v-model="dialog.changeName"></el-input>
       </div>
       <div v-else>
-        <el-input :placeholder="dialog.placeholder" v-model="dialog.name"></el-input>
+        <el-input :placeholder="dialog.placeholder" v-model="dialog.name" :autofocus="true"></el-input>
       </div>
       <span slot="footer" class="dialog-footer">
         <el-button @click="toggleDialog()">取 消</el-button>

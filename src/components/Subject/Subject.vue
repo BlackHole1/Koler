@@ -45,7 +45,7 @@
       <div v-if="dialog.model === 'create'">
         <el-form :model="create" :rules="rules.create" ref="create" label-position="top" label-width="100px">
           <el-form-item label="题目标题" prop="title">
-            <el-input v-model="create.title"></el-input>
+            <el-input v-model="create.title" :autofocus="true"></el-input>
           </el-form-item>
           <el-form-item label="题目内容" prop="content">
             <v-markdown v-model="create.content" :configs="simplemdeConfigs" :highlight="true" preview-class="markdown-body"></v-markdown>
