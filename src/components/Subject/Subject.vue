@@ -31,7 +31,6 @@
           <div class="card-foot">
             <el-button type="info" class="note" @click="showAnswerOrNote('note', subject.note)"  size="small">显示备注</el-button>
             <el-button type="info" class="answer" @click="showAnswerOrNote('answer', subject.answer)"  size="small">显示答案</el-button>
-            <el-button type="primary" size="small"> 修 改 </el-button>
             <el-button type="danger" @click="deleteSubject(subject._id)"  size="small"> 删 除 </el-button>
           </div>
         </el-card>
