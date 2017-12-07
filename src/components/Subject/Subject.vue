@@ -262,6 +262,7 @@ export default {
           // 当成功时重置表单，防止失败后，重新填写表单
           this.resetForm(model)
           this[model].answer = ''
+          this.refreshSubjectContent()
         }
       })
     },
