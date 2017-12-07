@@ -187,16 +187,16 @@ export default {
       }
     },
     refreshSubjectContent () {
-      if (this.$refs.subjectContent !== undefined) {
-        this.$nextTick(() => {
+      this.$nextTick(() => {
+        if (this.$refs.subjectContent !== undefined) {
           this.$refs.subjectContent.forEach(content => {
             const simplemde = content.simplemde
             if (!simplemde.isPreviewActive()) {
               simplemde.togglePreview()
             }
           })
-        })
-      }
+        }
+      })
     },
     toggleDialog (model) {
       const dialog = this.dialog
