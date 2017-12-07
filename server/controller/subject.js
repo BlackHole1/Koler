@@ -62,6 +62,7 @@ const resource = {
           res.send(result)
         } else {
           PWMolde.update({
+            email: email,
             name: name
           }, {
             '$pull': {
