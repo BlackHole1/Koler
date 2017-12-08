@@ -9,6 +9,9 @@
       <v-jumbotron class="create-subject">
         <div class="pw-operation">
           <el-button type="text" @click="toggleDialog('create')">创建题库</el-button>
+          <el-button type="text" @click="pageTurn('last')">上一页</el-button>
+          <el-button type="text" @click="pageTurn('next')">下一页</el-button>
+          <el-button type="text" @click="$router.push({params: { num: 'all' }})">显示全部题目</el-button>
         </div>
       </v-jumbotron>
       <br><br>
@@ -184,6 +187,9 @@ export default {
         this.$message.warning('不存在此题库，已返回首页')
         this.$router.push('/')
       }
+    },
+    pageTurn (method) {
+      //
     },
     refreshSubjectContent () {
       this.$nextTick(() => {
