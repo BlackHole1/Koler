@@ -88,7 +88,7 @@ export default {
   methods: {
     showProblemsWarehouse (e) {
       this.$router.push({
-        path: `ProblemsWarehouse/${e.target.innerText}/all`
+        path: `ProblemsWarehouse/${e.target.innerText}/1`
       })
     },
     toggleDialog (model) {

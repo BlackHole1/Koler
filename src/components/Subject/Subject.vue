@@ -9,9 +9,9 @@
       <v-jumbotron class="create-subject">
         <div class="pw-operation">
           <el-button type="text" @click="toggleDialog('create')">创建题库</el-button>
-          <el-button type="text" @click="pageTurn('last')">上一页</el-button>
-          <el-button type="text" @click="pageTurn('next')">下一页</el-button>
-          <el-button type="text" @click="$router.push({params: { num: 'all' }})">显示全部题目</el-button>
+          <el-button type="text" @click="pageTurn('last')" :disabled="checkLastPage">上一页</el-button>
+          <el-button type="text" @click="pageTurn('next')" :disabled="checkNextPage">下一页</el-button>
+          <el-button type="text" @click="showAllSubject()">显示全部题目</el-button>
         </div>
       </v-jumbotron>
       <br><br>
@@ -173,6 +173,15 @@ export default {
     ]),
     tagsMargin () {
       return (this.create.tags.length === 0) ? 'margin-left: 0;' : ''
+    },
+    checkLastPage () {
+      const pageNum = this.$route.params.num
+      return (pageNum === 'all') ? true : (pageNum * 1 === 1)
+    },
+    checkNextPage () {
+      const pageNum = this.$route.params.num
+      let data = this.getProblemsWarehouseInfo[this.name].details
+      return (pageNum === 'all') ? true : (pageNum === ~(data.length / 20) * -1)
     }
   },
   methods: {
@@ -181,7 +190,7 @@ export default {
       const num = (this.num = this.$route.params.num)
       if (this.getDetailsByName(this.name).state) {
         let data = this.getProblemsWarehouseInfo[name].details
-        this.details = num === 'all' ? data : data.slice(0, num)
+        this.details = num === 'all' ? data : data.slice(num * 20 - 20, num * 20)
         this.state = true
       } else {
         this.$message.warning('不存在此题库，已返回首页')
@@ -189,7 +198,22 @@ export default {
       }
     },
     pageTurn (method) {
-      //
+      const pageNum = this.$route.params.num
+      let data = this.getProblemsWarehouseInfo[this.name].details
+      if (method === 'last') {
+        if (pageNum !== 1) {
+          this.$router.push({params: { num: pageNum * 1 - 1 }})
+        }
+      } else if (method === 'next') {
+        if (pageNum !== ~(data.length / 20) * -1) { // 4.1 => 5 && 4.9 => 5 && 4.05 => 5x
+          this.$router.push({params: { num: pageNum * 1 + 1 }})
+        }
+      }
+      this.refreshSubjectContent()
+    },
+    showAllSubject () {
+      this.$router.push({params: { num: 'all' }})
+      this.refreshSubjectContent()
     },
     refreshSubjectContent () {
       this.$nextTick(() => {
