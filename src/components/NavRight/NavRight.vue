@@ -21,6 +21,7 @@
       </div>
       <div class="subject" v-if="getModel === 'subject'">
         <div class="subject">
+          题目名称：<br/><br/>
           {{$router.history.current.params.name}}
         </div>
         <div class="count">
