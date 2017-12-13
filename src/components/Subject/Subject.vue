@@ -181,7 +181,11 @@ export default {
     checkNextPage () {
       const pageNum = this.$route.params.num
       let data = this.getProblemsWarehouseInfo[this.name].details
-      return (pageNum === 'all') ? true : (pageNum === ~(data.length / 20) * -1)  // 4.1 => 5 && 4.9 => 5 && 4.05 => 5x
+      if (pageNum === 'all' || data.length < 20) {
+        return true
+      } else {
+        return (pageNum === ~(data.length / 20) * -1)  // 4.1 => 5 && 4.9 => 5 && 4.05 => 5x
+      }
     }
   },
   methods: {
