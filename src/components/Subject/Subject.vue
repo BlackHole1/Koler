@@ -32,9 +32,9 @@
             <v-markdown class="subject-content" :value="subject.content" :configs="subjectSimplemdeConfigs" :highlight="true" ref="subjectContent" preview-class="markdown-body"></v-markdown>
           </div>
           <div class="card-foot">
-            <el-button type="info" class="note" @click="showAnswerOrNote('note', subject.note)"  size="small">显示备注</el-button>
-            <el-button type="info" class="answer" @click="showAnswerOrNote('answer', subject.answer)"  size="small">显示答案</el-button>
-            <el-button type="danger" @click="deleteSubject(subject._id)"  size="small"> 删 除 </el-button>
+            <el-button type="info" class="note" @click="showAnswerOrNote('note', subject.note)"  size="small" icon="el-icon-document">显示备注</el-button>
+            <el-button type="info" class="answer" @click="showAnswerOrNote('answer', subject.answer)"  size="small" icon="el-icon-tickets">显示答案</el-button>
+            <el-button type="danger" @click="deleteSubject(subject._id)"  size="small" icon="el-icon-delete"> 删 除 </el-button>
           </div>
         </el-card>
         <br><br><br>

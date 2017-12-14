@@ -3,7 +3,7 @@
     <el-menu theme="dark" :default-active="activeIndex" class="el-menu-demo" mode="horizontal" :router="true">
       <el-menu-item index="/" class="nav-left">我的题库</el-menu-item>
       <el-submenu index="2" class="nav-right">
-        <template slot="title">账号</template>
+        <template slot="title">{{getUser.name}}</template>
         <el-menu-item index="/login/out">退出</el-menu-item>
       </el-submenu>
     </el-menu>
@@ -11,11 +11,17 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex'
 export default {
   data () {
     return {
       activeIndex: '/'
     }
+  },
+  computed: {
+    ...mapGetters([
+      'getUser'
+    ])
   }
 }
 </script>
