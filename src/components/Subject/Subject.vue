@@ -441,6 +441,7 @@ export default {
     padding: 10px 20px;
   }
   .el-card__body {
+    padding-top: 0;
     padding-bottom: 10px;
   }
   .markdown-editor {
@@ -464,11 +465,17 @@ export default {
       min-height: auto;
       border: none;
       background-color: rgba(255, 255, 255, 0);
+      .CodeMirror-sizer {
+        display: none;
+      }
       .CodeMirror-scroll {
         min-height: auto;
         .CodeMirror-code {
           opacity: 0;
         }
+      }
+      .editor-preview {
+        position: static;
       }
       .markdown-body {
         background-color: rgba(255, 255, 255, 0);
