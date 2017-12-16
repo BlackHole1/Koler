@@ -184,7 +184,7 @@ export default {
       if (pageNum === 'all' || data.length < 20) {
         return true
       } else {
-        return (pageNum === ~(data.length / 20) * -1)  // 4.1 => 5 && 4.9 => 5 && 4.05 => 5x
+        return (pageNum === Math.ceil(data.length / 20))
       }
     }
   },
@@ -209,7 +209,7 @@ export default {
           this.$router.push({params: { num: pageNum * 1 - 1 }})
         }
       } else if (method === 'next') {
-        if (pageNum !== ~(data.length / 20) * -1) { // 4.1 => 5 && 4.9 => 5 && 4.05 => 5x
+        if (pageNum !== Math.ceil(data.length / 20)) { // 4.1 => 5 && 4.9 => 5 && 4.05 => 5x
           this.$router.push({params: { num: pageNum * 1 + 1 }})
         }
       }
