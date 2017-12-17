@@ -65,7 +65,6 @@
 import { mapGetters } from 'vuex'
 import Header from '~/Header'
 import Jumbotron from '~/Jumbotron'
-import Subject from '~/Subject'
 import navRight from '~/NavRight'
 import common from '../../../common/function'
 export default {
@@ -182,7 +181,6 @@ export default {
   components: {
     'v-header': Header,
     'v-jumbotron': Jumbotron,
-    'v-subject': Subject,
     'v-nav-right': navRight
   }
 }
