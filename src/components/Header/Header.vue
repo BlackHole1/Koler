@@ -19,6 +19,13 @@ export default {
       activeIndex: '/'
     }
   },
+  created () {
+    if (this.getUser.name === '') { // 说明用户刷新页面，导致信息丢失。需要重新获取
+      this.$store.dispatch('getInfoBymodel', {
+        model: 'user'
+      })
+    }
+  },
   computed: {
     ...mapGetters([
       'getUser'
