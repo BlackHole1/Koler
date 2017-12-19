@@ -11,28 +11,28 @@
               <img :src="getUser.avatar_url">
               <img :src="getUser.avatar_url">
             </p>
-            <duv class="operation">
-              <el-button size="small" icon="el-icon-close">重置</el-button>
+            <div class="operation">
+              <el-button size="small" icon="el-icon-refresh">重置</el-button>
               <el-button size="small" type="primary" icon="el-icon-check">确定上传</el-button>
-            </duv>
+            </div>
           </div>
           <div class="info-item chang-password">
             <h3>修改密码</h3>
             <el-form :model="userInfo">
               <el-form-item label="旧密码">
-                <el-input v-model="userInfo.oldPassword"></el-input>
+                <el-input v-model="userInfo.oldPassword" size="medium"></el-input>
               </el-form-item>
               <el-form-item label="新密码">
-                <el-input v-model="userInfo.newPassword"></el-input>
+                <el-input v-model="userInfo.newPassword" size="medium"></el-input>
               </el-form-item>
               <el-form-item label="确认密码">
-                <el-input v-model="userInfo.confirmPassword"></el-input>
+                <el-input v-model="userInfo.confirmPassword" size="medium"></el-input>
               </el-form-item>
             </el-form>
-            <duv class="operation">
-              <el-button size="small" icon="el-icon-close">重置</el-button>
+            <div class="operation">
+              <el-button size="small" icon="el-icon-refresh">重置</el-button>
               <el-button size="small" type="primary" icon="el-icon-check">确定修改</el-button>
-            </duv>
+            </div>
           </div>
         </v-jumbotron>
       </el-col>

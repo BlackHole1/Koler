@@ -47,7 +47,7 @@
       <div v-if="dialog.model === 'create'">
         <el-form :model="create" :rules="rules.create" ref="create" label-position="top" label-width="100px">
           <el-form-item label="题目标题" prop="title">
-            <el-input v-model="create.title" :autofocus="true"></el-input>
+            <el-input v-model="create.title" :autofocus="true" size="medium"></el-input>
           </el-form-item>
           <el-form-item label="题目内容" prop="content">
             <v-markdown v-model="create.content" :configs="simplemdeConfigs" :highlight="true" preview-class="markdown-body"></v-markdown>
@@ -77,9 +77,9 @@
         </el-form>
       </div>
       <span slot="footer" class="dialog-footer">
-        <el-button @click="toggleDialog()">取 消</el-button>
-        <el-button @click="resetForm(dialog.model)">重 置</el-button>
-        <el-button type="primary" @click="subjectOperation(dialog.model)" :loading="dialog.loading">确 定</el-button>
+        <el-button @click="toggleDialog()" size="small" icon="el-icon-close">取消</el-button>
+        <el-button @click="resetForm(dialog.model)" size="small" icon="el-icon-refresh">重置</el-button>
+        <el-button type="primary" @click="subjectOperation(dialog.model)" :loading="dialog.loading" size="small" icon="el-icon-check">确 定</el-button>
       </span>
     </el-dialog>
     <el-dialog

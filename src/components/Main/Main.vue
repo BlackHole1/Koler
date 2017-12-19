@@ -21,7 +21,7 @@
             <el-button type="text" style="font-size: 16px;" @click="toggleDialog('delete')">删除题库</el-button>
             <el-button type="text" style="font-size: 16px;" @click="toggleDialog('rename')">重命名题库</el-button>
           </div>
-          <el-button type="primary" size="large" icon="document" class="pw-button" v-for="name in getProblemsWarehouseInfo.names" :key="name.id" @click="showProblemsWarehouse">{{name}}</el-button>
+          <el-button type="primary" size="medium" icon="document" class="pw-button" v-for="name in getProblemsWarehouseInfo.names" :key="name.id" @click="showProblemsWarehouse">{{name}}</el-button>
           <span style="clear: both;"></span>
         </v-jumbotron>
         <!-- 如果有，则说明已经进入到router里，则显示router对应的组件 -->
@@ -39,7 +39,7 @@
       :visible.sync="dialog.state"
       width="22%">
       <div v-if="dialog.model === 'rename'">
-        <el-select v-model="dialog.name" placeholder="请选择您要重命名的题库" style="width: 100%">
+        <el-select v-model="dialog.name" size="medium" placeholder="请选择您要重命名的题库" style="width: 100%">
           <el-option
             v-for="item in getProblemsWarehouseInfo.names"
             :key="item"
@@ -48,14 +48,14 @@
           </el-option>
         </el-select>
         <br><br>
-        <el-input placeholder="新名称" v-model="dialog.changeName"></el-input>
+        <el-input  size="medium" placeholder="新名称" v-model="dialog.changeName"></el-input>
       </div>
       <div v-else>
-        <el-input :placeholder="dialog.placeholder" v-model="dialog.name" :autofocus="true"></el-input>
+        <el-input size="medium" :placeholder="dialog.placeholder" v-model="dialog.name" :autofocus="true"></el-input>
       </div>
       <span slot="footer" class="dialog-footer">
-        <el-button @click="toggleDialog()">取 消</el-button>
-        <el-button type="primary" @click="PWOperation(dialog.model)" :loading="dialog.loading">确 定</el-button>
+        <el-button size="small" icon="el-icon-close" @click="toggleDialog()">取 消</el-button>
+        <el-button type="primary" size="small" icon="el-icon-check" @click="PWOperation(dialog.model)" :loading="dialog.loading">确 定</el-button>
       </span>
     </el-dialog>
   </div>

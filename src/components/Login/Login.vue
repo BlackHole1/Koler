@@ -4,14 +4,14 @@
       <div class="form">
         <el-form :model="loginForm" :rules="rules" ref="loginForm" label-width="100px" class="demo-ruleForm">
         <el-form-item label="" prop="email">
-          <el-input type="text" v-model="loginForm.email" auto-complete="off" placeholder="邮箱" :autofocus="true"></el-input>
+          <el-input type="text" v-model="loginForm.email" auto-complete="off" placeholder="邮箱" :autofocus="true" size="medium"></el-input>
         </el-form-item>
         <el-form-item label="" prop="pass">
-          <el-input type="password" v-model="loginForm.pass" auto-complete="off" placeholder="密码"></el-input>
+          <el-input type="password" v-model="loginForm.pass" auto-complete="off" placeholder="密码" size="medium"></el-input>
         </el-form-item>
         <el-form-item style="text-align: center;">
-          <el-button type="primary" @click="submitForm('loginForm')" :loading="loading">登录</el-button>
-          <el-button @click="resetForm('loginForm')">重置</el-button>
+          <el-button type="primary" @click="submitForm('loginForm')" :loading="loading" icon="el-icon-check" size="medium">登录</el-button>
+          <el-button @click="resetForm('loginForm')" icon="el-icon-refresh" size="medium">重置</el-button>
         </el-form-item>
       </el-form>
       </div>
