@@ -6,14 +6,14 @@
         <v-jumbotron>
           <div class="info-item change-header">
             <h3>用户头像</h3>
-            <el-button size="small" type="primary">点击上传</el-button>
+            <el-button size="small" type="primary" icon="el-icon-upload">点击上传</el-button>
             <p>
               <img :src="getUser.avatar_url">
               <img :src="getUser.avatar_url">
             </p>
             <duv class="operation">
-              <el-button size="small">重置</el-button>
-              <el-button size="small" type="primary">确定上传</el-button>
+              <el-button size="small" icon="el-icon-close">重置</el-button>
+              <el-button size="small" type="primary" icon="el-icon-check">确定上传</el-button>
             </duv>
           </div>
           <div class="info-item chang-password">
@@ -30,8 +30,8 @@
               </el-form-item>
             </el-form>
             <duv class="operation">
-              <el-button size="small">重置</el-button>
-              <el-button size="small" type="primary">确定修改</el-button>
+              <el-button size="small" icon="el-icon-close">重置</el-button>
+              <el-button size="small" type="primary" icon="el-icon-check">确定修改</el-button>
             </duv>
           </div>
         </v-jumbotron>
