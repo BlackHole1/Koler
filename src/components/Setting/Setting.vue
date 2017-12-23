@@ -79,8 +79,6 @@ export default {
     font-size: 22px;
     font-weight: 400;
   }
-  .operation {
-  }
 }
 .change-header {
   img {
