@@ -20,7 +20,6 @@
 </template>
 
 <script>
-  const qs = require('qs')
   export default {
     created () {
       if (this.$router.history.current.name === 'Logout') {
@@ -77,10 +76,10 @@
           if (valid) {
             const email = this.loginForm.email
             const pass = this.loginForm.pass
-            this.$http.post(`/Api/sign`, qs.stringify({
+            this.$http.post(`/Api/sign`, {
               email: email,
               pass: pass
-            }))
+            })
             .then(resp => {
               this.loading = false
               const data = resp.data
