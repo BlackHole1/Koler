@@ -422,7 +422,7 @@ export default {
   @import '~highlight.js/styles/github.css';
   @import '~font-awesome/css/font-awesome.min.css';
 
-  textarea{
+  textarea {
     font-family: "Helvetica Neue", Helvetica, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "\5FAE\8F6F\96C5\9ED1", Arial,sans-serif !important;
     height: 150px;
   }
@@ -449,7 +449,7 @@ export default {
     padding-bottom: 10px;
   }
   .markdown-editor {
-    .editor-toolbar{
+    .editor-toolbar {
       line-height: normal;
     }
     .CodeMirror-line {

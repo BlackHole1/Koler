@@ -104,7 +104,7 @@
 
 <style lang="less" scoped>
 .main {
-  position:fixed;
+  position: fixed;
   left: 0;
   right: 0;
   top: -20%;
@@ -116,7 +116,7 @@
   background-color: rgba(255, 255, 255, 0.9215686274509803);
   border-radius: 10px;
 }
-.form{
+.form {
   display: block;
   padding: 40px 60px 20px 0;
 }

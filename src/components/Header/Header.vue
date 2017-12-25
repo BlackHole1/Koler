@@ -35,14 +35,14 @@ export default {
 </script>
 
 <style lang="less" scoped>
-  .header .el-menu{
+  .header .el-menu {
     background-color: rgba(255, 255, 255, 0.9215686274509803);
   }
-  .nav-right{
+  .nav-right {
     float: right;
     margin-right: 20%;
   }
-  .nav-left{
+  .nav-left {
     margin-left: 20%;
   }
 </style>

@@ -90,12 +90,12 @@ export default {
         letter-spacing: 2px;
       }
     }
-    .type, .upper, .upper_name, .created_date, .count, .practice, .subject{
+    .type, .upper, .upper_name, .created_date, .count, .practice, .subject {
       display: block;
       padding: 10px 0;
       border-bottom: 1px solid #d3dce6;
     }
-    & > div:last-of-type, span:last-of-type{
+    & > div:last-of-type, span:last-of-type {
       border-bottom: none !important;
     }
   }

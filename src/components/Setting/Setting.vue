@@ -72,7 +72,7 @@ export default {
 }
 .info-item {
   margin-bottom: 55px;
-  &:last-child{
+  &:last-child {
     margin-bottom: 0;
   }
   h3 {

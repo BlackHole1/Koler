@@ -23,13 +23,13 @@ export default {
 </script>
 
 <style lang="less" scoped>
-  .well{
+  .well {
     padding: 18px;
     background-color: #f5f5f5;
     border: 1px solid #e3e3e3;
     border-radius: 4px;
     box-shadow: inset 0 1px 1px rgba(0,0,0,.05);
-    .answer{
+    .answer {
       margin-top: 20px;
       font-size: 16px;
     }
