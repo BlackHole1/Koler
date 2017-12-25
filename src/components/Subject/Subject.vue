@@ -11,7 +11,7 @@
           <el-button type="text" @click="toggleDialog('create')">创建题库</el-button>
           <el-button type="text" @click="pageTurn('last')" :disabled="checkLastPage">上一页</el-button>
           <el-button type="text" @click="pageTurn('next')" :disabled="checkNextPage">下一页</el-button>
-          <el-button type="text" @click="showAllSubject()">显示全部题目</el-button>
+          <el-button type="text" @click="showAllSubject()" :disabled="checkShowAllSubject">显示全部题目</el-button>
         </div>
       </v-jumbotron>
       <br><br>
@@ -186,6 +186,10 @@ export default {
       } else {
         return (pageNum === Math.ceil(data.length / 20))
       }
+    },
+    checkShowAllSubject () {
+      let data = this.getProblemsWarehouseInfo[this.name].details
+      return (data.length < 20)
     }
   },
   methods: {
