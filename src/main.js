@@ -7,7 +7,7 @@ import router from './router'
 
 import ElementUI from 'element-ui'
 import 'element-ui/lib/theme-chalk/index.css'
-import axios from './commons/axios'
+import axios from './extensions/axios'
 import store from './store'
 
 Vue.config.productionTip = false
@@ -28,15 +28,16 @@ new Vue({
   },
   methods: {
     checkLogin () {
-      this.$http.defaults.headers.common['Authorization'] = 'Bearer ' + sessionStorage.getItem('Koler-token')
-      this.$http.defaults.headers.common['Accept'] = 'application/json'
+      let httpCommon = this.$http.defaults.headers.common
+      httpCommon['Authorization'] = 'Bearer ' + sessionStorage.getItem('Koler-token')
+      httpCommon['Accept'] = 'application/json'
       let currentRouter = this.$router.history.current.name
       if (currentRouter === 'Login') {
         this.sendCheckLoginResp().then(() => {
           this.$message.success(`您已成功登录，无需多次登录`)
           this.$router.push('/')
         }).catch((resp) => {
-          this.$http.defaults.headers.common['Authorization'] = ''
+          httpCommon['Authorization'] = ''
           this.$store.dispatch('delToken')
         })
       } else {
@@ -44,7 +45,7 @@ new Vue({
           // 无操作
         }).catch((resp) => {
           this.$message.warning(`${resp.data.data}！请重新登录`)
-          this.$http.defaults.headers.common['Authorization'] = ''
+          httpCommon['Authorization'] = ''
           this.$store.dispatch('delToken')
           this.$router.push('/Login')
         })
