@@ -49,7 +49,18 @@ export default {
   },
   methods: {
     checkModel () {
-      this.fun.navRightModeltoggle(this)
+      const routerName = this.$router.history.current.name
+      const model = (routerName === 'Main')
+        ? 'user'
+        : (routerName === 'ProblemsWarehouse')
+        ? 'subject'
+        : (routerName === 'Exam')
+        ? 'exem'
+        : 'user'
+      this.$store.dispatch('getInfoBymodel', {
+        model: model,
+        subjectName: (this.$router.history.current.params.name) ? this.$router.history.current.params.name : ''
+      })
     }
   },
   computed: {
