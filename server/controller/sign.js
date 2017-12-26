@@ -1,7 +1,7 @@
 const jwt = require('jsonwebtoken')
 const empty = require('is-empty')
 const common = require('../lib/common')
-const constant = require('../../src/commons/configConstant')
+const constant = require('../../common/config')
 const M = require('../model')
 
 let result

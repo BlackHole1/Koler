@@ -1,5 +1,5 @@
 import axios from 'axios'
-import constants from './configConstant'
+import constants from '../../common/config'
 
 const http = axios.create({
   baseURL: constants.serverAddress

@@ -1,5 +1,5 @@
 const mongoose = require('mongoose')
-const config = require('../../src/commons/configConstant')
+const config = require('../../common/config')
 
 mongoose.Promise = global.Promise
 mongoose.connect(config.mongodb.url, {useMongoClient: true})

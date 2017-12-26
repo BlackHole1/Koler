@@ -1,6 +1,6 @@
 const restify = require('restify')
 const corsMiddleware = require('restify-cors-middleware')
-const config = require('../../src/commons/configConstant')
+const config = require('../../common/config')
 const common = require('../lib/common')
 
 const server = restify.createServer({

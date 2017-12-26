@@ -1,6 +1,6 @@
 const crypto = require('crypto')
 const jwt = require('jsonwebtoken')
-const config = require('../../src/commons/configConstant')
+const config = require('../../common/config')
 const common = {
   isObject: (obj) => {
     return obj != null && typeof obj === 'object' && Array.isArray(obj) === false && Object.prototype.toString.call(obj) === '[object Object]'
