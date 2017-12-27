@@ -310,16 +310,17 @@ export default {
       this.create.tags.splice(this.create.tags.indexOf(tag), 1)
     },
     handleInputConfirm () {
-      let inputValue = this.create.inputValue
+      let create = this.create
+      let inputValue = create.inputValue
       if (inputValue) {
-        this.create.tags.push(inputValue)
+        create.tags.push(inputValue)
       }
-      this.create.inputVisible = false
-      this.create.inputValue = ''
+      create.inputVisible = false
+      create.inputValue = ''
     },
     showInput () {
       this.create.inputVisible = true
-      this.$nextTick(_ => {
+      this.$nextTick(() => {
         this.$refs.saveTagInput.$refs.input.focus()
       })
     },

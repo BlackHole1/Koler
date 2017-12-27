@@ -41,9 +41,7 @@ new Vue({
           this.$store.dispatch('delToken')
         })
       } else {
-        this.sendCheckLoginResp().then(() => {
-          // 无操作
-        }).catch((resp) => {
+        this.sendCheckLoginResp().catch((resp) => {
           this.$message.warning(`${resp.data.data}！请重新登录`)
           httpCommon['Authorization'] = ''
           this.$store.dispatch('delToken')
