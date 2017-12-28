@@ -110,7 +110,7 @@
   top: -20%;
   bottom: 0;
   margin: auto;
-  width: 23em;
+  width: 25em;
   height: 233px;
   border: 1px solid rgba(255, 255, 255, 0.9215686274509803);
   background-color: rgba(255, 255, 255, 0.9215686274509803);
