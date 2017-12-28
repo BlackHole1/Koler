@@ -1,3 +1,4 @@
+require('./lib/prototypes')()
 const server = require('./lib/server')
 require('./router/index')()
 

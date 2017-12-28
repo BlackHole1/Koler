@@ -1,21 +1,25 @@
 const mongoose = require('../../lib/mongoose')
 const userSchema = require('../schema/user')
 
-userSchema.statics.findByName = function (name, cb) {
-  this.findOne({
+userSchema.statics.findByName = function (name) {
+  return this.findOne({
     name: name
   }, {  // 不显示以下字段
     '_id': 0,
     '__v': 0,
     'password': 0
-  }, cb)
+  }).exec()
 }
 
-userSchema.statics.findByEmailAndPassword = function (data, cb) {
-  this.findOne({
+userSchema.statics.findByEmailAndPassword = function (data) {
+  return this.findOne({
     email: data.email,
     password: data.password
-  }, cb)
+  }).exec()
+}
+
+userSchema.statics.userDataCount = function (data) {
+  return this.count({}).exec()
 }
 
 module.exports = mongoose.model('User', userSchema)
