@@ -7,12 +7,8 @@ module.exports = () => {
    */
   Promise.prototype.unified = function (callback) {
     this.then(
-      data => {
-        callback(true, data)
-      },
-      data => {
-        callback(false, data)
-      }
+      data => callback(true, data),
+      data => callback(false, data)
     )
   }
 }
