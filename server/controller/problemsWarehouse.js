@@ -3,12 +3,10 @@ const empty = require('is-empty')
 
 const resource = {
   getInfo: (req, res, next) => {
-    let result = {}
     let PWMolde = M('problemsWarehouse')
-    PWMolde.findByEmail(req.$getInfo.email, function (err, data) {
-      if (err) {
-        result = err
-      } else {
+    PWMolde.findByEmail(req.$getInfo.email)
+      .catch(() => Promise.reject('数据库查询错误'))
+      .then(data => {
         const PWData = {}
         let names = []
         data.forEach(el => {
@@ -22,10 +20,11 @@ const resource = {
         data.forEach(el => {
           PWData[el.name] = el
         })
-        result = PWData
-      }
-      res.send(result)
-    })
+        return Promise.resolve(PWData)
+      })
+      .unified((state, data) => {
+        res.send(data)
+      })
   },
   add: (req, res, next) => {
     const result = {
