@@ -15,9 +15,6 @@
         <span class="upper_name">
           上级用户：{{getUser.upper_name}}
         </span>
-        <span class="created_date">
-          创建时间：{{getUser.created_date}}
-        </span>
       </div>
       <div class="subject" v-if="getModel === 'subject'">
         <div class="subject">
