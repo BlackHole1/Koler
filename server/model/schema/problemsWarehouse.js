@@ -4,8 +4,14 @@ const dateFormat = require('dateformat')
 const problemsWarehouse = new mongoose.Schema({
   email: String, // 所属哪个邮箱
   name: String, // 所属哪个题库
-  practiceNumber: Number, // 练习的次数
-  average: Number,  // 平均分
+  practiceNumber: { // 练习的次数
+    type: Number,
+    default: 0
+  },
+  average: {  // 平均分
+    type: Number,
+    default: 0
+  },
   details: [  // 题目详情
     {
       name: String, // 题目标题

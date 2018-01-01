@@ -27,41 +27,34 @@ const resource = {
       })
   },
   add: (req, res, next) => {
-    const result = {
-      state: false,
-      data: ''
-    }
     if (empty(req.body.name)) {
-      result.data = '请输入要创建的题库名称'
-      res.send(result)
-    } else {
-      const name = req.body.name
-      const email = req.$getInfo.email
-      let PWMolde = M('problemsWarehouse')
-      PWMolde.findByEmailAndName1(email, name)
-        .catch(() => Promise.reject('连接数据库出错'))
-        .then(data => {
-          if (data.length === 1) {
-            return Promise.reject('题库名称已被使用')
-          }
-          const PWEntity = new PWMolde({
-            email: email,
-            name: name,
-            practiceNumber: 0,
-            average: 0,
-            details: []
-          })
-          return PWEntity.save()
-            .catch(() => Promise.reject('保存数据时出错'))
-            .then(() => Promise.resolve('创建题库成功'))
-        })
-        .unified((state, data) => {
-          res.send({
-            state,
-            data
-          })
-        })
+      return res.send({
+        state: false,
+        data: '请输入要创建的题库名称'
+      })
     }
+    const name = req.body.name
+    const email = req.$getInfo.email
+    let PWMolde = M('problemsWarehouse')
+    PWMolde.findByEmailAndName1(email, name)
+      .catch(() => Promise.reject('连接数据库出错'))
+      .then(data => {
+        if (data.length === 1) {
+          return Promise.reject('题库名称已被使用')
+        }
+        const PWEntity = new PWMolde({
+          email: email,
+          name: name,
+          details: []
+        })
+        return PWEntity.save()
+          .catch(() => Promise.reject('保存数据时出错'))
+          .then(() => Promise.resolve('创建题库成功'))
+      })
+      .unified((state, data) => res.send({
+        state,
+        data
+      }))
   },
   del: (req, res, next) => {
     const result = {
