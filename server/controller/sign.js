@@ -27,9 +27,9 @@ const resource = {
             upper: '无',
             upper_name: '无'
           })
-          return UserEntity.save(err => {
-            (err) ? Promise.reject('保存为管理员账户出错') : Promise.resolve()
-          })
+          return UserEntity.save()
+            .catch(() => Promise.reject('保存为管理员账户出错'))
+            .then(() => Promise.resolve())
         }
       })
       .then(() => Promise.resolve(UserModel.findByEmailAndPassword({
