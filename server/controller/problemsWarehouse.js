@@ -38,11 +38,12 @@ const resource = {
       const name = req.body.name
       const email = req.$getInfo.email
       let PWMolde = M('problemsWarehouse')
-      PWMolde.findByEmailAndName(email, name, function (err, data) {
-        if (err || data.length === 1) {
-          result.data = !(err) ? '题库名称已被使用' : err
-          res.send(result)
-        } else {
+      PWMolde.findByEmailAndName1(email, name)
+        .catch(() => Promise.reject('连接数据库出错'))
+        .then(data => {
+          if (data.length === 1) {
+            return Promise.reject('题库名称已被使用')
+          }
           const PWEntity = new PWMolde({
             email: email,
             name: name,
@@ -50,17 +51,16 @@ const resource = {
             average: 0,
             details: []
           })
-          PWEntity.save(function (err) {
-            if (err) {
-              result.data = err
-            } else {
-              result.state = true
-              result.data = '创建题库成功'
-            }
-            res.send(result)
+          return PWEntity.save()
+            .catch(() => Promise.reject('保存数据时出错'))
+            .then(() => Promise.resolve('创建题库成功'))
+        })
+        .unified((state, data) => {
+          res.send({
+            state,
+            data
           })
-        }
-      })
+        })
     }
   },
   del: (req, res, next) => {

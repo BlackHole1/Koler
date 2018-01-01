@@ -19,4 +19,13 @@ problemsWarehouseSchema.statics.findByEmailAndName = function (email, name, cb) 
   }, cb)
 }
 
+problemsWarehouseSchema.statics.findByEmailAndName1 = function (email, name) {
+  return this.find({
+    email: email,
+    name: name
+  }, {  // 不显示以下字段
+    '__v': 0
+  }).exec()
+}
+
 module.exports = mongoose.model('ProblemsWarehouse', problemsWarehouseSchema)
