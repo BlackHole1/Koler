@@ -19,17 +19,12 @@ export default {
     background-repeat: no-repeat;
     background-size:cover;
   }
-  body{
+  body {
     margin: 0;
     font-family: "Helvetica Neue",Helvetica,"PingFang SC","Hiragino Sans GB","Microsoft YaHei","微软雅黑",Arial,sans-serif;
     color: #1f2f3d;
   }
-  ::-webkit-scrollbar {  
-    width: 0;  
+  ::-webkit-scrollbar {
+    width: 0;
   }
 </style>
-<script>
-export default {
-  name: 'app'
-}
-</script>
