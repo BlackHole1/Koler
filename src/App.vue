@@ -14,7 +14,7 @@ export default {
   html {
     height:100%;
     width:100%;
-    background-image: url(/static/loginBackground.jpg);
+    background-image: url(/static/background/1.jpg);
     background-attachment:fixed;
     background-repeat: no-repeat;
     background-size:cover;
