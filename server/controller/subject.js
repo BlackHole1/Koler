@@ -46,39 +46,40 @@ const resource = {
       })
   },
   del: (req, res, next) => {
-    const result = {
-      state: false,
-      data: ''
-    }
     if (empty(req.query.name) || empty(req.query.id)) {
-      result.data = '请确认传入了值'
-      res.send(result)
-    } else {
-      const { name, id } = req.query
-      const email = req.$getInfo.email
-      let PWMolde = M('problemsWarehouse')
-      PWMolde.findByEmailAndName(email, name, function (err, data) {
-        if (err || data.length !== 1) {
-          result.data = !(err) ? '找不到此题库' : err
-          res.send(result)
-        } else {
-          PWMolde.update({
-            email: email,
-            name: name
-          }, {
-            '$pull': {
-              'details': {
-                _id: id
-              }
-            }
-          }, function (err) {
-            result.state = !(err)
-            result.data = (err) ? '删除失败' : '删除成功'
-            res.send(result)
-          })
-        }
+      return res.send({
+        state: false,
+        data: '请确认传入了值'
       })
     }
+    const { name, id } = req.query
+    const email = req.$getInfo.email
+    let PWMolde = M('problemsWarehouse')
+    PWMolde.findByEmailAndName1(email, name)
+      .catch(() => Promise.reject('连接数据库出错'))
+      .then(data => {
+        if (data.length !== 1) {
+          return Promise.reject('找不到此题库')
+        }
+        return PWMolde.update({
+          email: email,
+          name: name
+        }, {
+          '$pull': {
+            'details': {
+              _id: id
+            }
+          }
+        })
+          .catch(() => Promise.reject('删除失败'))
+          .then(() => Promise.resolve('删除成功'))
+      })
+      .unified((state, data) => {
+        res.send({
+          state,
+          data
+        })
+      })
   }
 }
 
