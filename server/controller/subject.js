@@ -12,7 +12,7 @@ const resource = {
     const {name, title, content, score, tags, note, answer} = req.body
     const email = req.$getInfo.email
     let PWMolde = M('problemsWarehouse')
-    PWMolde.findByEmailAndName1(email, name)
+    PWMolde.findByEmailAndName(email, name)
       .catch(() => Promise.reject('连接数据库出错'))
       .then(data => {
         if (data.length !== 1) {
@@ -55,7 +55,7 @@ const resource = {
     const { name, id } = req.query
     const email = req.$getInfo.email
     let PWMolde = M('problemsWarehouse')
-    PWMolde.findByEmailAndName1(email, name)
+    PWMolde.findByEmailAndName(email, name)
       .catch(() => Promise.reject('连接数据库出错'))
       .then(data => {
         if (data.length !== 1) {

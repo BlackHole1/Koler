@@ -10,16 +10,7 @@ problemsWarehouseSchema.statics.findByEmail = function (email, cb) {
   }, cb).exec()
 }
 
-problemsWarehouseSchema.statics.findByEmailAndName = function (email, name, cb) {
-  this.find({
-    email: email,
-    name: name
-  }, {  // 不显示以下字段
-    '__v': 0
-  }, cb)
-}
-
-problemsWarehouseSchema.statics.findByEmailAndName1 = function (email, name) {
+problemsWarehouseSchema.statics.findByEmailAndName = function (email, name) {
   return this.find({
     email: email,
     name: name

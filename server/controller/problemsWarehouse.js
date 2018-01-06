@@ -36,7 +36,7 @@ const resource = {
     const name = req.body.name
     const email = req.$getInfo.email
     let PWMolde = M('problemsWarehouse')
-    PWMolde.findByEmailAndName1(email, name)
+    PWMolde.findByEmailAndName(email, name)
       .catch(() => Promise.reject('连接数据库出错'))
       .then(data => {
         if (data.length === 1) {
@@ -66,7 +66,7 @@ const resource = {
       const name = req.query.name
       const email = req.$getInfo.email
       let PWMolde = M('problemsWarehouse')
-      PWMolde.findByEmailAndName1(email, name)
+      PWMolde.findByEmailAndName(email, name)
         .catch(() => Promise.reject('连接数据库出错'))
         .then(data => {
           if (data.length !== 1) {
@@ -97,7 +97,7 @@ const resource = {
     const {name, changeName} = req.body
     const email = req.$getInfo.email
     let PWMolde = M('problemsWarehouse')
-    PWMolde.findByEmailAndName1(email, name)
+    PWMolde.findByEmailAndName(email, name)
       .catch(() => Promise.reject('连接数据库出错'))
       .then(data => {
         if (data.length !== 1) {
