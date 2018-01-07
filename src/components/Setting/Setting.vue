@@ -18,20 +18,20 @@
           </div>
           <div class="info-item chang-password">
             <h3>修改密码</h3>
-            <el-form :model="userInfo">
-              <el-form-item label="旧密码">
-                <el-input v-model="userInfo.oldPassword" size="medium"></el-input>
+            <el-form :model="updateUserInfo" ref="updateUserInfo">
+              <el-form-item label="旧密码" prop="oldPassword">
+                <el-input v-model="updateUserInfo.oldPassword" size="medium"></el-input>
               </el-form-item>
-              <el-form-item label="新密码">
-                <el-input v-model="userInfo.newPassword" size="medium"></el-input>
+              <el-form-item label="新密码" prop="newPassword">
+                <el-input v-model="updateUserInfo.newPassword" size="medium"></el-input>
               </el-form-item>
-              <el-form-item label="确认密码">
-                <el-input v-model="userInfo.confirmPassword" size="medium"></el-input>
+              <el-form-item label="确认密码" prop="confirmPassword">
+                <el-input v-model="updateUserInfo.confirmPassword" size="medium"></el-input>
               </el-form-item>
             </el-form>
             <div class="operation">
-              <el-button size="small" icon="el-icon-refresh">重置</el-button>
-              <el-button size="small" type="primary" icon="el-icon-check">确定修改</el-button>
+              <el-button size="small" icon="el-icon-refresh" @click="resetForm('updateUserInfo')">重置</el-button>
+              <el-button size="small" type="primary" icon="el-icon-check"  @click="updatePassWord()">确定修改</el-button>
             </div>
           </div>
         </v-jumbotron>
@@ -47,11 +47,19 @@ import { mapGetters } from 'vuex'
 export default {
   data () {
     return {
-      userInfo: {
+      updateUserInfo: {
         header: '',
         oldPassword: '',
         confirmPassword: ''
       }
+    }
+  },
+  methods: {
+    updatePassWord () {
+      // 更改
+    },
+    resetForm (formName) {
+      this.$refs[formName].resetFields()
     }
   },
   computed: {
