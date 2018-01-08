@@ -19,7 +19,8 @@ const routes = {
       'del': subject.del
     },
     'user': {
-      'get': user.getInfo
+      'get': user.getInfo,
+      'put': user.update
     },
     'sign': {
       'post': sign.login

@@ -18,15 +18,15 @@
           </div>
           <div class="info-item chang-password">
             <h3>修改密码</h3>
-            <el-form :model="updateUserInfo" ref="updateUserInfo">
+            <el-form :model="userInfo" ref="updateUserInfo" :rules="rulesUpdateUserInfo">
               <el-form-item label="旧密码" prop="oldPassword">
-                <el-input v-model="updateUserInfo.oldPassword" size="medium"></el-input>
+                <el-input v-model="userInfo.oldPassword" size="medium" type="password"></el-input>
               </el-form-item>
               <el-form-item label="新密码" prop="newPassword">
-                <el-input v-model="updateUserInfo.newPassword" size="medium"></el-input>
+                <el-input v-model="userInfo.newPassword" size="medium" type="password"></el-input>
               </el-form-item>
               <el-form-item label="确认密码" prop="confirmPassword">
-                <el-input v-model="updateUserInfo.confirmPassword" size="medium"></el-input>
+                <el-input v-model="userInfo.confirmPassword" size="medium" type="password"></el-input>
               </el-form-item>
             </el-form>
             <div class="operation">
@@ -47,16 +47,66 @@ import { mapGetters } from 'vuex'
 export default {
   data () {
     return {
-      updateUserInfo: {
+      userInfo: {
         header: '',
         oldPassword: '',
         confirmPassword: ''
+      },
+      rulesUpdateUserInfo: {
+        oldPassword: [{
+          validator: (rule, value, callback) => {
+            if (!value) {
+              return callback(new Error('旧密码不能为空'))
+            } else {
+              callback()
+            }
+          },
+          trigger: 'blur'
+        }],
+        newPassword: [{
+          validator: (rule, value, callback) => {
+            if (value === '') {
+              callback(new Error('请输入密码'))
+            } else {
+              if (this.userInfo.confirmPassword !== '') {
+                this.$refs.updateUserInfo.validateField('confirmPassword')
+              }
+              callback()
+            }
+          },
+          trigger: 'blur'
+        }],
+        confirmPassword: [{
+          validator: (rule, value, callback) => {
+            if (value === '') {
+              callback(new Error('请再次输入密码'))
+            } else if (value !== this.userInfo.newPassword) {
+              callback(new Error('两次输入密码不一致!'))
+            } else {
+              callback()
+            }
+          },
+          trigger: 'blur'
+        }]
       }
     }
   },
   methods: {
     updatePassWord () {
-      // 更改
+      this.$refs.updateUserInfo.validate((valid) => {
+        if (!valid) {
+          return false
+        }
+        const {oldPassword, newPassword, confirmPassword} = this.userInfo
+        this.$http.put(`/Api/user`, {
+          oldPassword,
+          newPassword,
+          confirmPassword
+        })
+          .then(resp => {
+            this.$message[resp.data.state ? 'success' : 'error'](resp.data.data)
+          })
+      })
     },
     resetForm (formName) {
       this.$refs[formName].resetFields()
