@@ -6,14 +6,15 @@
         <v-jumbotron>
           <div class="info-item change-header">
             <h3>用户头像</h3>
-            <el-button size="small" type="primary" icon="el-icon-upload">点击上传</el-button>
+            <el-button size="small" type="primary" icon="el-icon-upload" @click="$refs.uploadFile.click()">点击上传</el-button>
+            <input type="file" style="display:none" ref="uploadFile" @change="checkFile">
             <p>
-              <img :src="getUser.avatar_url">
-              <img :src="getUser.avatar_url">
+              <img :src="userInfo.header || getUser.avatar_url">
+              <img :src="userInfo.header || getUser.avatar_url">
             </p>
             <div class="operation">
-              <el-button size="small" icon="el-icon-refresh">重置</el-button>
-              <el-button size="small" type="primary" icon="el-icon-check">确定上传</el-button>
+              <el-button size="small" icon="el-icon-refresh" @click="resetFile()">重置</el-button>
+              <el-button size="small" type="primary" icon="el-icon-check" @click="updateFile">确定上传</el-button>
             </div>
           </div>
           <div class="info-item chang-password">
@@ -107,6 +108,37 @@ export default {
             this.$message[resp.data.state ? 'success' : 'error'](resp.data.data)
           })
       })
+    },
+    checkFile () {
+      if (this.$refs.uploadFile.files.length === 0) {
+        return false
+      }
+      const fileInfo = this.$refs.uploadFile.files[0]
+      const suffix = fileInfo.name.split('.').pop()
+      const size = fileInfo.size
+      if (!/(jpg|jpeg|png)$/.test(suffix)) {
+        return this.$message.error('上传的图片后缀必须为jpg、jpeg、png')
+      }
+      if (size > 1024 * 1024 * 2) {
+        return this.$message.error('上传的图片必须在2M之内')
+      }
+      this.changeImg(fileInfo)
+    },
+    changeImg (fileInfo) {
+      this.userInfo.header = URL.createObjectURL(fileInfo)
+    },
+    updateFile () {
+      if (this.$refs.uploadFile.files.length === 0) {
+        return this.$message.error('请先上传你的图片')
+      }
+      const fileInfo = this.$refs.uploadFile.files[0]
+      let param = new FormData()
+      param.append('file', fileInfo, fileInfo.name)
+      // axios上传至服务器
+    },
+    resetFile () {
+      this.$refs.uploadFile.value = ''
+      this.userInfo.header = ''
     },
     resetForm (formName) {
       this.$refs[formName].resetFields()
