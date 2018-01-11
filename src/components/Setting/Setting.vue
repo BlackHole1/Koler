@@ -99,7 +99,7 @@ export default {
           return false
         }
         const {oldPassword, newPassword, confirmPassword} = this.userInfo
-        this.$http.put(`/Api/user`, {
+        this.$http.put(`/Api/user/password`, {
           oldPassword,
           newPassword,
           confirmPassword

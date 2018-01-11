@@ -20,7 +20,9 @@ const routes = {
     },
     'user': {
       'get': user.getInfo,
-      'put': user.update
+      'password': {
+        'put': user.update('password')
+      }
     },
     'sign': {
       'post': sign.login
