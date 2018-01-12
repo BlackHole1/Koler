@@ -11,6 +11,16 @@ userSchema.statics.findByName = function (name) {
   }).exec()
 }
 
+userSchema.statics.findByEmail = function (email) {
+  return this.findOne({
+    email: email
+  }, {
+    '_id': 0,
+    '__v': 0,
+    'password': 0
+  }).exec()
+}
+
 userSchema.statics.findByEmailAndPassword = function (data) {
   return this.findOne({
     email: data.email,

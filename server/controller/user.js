@@ -1,3 +1,5 @@
+const fs = require('fs')
+const uuidv1 = require('uuid/v1')
 const M = require('../model')
 const common = require('../lib/common')
 const empty = require('is-empty')
@@ -59,7 +61,64 @@ const resource = {
         })
     }
     const header = (req, res, next) => {
-      //
+      if (empty(req.files) || empty(req.files.file) || empty(req.files.file.name)) {
+        return res.send({
+          state: false,
+          data: '请先上传你的图片'
+        })
+      }
+      const uploadedFile = req.files.file
+      const suffix = uploadedFile.name.split('.').pop()
+      if (!/(jpg|jpeg|png)$/.test(suffix)) {
+        return res.send({
+          state: false,
+          data: '上传的图片后缀必须为jpg、jpeg、png'
+        })
+      }
+      if (uploadedFile.size > 1024 * 1024 * 2) {
+        return Promise.reject('上传的图片必须在2M之内')
+      }
+      let UserModel = M('user')
+      const newFilePath = `/static/userHeader/${uuidv1()}.${suffix}`
+      const email = req.$getInfo.email
+      /**
+       * 上传新的头像文件，删除旧的文件
+       * 更新数据库里的头像url
+       */
+      UserModel.findByEmail(email)
+        .catch(() => Promise.reject('连接数据库失败'))
+        .then(data => {
+          const readStream = fs.createReadStream(uploadedFile.path)
+          const writeStream = fs.createWriteStream('..' + newFilePath)
+          readStream.pipe(writeStream)
+          readStream.on('end', () => {
+            // 删除上传时遗留的临时文件
+            fs.unlinkSync(uploadedFile.path)
+              // 判断当前头像是否为系统默认头像
+            if (!data.avatar_url.includes('defaultUserHeader')) {
+              // 删除旧的头像文件
+              fs.unlinkSync(`..${data.avatar_url}`)
+            }
+          })
+          // 更新数据库里的头像信息
+          return UserModel.update({
+            email
+          }, {
+            $set: {
+              avatar_url: newFilePath
+            }
+          }, {
+            upsert: true
+          })
+            .catch(() => Promise.reject('更新头像失败'))
+            .then(() => Promise.resolve('更新头像成功'))
+        })
+        .unified((state, data) => {
+          res.send({
+            state,
+            data
+          })
+        })
     }
     return model === 'password' ? password : header
   }

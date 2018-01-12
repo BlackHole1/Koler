@@ -12,3 +12,6 @@ yarn-error.log*
 *.ntvs*
 *.njsproj
 *.sln
+
+/static/userHeader/*
+!/static/userHeader/defaultUserHeader.png

@@ -134,7 +134,10 @@ export default {
       const fileInfo = this.$refs.uploadFile.files[0]
       let param = new FormData()
       param.append('file', fileInfo, fileInfo.name)
-      // axios上传至服务器
+      this.$http.put('/Api/user/header', param)
+        .then(resp => {
+          this.$message[resp.data.state ? 'success' : 'error'](resp.data.data)
+        })
     },
     resetFile () {
       this.$refs.uploadFile.value = ''

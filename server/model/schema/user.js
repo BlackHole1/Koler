@@ -10,7 +10,7 @@ const user = new mongoose.Schema({
   upper_name: String,
   avatar_url: {
     type: String,
-    default: '/static/defaultUserHeader.png'
+    default: '/static/userHeader/defaultUserHeader.png'
   },
   created_date: {
     type: String,

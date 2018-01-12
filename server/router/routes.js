@@ -22,6 +22,9 @@ const routes = {
       'get': user.getInfo,
       'password': {
         'put': user.update('password')
+      },
+      'header': {
+        'put': user.update('header')
       }
     },
     'sign': {
