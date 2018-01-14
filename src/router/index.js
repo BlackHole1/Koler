@@ -5,6 +5,7 @@ const Main = () => import('@/components/Main')
 const Subject = () => import('@/components/Subject')
 const Setting = () => import('@/components/Setting')
 const Login = () => import('@/components/Login')
+const Manage = () => import('@/components/Manage')
 
 Vue.use(Router)
 export default new Router({
@@ -25,6 +26,11 @@ export default new Router({
       path: '/Setting',
       name: 'Setting',
       component: Setting
+    },
+    {
+      path: '/Manage',
+      name: 'Manage',
+      component: Manage
     },
     {
       path: '/Login',
