@@ -2,7 +2,7 @@
   <div class="header">
     <el-menu theme="dark" :default-active="activeIndex" class="el-menu-demo" mode="horizontal" menu-trigger="click" :router="true">
       <el-menu-item index="/" class="nav-left">我的题库</el-menu-item>
-      <el-menu-item index="/Manage">网站管理</el-menu-item>
+      <el-menu-item index="/UserManage">用户管理</el-menu-item>
       <el-submenu index="2" class="nav-right">
         <template slot="title">{{getUser.name}}</template>
         <el-menu-item index="/Setting">设置</el-menu-item>
@@ -15,11 +15,6 @@
 <script>
 import { mapGetters } from 'vuex'
 export default {
-  data () {
-    return {
-      activeIndex: '/'
-    }
-  },
   created () {
     if (this.getUser.name === '') { // 说明用户刷新页面，导致信息丢失。需要重新获取
       this.$store.dispatch('getInfoBymodel', {
@@ -30,7 +25,10 @@ export default {
   computed: {
     ...mapGetters([
       'getUser'
-    ])
+    ]),
+    activeIndex () {
+      return (this.$route.name === 'Main') ? '/' : '/UserManage'
+    }
   }
 }
 </script>
