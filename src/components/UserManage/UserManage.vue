@@ -3,21 +3,21 @@
     <v-header></v-header>
     <el-row type="flex" class="row" justify="center">
       <el-col :span="3">
-         <el-menu default-active="addUser" class="el-menu-vertical-demo">
-          <el-menu-item index="addUser">
+         <el-menu default-active="/UserManage/addUser" class="el-menu-vertical-demo" :router="true">
+          <el-menu-item index="/UserManage/addUser">
             <i class="el-icon-menu"></i>
-            <span slot="title">添加老师</span>
+            <span slot="title">添加{{subName}}</span>
           </el-menu-item>
-          <el-menu-item index="delUser">
+          <el-menu-item index="/UserManage/delUser">
             <i class="el-icon-setting"></i>
-            <span slot="title">删除老师</span>
+            <span slot="title">删除{{subName}}</span>
           </el-menu-item>
         </el-menu>
       </el-col>
       <el-col :span="1"> </el-col>
       <el-col :span="11">
         <v-jumbotron>
-          
+          <router-view></router-view>
         </v-jumbotron>
       </el-col>
     </el-row>
@@ -25,9 +25,27 @@
 </template>
 
 <script>
+import common from '../../../common/function'
 import Header from '~/Header'
 import Jumbotron from '~/Jumbotron'
+import { mapGetters } from 'vuex'
 export default {
+  created: function () {
+    (this.$route.name === 'UserManage') ? this.$router.push('/UserManage/addUser') : ''
+    if (this.getUser.type === '') {
+      this.$store.dispatch('getInfoBymodel', {
+        model: 'user'
+      })
+    }
+  },
+  computed: {
+    ...mapGetters([
+      'getUser'
+    ]),
+    subName () {
+      return common.subName(this.getUser.type)
+    }
+  },
   components: {
     'v-header': Header,
     'v-jumbotron': Jumbotron

@@ -6,6 +6,8 @@ const Subject = () => import('@/components/Subject')
 const Setting = () => import('@/components/Setting')
 const Login = () => import('@/components/Login')
 const UserManage = () => import('@/components/UserManage')
+const addUser = () => import('@/components/addUser')
+const delUser = () => import('@/components/delUser')
 
 Vue.use(Router)
 export default new Router({
@@ -30,7 +32,19 @@ export default new Router({
     {
       path: '/UserManage',
       name: 'UserManage',
-      component: UserManage
+      component: UserManage,
+      children: [
+        {
+          path: 'addUser',
+          name: 'addUser',
+          component: addUser
+        },
+        {
+          path: 'delUser',
+          name: 'delUser',
+          component: delUser
+        }
+      ]
     },
     {
       path: '/Login',
