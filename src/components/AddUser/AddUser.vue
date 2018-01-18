@@ -1,17 +1,18 @@
 <template>
   <div class="add-user">
-    <el-form label-width="80px" :model="userInfoSet" :rules="rulesUserInfo" label-position="left">
+    <el-form label-width="80px" :model="setUserInfo" ref="updateAddUser" :rules="rulesUserInfo" label-position="left">
       <el-form-item label="设置姓名" prop="name">
-        <el-input v-model="userInfoSet.name" size="medium"></el-input>
+        <el-input v-model="setUserInfo.name" size="medium"></el-input>
       </el-form-item>
       <el-form-item label="设置邮箱" prop="email">
-        <el-input v-model="userInfoSet.email" size="medium"></el-input>
+        <el-input v-model="setUserInfo.email" size="medium"></el-input>
       </el-form-item>
       <el-form-item label="设置密码" prop="password">
-        <el-input v-model="userInfoSet.password" size="medium"></el-input>
+        <el-input v-model="setUserInfo.password" size="medium"></el-input>
       </el-form-item>
     </el-form>
-    <el-button type="primary" size="small">确认添加{{subName}}</el-button>
+    <el-button size="small" icon="el-icon-refresh" @click="resetForm('updateAddUser')">重置</el-button>
+    <el-button type="primary" size="small" icon="el-icon-check" @click="updateAddUser">确认添加{{subName}}</el-button>
   </div>
 </template>
 
@@ -26,7 +27,7 @@ export default {
   },
   data: () => {
     return {
-      userInfoSet: {
+      setUserInfo: {
         name: '',
         email: '',
         password: ''
@@ -42,6 +43,30 @@ export default {
           {required: true, message: '密码不能为空', trigger: 'blur'}
         ]
       }
+    }
+  },
+  methods: {
+    updateAddUser () {
+      this.$refs.updateAddUser.validate((valid) => {
+        if (!valid) {
+          return false
+        }
+        const {name, email, password} = this.setUserInfo
+        if (!common.regx.englishAndChinese.test(name)) {
+          return this.$message.error('姓名里只能输入英语和中文')
+        }
+        this.$http.post(`/Api/user/add`, {
+          name,
+          email,
+          password
+        })
+          .then(resp => {
+            this.$message[resp.data.state ? 'success' : 'error'](resp.data.data)
+          })
+      })
+    },
+    resetForm (formName) {
+      this.$refs[formName].resetFields()
     }
   }
 }
