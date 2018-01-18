@@ -2,6 +2,7 @@ const restify = require('restify')
 const corsMiddleware = require('restify-cors-middleware')
 const config = require('../../common/config')
 const common = require('../lib/common')
+const M = require('../model')
 
 const server = restify.createServer({
   name: 'Koler'
@@ -26,10 +27,24 @@ server.use(function (req, res, next) {  // 请求hook，每次请求查看是否
   const jwtState = common.jwt(req.header('Authorization'))
   if (jwtState.state) {
     req.$getInfo = jwtState.data.data
-    return next()
+    const UserModel = M('user')
+    UserModel.findByEmail(req.$getInfo.email)
+      .catch(() => Promise.reject('连接数据库出错'))
+      .then(data => Promise.resolve(data))
+      .unified((state, data) => {
+        if (state) {
+          req.$currentUserInfo = data
+          return next()
+        } else {
+          return res.send({
+            state,
+            data
+          })
+        }
+      })
   } else {
     res.contentType = 'json'
-    res.send(jwtState)
+    return res.send(jwtState)
   }
 })
 

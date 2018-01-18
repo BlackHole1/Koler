@@ -25,6 +25,9 @@ const routes = {
       },
       'header': {
         'put': user.update('header')
+      },
+      'add': {
+        post: user.add
       }
     },
     'sign': {

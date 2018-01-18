@@ -25,7 +25,8 @@ const resource = {
             password: common.md5s(req.body.pass),
             type: 'Admin',
             upper: '无',
-            upper_name: '无'
+            upper_name: '无',
+            under: 'Teacher'
           })
           return UserEntity.save()
             .catch(() => Promise.reject('保存为管理员账户出错'))
