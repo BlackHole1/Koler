@@ -27,7 +27,13 @@ export default {
       'getUser'
     ]),
     activeIndex () {
-      return (this.$route.name === 'Main') ? '/' : '/UserManage'
+      let activeName = ''
+      if (this.$route.name === 'Main') {
+        activeName = '/'
+      } else if (this.$route.name === 'addUser' || this.$route.name === 'delUser') {
+        activeName = '/UserManage'
+      }
+      return activeName
     },
     userManageShow () {
       const currentUserlevel = this.$store.getters.getUser.type
