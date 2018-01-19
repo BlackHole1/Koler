@@ -31,6 +31,10 @@ import Jumbotron from '~/Jumbotron'
 import { mapGetters } from 'vuex'
 export default {
   created: function () {
+    if (this.getUser.type === 'Student') {
+      this.$message.error('你无权限进入此页面')
+      return this.$router.push('/')
+    }
     (this.$route.name === 'UserManage') ? this.$router.push('/UserManage/addUser') : ''
     if (this.getUser.type === '') {
       this.$store.dispatch('getInfoBymodel', {
