@@ -17,7 +17,7 @@
 </template>
 
 <script>
-import common from '../../../common/function'
+import common from '../../../../common/function'
 export default {
   name: 'addUser',
   computed: {

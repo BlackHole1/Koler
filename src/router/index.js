@@ -6,8 +6,8 @@ const Subject = () => import('@/components/Subject')
 const Setting = () => import('@/components/Setting')
 const Login = () => import('@/components/Login')
 const UserManage = () => import('@/components/UserManage')
-const addUser = () => import('@/components/addUser')
-const delUser = () => import('@/components/delUser')
+const addUser = () => import('@/components/UserManage/addUser')
+const delUser = () => import('@/components/UserManage/delUser')
 
 Vue.use(Router)
 export default new Router({
