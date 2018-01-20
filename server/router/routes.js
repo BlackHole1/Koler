@@ -1,6 +1,7 @@
 const problemsWarehouse = require('../controller/problemsWarehouse')
 const subject = require('../controller/subject')
 const user = require('../controller/user')
+const users = require('../controller/users')
 const sign = require('../controller/sign')
 
 const routes = {
@@ -18,6 +19,7 @@ const routes = {
       'post': subject.add,
       'del': subject.del
     },
+    // 只针对当前用户的操作
     'user': {
       'get': user.getInfo,
       'password': {
@@ -25,10 +27,11 @@ const routes = {
       },
       'header': {
         'put': user.update('header')
-      },
-      'add': {
-        post: user.add
       }
+    },
+    // 针对当前用户下属的操作
+    'users': {
+      'post': users.add
     },
     'sign': {
       'post': sign.login

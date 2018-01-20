@@ -59,7 +59,7 @@ export default {
         if (!common.regx.englishAndChinese.test(name)) {
           return this.$message.error('姓名里只能输入英语和中文')
         }
-        this.$http.post(`/Api/user/add`, {
+        this.$http.post(`/Api/users`, {
           name,
           email,
           password
