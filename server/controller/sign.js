@@ -25,6 +25,7 @@ const resource = {
             password: common.md5s(req.body.pass),
             type: 'Admin',
             upper: '无',
+            upper_email: '无',
             upper_name: '无',
             under: 'Teacher'
           })

@@ -30,6 +30,7 @@ const resource = {
           password: common.md5(password),
           type: req.$currentUserInfo.under,
           upper: req.$currentUserInfo.type,
+          upper_email: req.$currentUserInfo.email,
           upper_name: req.$currentUserInfo.name,
           under: (req.$currentUserInfo.type === 'Admin') ? 'Student' : '无'
         })
