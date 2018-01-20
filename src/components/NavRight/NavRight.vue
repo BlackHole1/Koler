@@ -54,14 +54,14 @@ export default {
         : (routerName === 'Exam')
         ? 'exem'
         : 'user'
-      this.$store.dispatch('getInfoBymodel', {
+      this.$store.dispatch('navRight/getInfoBymodel', {
         model: model,
         subjectName: (this.$router.history.current.params.name) ? this.$router.history.current.params.name : ''
       })
     }
   },
   computed: {
-    ...mapGetters([
+    ...mapGetters('navRight', [
       'getModel',
       'getUser',
       'getSubject',

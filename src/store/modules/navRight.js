@@ -66,13 +66,13 @@ const actions = {
         setState(content)
       })
     } else {
-      const subjectInfo = this.getters.getProblemsWarehouseInfo[data.subjectName] // 当前题目的详细信息
+      const subjectInfo = this.getters['problemsWarehouse/getProblemsWarehouseInfo'][data.subjectName] // 当前题目的详细信息
       if (subjectInfo || subjectInfo !== undefined) {
         setContent(content, subjectInfo)
         setState(content)
       } else {
-        this.dispatch('getProblemsWarehouseList', () => {
-          const subjectInfo = this.getters.getProblemsWarehouseInfo[data.subjectName] // 当前题目的详细信息
+        this.dispatch('problemsWarehouse/getProblemsWarehouseList', () => {
+          const subjectInfo = this.getters['problemsWarehouse/getProblemsWarehouseInfo'][data.subjectName] // 当前题目的详细信息
           if (subjectInfo === undefined) {
             content = {}
           } else {
@@ -95,6 +95,7 @@ const mutations = {
 }
 
 export default {
+  namespaced: true,
   state,
   getters,
   actions,

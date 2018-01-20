@@ -62,14 +62,14 @@
 </template>
 
 <script>
-import { mapGetters } from 'vuex'
+import { mapGetters, mapActions } from 'vuex'
 import Header from '~/Header'
 import Jumbotron from '~/Jumbotron'
 import navRight from '~/NavRight'
 import common from '../../../common/function'
 export default {
   created () {
-    this.$store.dispatch('getProblemsWarehouseList')
+    this.getProblemsWarehouseList()
   },
   data () {
     return {
@@ -85,6 +85,9 @@ export default {
     }
   },
   methods: {
+    ...mapActions('problemsWarehouse', [
+      'getProblemsWarehouseList'
+    ]),
     showProblemsWarehouse (e) {
       this.$router.push({
         path: `ProblemsWarehouse/${e.target.innerText}/1`
@@ -165,7 +168,7 @@ export default {
         this.$message[data.state ? 'success' : 'error'](data.data)
         this.toggleDialog()
         if (data.state) {
-          this.$store.dispatch('getProblemsWarehouseList')
+          this.getProblemsWarehouseList()
         }
       }).catch(data => {
         dialog.loading = false
@@ -174,7 +177,7 @@ export default {
     }
   },
   computed: {
-    ...mapGetters([
+    ...mapGetters('problemsWarehouse', [
       'getProblemsWarehouseInfo'
     ])
   },

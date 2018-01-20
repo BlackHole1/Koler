@@ -148,7 +148,7 @@ export default {
     }
   },
   computed: {
-    ...mapGetters([
+    ...mapGetters('navRight', [
       'getUser'
     ])
   },

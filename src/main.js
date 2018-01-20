@@ -38,13 +38,13 @@ new Vue({
           this.$router.push('/')
         }).catch((resp) => {
           httpCommon['Authorization'] = ''
-          this.$store.dispatch('delToken')
+          this.$store.dispatch('login/delToken')
         })
       } else {
         this.sendCheckLoginResp().catch((resp) => {
           this.$message.warning(`${resp.data.data}！请重新登录`)
           httpCommon['Authorization'] = ''
-          this.$store.dispatch('delToken')
+          this.$store.dispatch('login/delToken')
           this.$router.push('/Login')
         })
       }

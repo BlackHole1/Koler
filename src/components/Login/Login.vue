@@ -23,7 +23,7 @@
   export default {
     created () {
       if (this.$router.history.current.name === 'Logout') {
-        this.$store.dispatch('delToken')
+        this.$store.dispatch('login/delToken')
         this.$router.push('/Login')
         this.$message.success('您已成功退出登录')
       }
@@ -83,7 +83,7 @@
             .then(resp => {
               this.loading = false
               const data = resp.data
-              this.$store.dispatch((data.state) ? 'addToken' : 'delToken', data.token)
+              this.$store.dispatch((data.state) ? 'login/addToken' : 'login/delToken', data.token)
               this.$message[data.state ? 'success' : 'warning'](data.data)
               data.state ? this.$router.push('/') : ''
             })

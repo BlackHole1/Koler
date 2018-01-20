@@ -98,7 +98,7 @@
 </template>
 
 <script>
-import { mapGetters } from 'vuex'
+import { mapGetters, mapActions } from 'vuex'
 import Jumbotron from '~/Jumbotron'
 import markdownEditor from 'vue-simplemde/src/markdown-editor'
 import hljs from 'highlight.js'
@@ -167,7 +167,7 @@ export default {
     '$route': 'subjectInfo'
   },
   computed: {
-    ...mapGetters([
+    ...mapGetters('problemsWarehouse', [
       'getDetailsByName',
       'getProblemsWarehouseInfo'
     ]),
@@ -193,6 +193,9 @@ export default {
     }
   },
   methods: {
+    ...mapActions('problemsWarehouse', [
+      'getProblemsWarehouseList'
+    ]),
     subjectInfo () {
       const name = (this.name = this.$route.params.name)
       const num = (this.num = this.$route.params.num)
@@ -287,11 +290,11 @@ export default {
         this.$message[data.state ? 'success' : 'error'](data.data)
         this.toggleDialog()
         if (data.state) {
-          this.$store.dispatch('getProblemsWarehouseList', () => {
+          this.getProblemsWarehouseList(() => {
             // 重新渲染组件，使之看到最新的变化，无需刷新页面
             this.subjectInfo()
             this.refreshSubjectContent()
-            this.$store.dispatch('getInfoBymodel', {
+            this.$store.dispatch('navRight/getInfoBymodel', {
               model: 'subject',
               subjectName: this.name
             })
@@ -334,10 +337,10 @@ export default {
         .then((res) => {
           const data = res.data
           this.$message[data.state ? 'success' : 'error'](data.data)
-          this.$store.dispatch('getProblemsWarehouseList', () => {
+          this.getProblemsWarehouseList(() => {
             // 重新渲染组件，使之看到最新的变化，无需刷新页面
             this.subjectInfo()
-            this.$store.dispatch('getInfoBymodel', {
+            this.$store.dispatch('navRight/getInfoBymodel', {
               model: 'subject',
               subjectName: this.name
             })

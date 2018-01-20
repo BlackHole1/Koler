@@ -37,13 +37,13 @@ export default {
     }
     (this.$route.name === 'UserManage') ? this.$router.push('/UserManage/addUser') : ''
     if (this.getUser.type === '') {
-      this.$store.dispatch('getInfoBymodel', {
+      this.$store.dispatch('navRight/getInfoBymodel', {
         model: 'user'
       })
     }
   },
   computed: {
-    ...mapGetters([
+    ...mapGetters('navRight', [
       'getUser'
     ]),
     subName () {

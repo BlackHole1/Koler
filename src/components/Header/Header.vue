@@ -17,13 +17,13 @@ import { mapGetters } from 'vuex'
 export default {
   created () {
     if (this.getUser.name === '') { // 说明用户刷新页面，导致信息丢失。需要重新获取
-      this.$store.dispatch('getInfoBymodel', {
+      this.$store.dispatch('navRight/getInfoBymodel', {
         model: 'user'
       })
     }
   },
   computed: {
-    ...mapGetters([
+    ...mapGetters('navRight', [
       'getUser'
     ]),
     activeIndex () {
@@ -36,7 +36,7 @@ export default {
       return activeName
     },
     userManageShow () {
-      const currentUserlevel = this.$store.getters.getUser.type
+      const currentUserlevel = this.getUser.type
       return (currentUserlevel && currentUserlevel !== 'Student')
     }
   }
