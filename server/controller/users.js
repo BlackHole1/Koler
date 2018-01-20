@@ -3,6 +3,24 @@ const common = require('../lib/common')
 const empty = require('is-empty')
 
 const resource = {
+  getList: (req, res, next) => {
+    if (req.$currentUserInfo.type === 'Student') {
+      return res.send({
+        state: false,
+        data: '很抱歉，你没用权限进行列举你的下属'
+      })
+    }
+    const UsersModel = M('users')
+    UsersModel.findUnderByEmail(req.$currentUserInfo.email)
+      .catch(() => Promise.reject('连接数据库失败'))
+      .then(data => Promise.resolve(data))
+      .unified((state, data) => {
+        return res.send({
+          state,
+          data
+        })
+      })
+  },
   add: (req, res, next) => {
     if (empty(req.body.name) || empty(req.body.email) || empty(req.body.password)) {
       return res.send({

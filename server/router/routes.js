@@ -31,6 +31,7 @@ const routes = {
     },
     // 针对当前用户下属的操作
     'users': {
+      'get': users.getList,
       'post': users.add
     },
     'sign': {
