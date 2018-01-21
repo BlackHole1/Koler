@@ -1,6 +1,20 @@
 <template>
   <div class="del-user">
-    删除{{subName}}
+    <el-row class="user-list">
+      <el-col :span="8" v-for="(o) in userList" :key="o._id" class="card">
+        <el-card :body-style="{ padding: '0px' }">
+          <img :src="o.avatar_url" class="image">
+          <div style="padding: 14px;">
+            <span>{{o.name}}</span>
+            <span class="email">{{o.email}}</span>
+            <div class="bottom clearfix">
+              <time class="time">{{ o.created_date }}</time>
+              <el-button type="text" class="button">删除此{{subName}}</el-button>
+            </div>
+          </div>
+        </el-card>
+      </el-col>
+    </el-row>
   </div>
 </template>
 
@@ -9,6 +23,31 @@ import common from '../../../../common/function'
 import { mapGetters } from 'vuex'
 export default {
   name: 'delUser',
+  created () {
+    this.$http.get('/Api/users')
+      .then(resp => {
+        let { state, data } = resp.data
+        if (!state) {
+          this.$message.error(data)
+          return this.$router.push('/')
+        }
+        this.userList = data
+      })
+  },
+  data () {
+    return {
+      userList: [{
+        name: '',
+        email: '',
+        type: '',
+        upper: '',
+        upper_name: '',
+        under: '',
+        avatar_url: '',
+        created_date: ''
+      }]
+    }
+  },
   computed: {
     ...mapGetters('navRight', [
       'getUser'
@@ -20,6 +59,38 @@ export default {
 }
 </script>
 
-<style>
-
+<style lang="less" scoped>
+.user-list {
+  .card {
+    margin-left: 20px;
+    &:first-child {
+      margin-left: 0;
+    }
+  }
+  .time, .email {
+    font-size: 13px;
+    color: #999;
+  }
+  .bottom {
+    margin-top: 13px;
+    line-height: 12px;
+  }
+  .button {
+    padding: 0;
+    float: right;
+  }
+  .image {
+    width: 100%;
+    display: block;
+  }
+  .clearfix:before,
+  .clearfix:after {
+      display: table;
+      content: "";
+  }
+  .clearfix:after {
+      clear: both
+  }
+}
 </style>
+
