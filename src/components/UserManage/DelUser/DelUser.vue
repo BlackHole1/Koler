@@ -1,14 +1,13 @@
 <template>
   <div class="del-user">
     <el-row class="user-list">
-      <el-col :span="8" v-for="(o) in userList" :key="o._id" class="card">
+      <el-col :span=5 v-for="(o) in userList" :key="o._id" class="card">
         <el-card :body-style="{ padding: '0px' }">
           <img :src="o.avatar_url" class="image">
           <div style="padding: 14px;">
             <span>{{o.name}}</span>
-            <span class="email">{{o.email}}</span>
             <div class="bottom clearfix">
-              <time class="time">{{ o.created_date }}</time>
+              <time class="email">{{ o.email }}</time>
               <el-button type="text" class="button">删除此{{subName}}</el-button>
             </div>
           </div>
@@ -62,12 +61,13 @@ export default {
 <style lang="less" scoped>
 .user-list {
   .card {
-    margin-left: 20px;
-    &:first-child {
-      margin-left: 0;
+    margin-bottom: 30px;
+    margin-right: 30px;
+    &:last-child {
+      margin-right: 0;
     }
   }
-  .time, .email {
+  .email {
     font-size: 13px;
     color: #999;
   }
