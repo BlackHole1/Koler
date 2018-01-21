@@ -3,7 +3,7 @@
     <v-header></v-header>
     <el-row type="flex" class="row" justify="center">
       <el-col :span="3">
-         <el-menu default-active="/UserManage/addUser" class="el-menu-vertical-demo" :router="true">
+         <el-menu :default-active="activeIndex" class="el-menu-vertical-demo" :router="true">
           <el-menu-item index="/UserManage/addUser">
             <i class="el-icon-menu"></i>
             <span slot="title">添加{{subName}}</span>
@@ -30,7 +30,7 @@ import Header from '~/Header'
 import Jumbotron from '~/Jumbotron'
 import { mapGetters } from 'vuex'
 export default {
-  created: function () {
+  created () {
     if (this.getUser.type === 'Student') {
       this.$message.error('你无权限进入此页面')
       return this.$router.push('/')
@@ -48,6 +48,10 @@ export default {
     ]),
     subName () {
       return common.subName(this.getUser.type)
+    },
+    activeIndex () {
+      let currentRouteName = this.$route.name
+      return (currentRouteName === 'addUser') ? '/UserManage/addUser' : '/UserManage/delUser'
     }
   },
   components: {
