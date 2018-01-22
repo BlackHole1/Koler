@@ -62,6 +62,45 @@ const resource = {
           data
         })
       })
+  },
+  del: (req, res, next) => {
+    if (empty(req.query.id)) {
+      return res.send({
+        state: false,
+        data: '值不能为空'
+      })
+    }
+    if (req.$currentUserInfo.type === 'Student') {
+      return res.send({
+        state: false,
+        data: '你没用权限进行删除用户'
+      })
+    }
+    const id = req.query.id
+    const UsersModel = M('users')
+    UsersModel.findUnderByEmailAndId(req.$currentUserInfo.email, id)
+      .catch(err => {
+        if (err === null) {
+          return Promise.reject('没有找到此用户')
+        } else {
+          return Promise.reject('连接数据库失败')
+        }
+      })
+      .then(data => {
+        const UserModel = M('user')
+        return UserModel.remove({
+          email: data.email,
+          _id: id
+        })
+          .catch(() => Promise.reject('删除失败'))
+          .then(() => Promise.resolve('删除成功'))
+      })
+      .unified((state, data) => {
+        return res.send({
+          state,
+          data
+        })
+      })
   }
 }
 

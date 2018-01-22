@@ -10,4 +10,11 @@ usersSchema.statics.findUnderByEmail = function (email) {
   }).exec()
 }
 
+usersSchema.statics.findUnderByEmailAndId = function (email, id) {
+  return this.findOne({
+    upper_email: email,
+    _id: id
+  }).exec()
+}
+
 module.exports = mongoose.model('Users', usersSchema)
