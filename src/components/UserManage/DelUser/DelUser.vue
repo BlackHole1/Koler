@@ -8,7 +8,7 @@
             <span>{{o.name}}</span>
             <div class="bottom clearfix">
               <time class="email">{{ o.email }}</time>
-              <el-button type="text" class="button">删除</el-button>
+              <el-button type="text" class="button" @click="delUser(o._id)">删除</el-button>
             </div>
           </div>
         </el-card>
@@ -23,15 +23,7 @@ import { mapGetters } from 'vuex'
 export default {
   name: 'delUser',
   created () {
-    this.$http.get('/Api/users')
-      .then(resp => {
-        let { state, data } = resp.data
-        if (!state) {
-          this.$message.error(data)
-          return this.$router.push('/')
-        }
-        this.userList = data
-      })
+    this.getUserList()
   },
   data () {
     return {
@@ -53,6 +45,35 @@ export default {
     ]),
     subName () {
       return common.subName(this.getUser.type)
+    }
+  },
+  methods: {
+    delUser (id) {
+      this.$confirm(`是否确认删除此${this.subName}?`, '警告', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      })
+        .then(() => {
+          this.$http.delete(`/Api/users?id=${id}`)
+            .then(resp => {
+              const { state, data } = resp.data
+              this.$message[state ? 'success' : 'error'](data)
+              state ? this.getUserList() : ''
+            })
+        })
+        .catch(() => {})  // 防止因点击取消，没有catch捕获。而报错
+    },
+    getUserList () {
+      this.$http.get('/Api/users')
+        .then(resp => {
+          let { state, data } = resp.data
+          if (!state) {
+            this.$message.error(data)
+            return this.$router.push('/')
+          }
+          this.userList = data
+        })
     }
   }
 }
