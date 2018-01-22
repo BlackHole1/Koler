@@ -8,7 +8,7 @@
             <span>{{o.name}}</span>
             <div class="bottom clearfix">
               <time class="email">{{ o.email }}</time>
-              <el-button type="text" class="button">删除此{{subName}}</el-button>
+              <el-button type="text" class="button">删除</el-button>
             </div>
           </div>
         </el-card>
@@ -78,6 +78,7 @@ export default {
   .button {
     padding: 0;
     float: right;
+    color: #f56c6c;
   }
   .image {
     width: 100%;
