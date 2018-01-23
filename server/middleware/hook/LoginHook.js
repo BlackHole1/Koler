@@ -24,7 +24,6 @@ module.exports = (req, res, next) => {  // 请求hook，每次请求查看是否
         }
       })
   } else {
-    res.contentType = 'json'
     return res.send(jwtState)
   }
 }
