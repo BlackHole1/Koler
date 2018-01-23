@@ -12,7 +12,8 @@
       "controller",
       "model",
       "lib",
-      "router"
+      "router",
+      "middleware"
     ],
     "watch_options": {
       "followSymlinks": false
