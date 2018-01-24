@@ -13,11 +13,9 @@ const cors = corsMiddleware({ // 解决跨域问题
   allowHeaders: ['Authorization']
 })
 
-server.pre(cors.preflight)
-server.use(cors.actual)
+server.pre([cors.preflight, cors.actual])
 
-server.use(restify.plugins.queryParser())
-server.use(restify.plugins.bodyParser())
+server.use([restify.plugins.queryParser(), restify.plugins.bodyParser()])
 
 server.use(middlewareHook())
 
