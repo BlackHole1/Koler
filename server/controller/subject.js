@@ -1,5 +1,6 @@
 const M = require('../model')
 const empty = require('is-empty')
+let PWMolde = M('problemsWarehouse')
 
 const resource = {
   add: (req, res, next) => {
@@ -11,7 +12,6 @@ const resource = {
     }
     const {name, title, content, score, tags, note, answer} = req.body
     const email = req.$getInfo.email
-    let PWMolde = M('problemsWarehouse')
     PWMolde.findByEmailAndName(email, name)
       .catch(() => Promise.reject('连接数据库出错'))
       .then(data => {
@@ -54,7 +54,6 @@ const resource = {
     }
     const { name, id } = req.query
     const email = req.$getInfo.email
-    let PWMolde = M('problemsWarehouse')
     PWMolde.findByEmailAndName(email, name)
       .catch(() => Promise.reject('连接数据库出错'))
       .then(data => {

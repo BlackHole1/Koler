@@ -1,9 +1,9 @@
 const M = require('../model')
 const empty = require('is-empty')
+let PWMolde = M('problemsWarehouse')
 
 const resource = {
   getInfo: (req, res, next) => {
-    let PWMolde = M('problemsWarehouse')
     PWMolde.findByEmail(req.$getInfo.email)
       .catch(() => Promise.reject('数据库查询错误'))
       .then(data => {
@@ -35,7 +35,6 @@ const resource = {
     }
     const name = req.body.name
     const email = req.$getInfo.email
-    let PWMolde = M('problemsWarehouse')
     PWMolde.findByEmailAndName(email, name)
       .catch(() => Promise.reject('连接数据库出错'))
       .then(data => {
@@ -65,7 +64,6 @@ const resource = {
     } else {
       const name = req.query.name
       const email = req.$getInfo.email
-      let PWMolde = M('problemsWarehouse')
       PWMolde.findByEmailAndName(email, name)
         .catch(() => Promise.reject('连接数据库出错'))
         .then(data => {
@@ -96,7 +94,6 @@ const resource = {
     }
     const {name, changeName} = req.body
     const email = req.$getInfo.email
-    let PWMolde = M('problemsWarehouse')
     PWMolde.findByEmailAndName(email, name)
       .catch(() => Promise.reject('连接数据库出错'))
       .then(data => {

@@ -3,12 +3,12 @@ const uuidv1 = require('uuid/v1')
 const M = require('../model')
 const common = require('../lib/common')
 const empty = require('is-empty')
+let UserModel = M('user')
 
 const resource = {
   getInfo: (req, res, next) => {
     res.contentType = 'json'
     const result = {}
-    let UserModel = M('user')
     UserModel.findByName(req.$getInfo.name)
       .then(function (data) {
         result.state = true
@@ -36,7 +36,6 @@ const resource = {
           data: '两次密码不一样'
         })
       }
-      let UserModel = M('user')
       UserModel.findByEmailAndPassword({
         email: req.$getInfo.email,
         password: common.md5(req.body.oldPassword)
@@ -78,7 +77,6 @@ const resource = {
       if (uploadedFile.size > 1024 * 1024 * 2) {
         return Promise.reject('上传的图片必须在2M之内')
       }
-      let UserModel = M('user')
       const newFilePath = `/static/userHeader/${uuidv1()}.${suffix}`
       const email = req.$getInfo.email
       /**

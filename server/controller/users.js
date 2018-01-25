@@ -1,6 +1,8 @@
 const M = require('../model')
 const common = require('../lib/common')
 const empty = require('is-empty')
+const UsersModel = M('users')
+const UserModel = M('user')
 
 const resource = {
   getList: (req, res, next) => {
@@ -10,7 +12,6 @@ const resource = {
         data: '很抱歉，你没用权限进行列举你的下属'
       })
     }
-    const UsersModel = M('users')
     UsersModel.findUnderByEmail(req.$currentUserInfo.email)
       .catch(() => Promise.reject('连接数据库失败'))
       .then(data => Promise.resolve(data))
@@ -35,7 +36,6 @@ const resource = {
       })
     }
     const {name, email, password} = req.body
-    const UserModel = M('user')
     UserModel.findByEmail(email)
       .catch(() => Promise.reject('数据库查询出错'))
       .then(data => {
@@ -77,7 +77,6 @@ const resource = {
       })
     }
     const id = req.query.id
-    const UsersModel = M('users')
     UsersModel.findUnderByEmailAndId(req.$currentUserInfo.email, id)
       .catch(err => {
         if (err === null) {
