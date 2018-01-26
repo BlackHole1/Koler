@@ -7,14 +7,6 @@ const UserModel = M('user')
 
 const resource = {
   login: (req, res, next) => {
-    if (empty(req.body.email) || empty(req.body.pass)) {
-      res.send({
-        state: false,
-        data: '账号或密码错误'
-      })
-      return false
-    }
-
     UserModel.userDataCount({}) // 此处会先跳转到下一个catach，再由下一个catch进入到unified
       .catch(() => Promise.reject('数据库查询错误'))
       .then(count => {  // 如果数据库里没有用户，则当前登录用户为管理员账户

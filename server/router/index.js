@@ -12,7 +12,7 @@ const recursion = (obj, path) => {  // 针对routes.js的路由配置挂载到re
       } else if (common.isArray(val)) {
         let validateFun = val[0]
         let mainFun = val[1]
-        validateFun(mainFun)
+        server[key](path, validateFun(mainFun))
       } else {
         server[key](path, val)
       }
