@@ -3,7 +3,7 @@ const common = require('../lib/common')
 
 const routes = require('./routes')
 
-const recursion = (obj, path) => {  // 针对routes.js的路由配置挂载到restify上
+const recursion = (obj, path = '') => {  // 针对routes.js的路由配置挂载到restify上
   return () => {
     for (let key in obj) {
       const val = obj[key]
@@ -20,5 +20,5 @@ const recursion = (obj, path) => {  // 针对routes.js的路由配置挂载到re
   }
 }
 
-module.exports = () => recursion(routes, '')()
+module.exports = () => recursion(routes)()
 
