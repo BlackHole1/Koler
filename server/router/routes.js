@@ -34,7 +34,10 @@ const routes = {
     'users': {
       'get': users.getList,
       'post': users.add,
-      'del': users.del
+      'del': [
+        validate.users.del,
+        users.del
+      ]
     },
     'sign': {
       'post': [

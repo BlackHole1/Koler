@@ -64,18 +64,6 @@ const resource = {
       })
   },
   del: (req, res, next) => {
-    if (empty(req.query.id)) {
-      return res.send({
-        state: false,
-        data: '值不能为空'
-      })
-    }
-    if (req.$currentUserInfo.type === 'Student') {
-      return res.send({
-        state: false,
-        data: '你没用权限进行删除用户'
-      })
-    }
     const id = req.query.id
     UsersModel.findUnderByEmailAndId(req.$currentUserInfo.email, id)
       .catch(err => {

@@ -15,6 +15,27 @@ const sign = {
   }
 }
 
+const users = {
+  del: cb => {
+    return (req, res, next) => {
+      if (empty(req.query.id)) {
+        return res.send({
+          state: false,
+          data: 'id的值不能为空'
+        })
+      }
+      if (req.$currentUserInfo.type === 'Student') {
+        return res.send({
+          state: false,
+          data: '你没用权限进行删除用户'
+        })
+      }
+      cb(req, res, next)
+    }
+  }
+}
+
 module.exports = {
+  users,
   sign
 }
