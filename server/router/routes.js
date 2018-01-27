@@ -24,11 +24,14 @@ const routes = {
     'user': {
       'get': user.getInfo,
       'password': {
-        'put': user.update.password
+        'put': [
+          validate.user.update.password,
+          user.update.password
+        ]
       },
       'header': {
         'put': [
-          validate.update.header,
+          validate.user.update.header,
           user.update.header
         ]
       }

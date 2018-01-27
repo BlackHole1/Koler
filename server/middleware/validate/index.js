@@ -89,6 +89,23 @@ const user = {
         }
         cb(req, res, next)
       }
+    },
+    password: cb => {
+      return (req, res, next) => {
+        if (empty(req.body.oldPassword) || empty(req.body.newPassword) || empty(req.body.confirmPassword)) {
+          return res.send({
+            state: false,
+            data: '值不能为空'
+          })
+        }
+        if (req.body.newPassword !== req.body.confirmPassword) {
+          return res.send({
+            state: false,
+            data: '两次密码不一样'
+          })
+        }
+        cb(req, res, next)
+      }
     }
   }
 }

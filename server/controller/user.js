@@ -24,18 +24,6 @@ const resource = {
   },
   update: {
     password: (req, res, next) => {
-      if (empty(req.body.oldPassword) || empty(req.body.newPassword) || empty(req.body.confirmPassword)) {
-        return res.send({
-          state: false,
-          data: '值不能为空'
-        })
-      }
-      if (req.body.newPassword !== req.body.confirmPassword) {
-        return res.send({
-          state: false,
-          data: '两次密码不一样'
-        })
-      }
       UserModel.findByEmailAndPassword({
         email: req.$getInfo.email,
         password: common.md5(req.body.oldPassword)
