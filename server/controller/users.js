@@ -23,18 +23,6 @@ const resource = {
       })
   },
   add: (req, res, next) => {
-    if (empty(req.body.name) || empty(req.body.email) || empty(req.body.password)) {
-      return res.send({
-        state: false,
-        data: '值不能为空'
-      })
-    }
-    if (req.$currentUserInfo.type === 'Student') {
-      return res.send({
-        state: false,
-        data: '很抱歉，你没用权限进行添加用户'
-      })
-    }
     const {name, email, password} = req.body
     UserModel.findByEmail(email)
       .catch(() => Promise.reject('数据库查询出错'))
