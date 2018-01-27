@@ -3,7 +3,7 @@ const subject = require('../controller/subject')
 const user = require('../controller/user')
 const users = require('../controller/users')
 const sign = require('../controller/sign')
-const validateSign = require('../middleware/validate/sign')
+const validate = require('../middleware/validate')
 
 const routes = {
   testLogin: {
@@ -38,7 +38,7 @@ const routes = {
     },
     'sign': {
       'post': [
-        validateSign.post,
+        validate.sign.post,
         sign.login
       ]
     }
