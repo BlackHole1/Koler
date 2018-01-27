@@ -24,10 +24,13 @@ const routes = {
     'user': {
       'get': user.getInfo,
       'password': {
-        'put': user.update('password')
+        'put': user.update.password
       },
       'header': {
-        'put': user.update('header')
+        'put': [
+          validate.update.header,
+          user.update.header
+        ]
       }
     },
     // 针对当前用户下属的操作

@@ -22,8 +22,8 @@ const resource = {
         res.send(result.data)
       })
   },
-  update: (model) => {
-    const password = (req, res, next) => {
+  update: {
+    password: (req, res, next) => {
       if (empty(req.body.oldPassword) || empty(req.body.newPassword) || empty(req.body.confirmPassword)) {
         return res.send({
           state: false,
@@ -58,25 +58,10 @@ const resource = {
             data
           })
         })
-    }
-    const header = (req, res, next) => {
-      if (empty(req.files) || empty(req.files.file) || empty(req.files.file.name)) {
-        return res.send({
-          state: false,
-          data: '请先上传你的图片'
-        })
-      }
+    },
+    header: (req, res, next) => {
       const uploadedFile = req.files.file
       const suffix = uploadedFile.name.split('.').pop()
-      if (!/(jpg|jpeg|png)$/.test(suffix)) {
-        return res.send({
-          state: false,
-          data: '上传的图片后缀必须为jpg、jpeg、png'
-        })
-      }
-      if (uploadedFile.size > 1024 * 1024 * 2) {
-        return Promise.reject('上传的图片必须在2M之内')
-      }
       const newFilePath = `/static/userHeader/${uuidv1()}.${suffix}`
       const email = req.$getInfo.email
       /**
@@ -118,7 +103,6 @@ const resource = {
           })
         })
     }
-    return model === 'password' ? password : header
   }
 }
 

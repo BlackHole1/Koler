@@ -63,7 +63,38 @@ const users = {
   }
 }
 
+const user = {
+  update: {
+    header: cb => {
+      return (req, res, next) => {
+        if (empty(req.files) || empty(req.files.file) || empty(req.files.file.name)) {
+          return res.send({
+            state: false,
+            data: '请先上传你的图片'
+          })
+        }
+        const uploadedFile = req.files.file
+        const suffix = uploadedFile.name.split('.').pop()
+        if (!/(jpg|jpeg|png)$/.test(suffix)) {
+          return res.send({
+            state: false,
+            data: '上传的图片后缀必须为jpg、jpeg、png'
+          })
+        }
+        if (uploadedFile.size > 1024 * 1024 * 2) {
+          return res.send({
+            state: false,
+            data: '上传的图片必须在2M之内'
+          })
+        }
+        cb(req, res, next)
+      }
+    }
+  }
+}
+
 module.exports = {
+  user,
   users,
   sign
 }
