@@ -6,12 +6,6 @@ const UserModel = M('user')
 
 const resource = {
   getList: (req, res, next) => {
-    if (req.$currentUserInfo.type === 'Student') {
-      return res.send({
-        state: false,
-        data: '很抱歉，你没用权限进行列举你的下属'
-      })
-    }
     UsersModel.findUnderByEmail(req.$currentUserInfo.email)
       .catch(() => Promise.reject('连接数据库失败'))
       .then(data => Promise.resolve(data))

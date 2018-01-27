@@ -16,6 +16,17 @@ const sign = {
 }
 
 const users = {
+  getList: cb => {
+    return (req, res, next) => {
+      if (req.$currentUserInfo.type === 'Student') {
+        return res.send({
+          state: false,
+          data: '很抱歉，你没用权限进行列举你的下属'
+        })
+      }
+      cb(req, res, next)
+    }
+  },
   add: cb => {
     return (req, res, next) => {
       if (empty(req.body.name) || empty(req.body.email) || empty(req.body.password)) {

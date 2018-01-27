@@ -32,7 +32,10 @@ const routes = {
     },
     // 针对当前用户下属的操作
     'users': {
-      'get': users.getList,
+      'get': [
+        validate.users.getList,
+        users.getList
+      ],
       'post': [
         validate.users.add,
         users.add
