@@ -124,7 +124,22 @@ const subject = {
   }
 }
 
+const problemsWarehouse = {
+  update: cb => {
+    return (req, res, next) => {
+      if (empty(req.body.name) || empty(req.body.changeName)) {
+        return res.send({
+          state: false,
+          data: '值不能为空'
+        })
+      }
+      cb(req, res, next)
+    }
+  }
+}
+
 module.exports = {
+  problemsWarehouse,
   user,
   users,
   sign,

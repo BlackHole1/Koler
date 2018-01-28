@@ -86,12 +86,6 @@ const resource = {
     }
   },
   update: (req, res, next) => {
-    if (empty(req.body.name) || empty(req.body.changeName)) {
-      return res.send({
-        state: false,
-        data: '值不能为空'
-      })
-    }
     const {name, changeName} = req.body
     const email = req.$getInfo.email
     PWMolde.findByEmailAndName(email, name)

@@ -14,7 +14,10 @@ const routes = {
       'get': problemsWarehouse.getInfo,
       'post': problemsWarehouse.add,
       'del': problemsWarehouse.del,
-      'put': problemsWarehouse.update
+      'put': [
+        validate.problemsWarehouse.update,
+        problemsWarehouse.update
+      ]
     },
     'subject': {
       'post': [
