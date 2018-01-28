@@ -17,7 +17,10 @@ const routes = {
       'put': problemsWarehouse.update
     },
     'subject': {
-      'post': subject.add,
+      'post': [
+        validate.subject.add,
+        subject.add
+      ],
       'del': subject.del
     },
     // 只针对当前用户的操作

@@ -110,8 +110,23 @@ const user = {
   }
 }
 
+const subject = {
+  add: cb => {
+    return (req, res, next) => {
+      if (empty(req.body.name) || empty(req.body.title) || empty(req.body.content) || empty(req.body.score)) {
+        return res.send({
+          state: false,
+          data: '值不能为空'
+        })
+      }
+      cb(req, res, next)
+    }
+  }
+}
+
 module.exports = {
   user,
   users,
-  sign
+  sign,
+  subject
 }
