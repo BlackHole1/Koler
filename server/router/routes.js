@@ -13,7 +13,10 @@ const routes = {
     'problemsWarehouse': {
       'get': problemsWarehouse.getInfo,
       'post': problemsWarehouse.add,
-      'del': problemsWarehouse.del,
+      'del': [
+        validate.problemsWarehouse.del,
+        problemsWarehouse.del
+      ],
       'put': [
         validate.problemsWarehouse.update,
         problemsWarehouse.update

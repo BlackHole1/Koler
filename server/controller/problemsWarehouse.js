@@ -56,34 +56,27 @@ const resource = {
       }))
   },
   del: (req, res, next) => {
-    if (empty(req.query.name)) {
-      res.send({
-        state: false,
-        data: '请确保您要删除的题目是否存在'
+    const name = req.query.name
+    const email = req.$getInfo.email
+    PWMolde.findByEmailAndName(email, name)
+      .catch(() => Promise.reject('连接数据库出错'))
+      .then(data => {
+        if (data.length !== 1) {
+          return Promise.reject('找不到此题库')
+        }
+        return PWMolde.remove({
+          email: email,
+          name: name
+        })
+        .catch(() => Promise.reject('删除失败'))
+        .then(data => Promise.resolve('删除成功'))
       })
-    } else {
-      const name = req.query.name
-      const email = req.$getInfo.email
-      PWMolde.findByEmailAndName(email, name)
-        .catch(() => Promise.reject('连接数据库出错'))
-        .then(data => {
-          if (data.length !== 1) {
-            return Promise.reject('找不到此题库')
-          }
-          return PWMolde.remove({
-            email: email,
-            name: name
-          })
-          .catch(() => Promise.reject('删除失败'))
-          .then(data => Promise.resolve('删除成功'))
+      .unified((state, data) => {
+        res.send({
+          state,
+          data
         })
-        .unified((state, data) => {
-          res.send({
-            state,
-            data
-          })
-        })
-    }
+      })
   },
   update: (req, res, next) => {
     const {name, changeName} = req.body

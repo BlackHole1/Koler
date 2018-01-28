@@ -135,6 +135,17 @@ const problemsWarehouse = {
       }
       cb(req, res, next)
     }
+  },
+  del: cb => {
+    return (req, res, next) => {
+      if (empty(req.query.name)) {
+        return res.send({
+          state: false,
+          data: '请确保您要删除的题目是否存在'
+        })
+      }
+      cb(req, res, next)
+    }
   }
 }
 
