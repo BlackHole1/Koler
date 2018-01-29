@@ -1,5 +1,4 @@
 const M = require('../model')
-const empty = require('is-empty')
 let PWMolde = M('problemsWarehouse')
 
 const resource = {

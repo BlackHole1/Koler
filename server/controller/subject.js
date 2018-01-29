@@ -1,5 +1,4 @@
 const M = require('../model')
-const empty = require('is-empty')
 let PWMolde = M('problemsWarehouse')
 
 const resource = {
@@ -40,12 +39,6 @@ const resource = {
       })
   },
   del: (req, res, next) => {
-    if (empty(req.query.name) || empty(req.query.id)) {
-      return res.send({
-        state: false,
-        data: '请确认传入了值'
-      })
-    }
     const { name, id } = req.query
     const email = req.$getInfo.email
     PWMolde.findByEmailAndName(email, name)

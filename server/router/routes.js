@@ -30,7 +30,10 @@ const routes = {
         validate.subject.add,
         subject.add
       ],
-      'del': subject.del
+      'del': [
+        validate.subject.del,
+        subject.del
+      ]
     },
     // 只针对当前用户的操作
     'user': {

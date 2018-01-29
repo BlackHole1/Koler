@@ -121,6 +121,17 @@ const subject = {
       }
       cb(req, res, next)
     }
+  },
+  del: cb => {
+    return (req, res, next) => {
+      if (empty(req.query.name) || empty(req.query.id)) {
+        return res.send({
+          state: false,
+          data: '请确认传入了值'
+        })
+      }
+      cb(req, res, next)
+    }
   }
 }
 
