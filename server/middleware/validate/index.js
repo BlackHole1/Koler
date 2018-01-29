@@ -1,13 +1,22 @@
 const empty = require('is-empty')
 
+/**
+ * 向浏览器返回错误信息
+ * @param {Object res} res restify的res对象
+ * @param {String} msg 返回错误的描述信息
+ */
+const returnFalse = (res, msg) => {
+  res.send({
+    state: false,
+    data: msg
+  })
+}
+
 const problemsWarehouse = {
   add: cb => {
     return (req, res, next) => {
       if (empty(req.body.name)) {
-        return res.send({
-          state: false,
-          data: '请输入要创建的题库名称'
-        })
+        return returnFalse(res, '请输入要创建的题库名称')
       }
       cb(req, res, next)
     }
@@ -15,20 +24,14 @@ const problemsWarehouse = {
   update: cb => {
     return (req, res, next) => {
       if (empty(req.body.name) || empty(req.body.changeName)) {
-        return res.send({
-          state: false,
-          data: '值不能为空'
-        })
+        return returnFalse(res, '值不能为空')
       }
     }
   },
   del: cb => {
     return (req, res, next) => {
       if (empty(req.query.name)) {
-        return res.send({
-          state: false,
-          data: '请确保您要删除的题目是否存在'
-        })
+        return returnFalse(res, '请确保您要删除的题目是否存在')
       }
       cb(req, res, next)
     }
@@ -39,10 +42,7 @@ const subject = {
   add: cb => {
     return (req, res, next) => {
       if (empty(req.body.name) || empty(req.body.title) || empty(req.body.content) || empty(req.body.score)) {
-        return res.send({
-          state: false,
-          data: '值不能为空'
-        })
+        return returnFalse(res, '值不能为空')
       }
       cb(req, res, next)
     }
@@ -50,10 +50,7 @@ const subject = {
   del: cb => {
     return (req, res, next) => {
       if (empty(req.query.name) || empty(req.query.id)) {
-        return res.send({
-          state: false,
-          data: '请确认传入了值'
-        })
+        return returnFalse(res, '请确认传入了值')
       }
       cb(req, res, next)
     }
@@ -65,24 +62,15 @@ const user = {
     header: cb => {
       return (req, res, next) => {
         if (empty(req.files) || empty(req.files.file) || empty(req.files.file.name)) {
-          return res.send({
-            state: false,
-            data: '请先上传你的图片'
-          })
+          return returnFalse(res, '请先上传你的图片')
         }
         const uploadedFile = req.files.file
         const suffix = uploadedFile.name.split('.').pop()
         if (!/(jpg|jpeg|png)$/.test(suffix)) {
-          return res.send({
-            state: false,
-            data: '上传的图片后缀必须为jpg、jpeg、png'
-          })
+          return returnFalse(res, '上传的图片后缀必须为jpg、jpeg、png')
         }
         if (uploadedFile.size > 1024 * 1024 * 2) {
-          return res.send({
-            state: false,
-            data: '上传的图片必须在2M之内'
-          })
+          return returnFalse(res, '上传的图片必须在2M之内')
         }
         cb(req, res, next)
       }
@@ -90,16 +78,10 @@ const user = {
     password: cb => {
       return (req, res, next) => {
         if (empty(req.body.oldPassword) || empty(req.body.newPassword) || empty(req.body.confirmPassword)) {
-          return res.send({
-            state: false,
-            data: '值不能为空'
-          })
+          return returnFalse(res, '值不能为空')
         }
         if (req.body.newPassword !== req.body.confirmPassword) {
-          return res.send({
-            state: false,
-            data: '两次密码不一样'
-          })
+          return returnFalse(res, '两次密码不一样')
         }
         cb(req, res, next)
       }
@@ -111,10 +93,7 @@ const users = {
   getList: cb => {
     return (req, res, next) => {
       if (req.$currentUserInfo.type === 'Student') {
-        return res.send({
-          state: false,
-          data: '很抱歉，你没用权限进行列举你的下属'
-        })
+        return returnFalse(res, '很抱歉，你没用权限进行列举你的下属')
       }
       cb(req, res, next)
     }
@@ -122,16 +101,10 @@ const users = {
   add: cb => {
     return (req, res, next) => {
       if (empty(req.body.name) || empty(req.body.email) || empty(req.body.password)) {
-        return res.send({
-          state: false,
-          data: '姓名、邮箱、密码等值不能为空，请检查后重新提交'
-        })
+        return returnFalse(res, '姓名、邮箱、密码等值不能为空，请检查后重新提交')
       }
       if (req.$currentUserInfo.type === 'Student') {
-        return res.send({
-          state: false,
-          data: '很抱歉，你没用权限进行添加用户'
-        })
+        return returnFalse(res, '很抱歉，你没用权限进行添加用户')
       }
       cb(req, res, next)
     }
@@ -139,16 +112,10 @@ const users = {
   del: cb => {
     return (req, res, next) => {
       if (empty(req.query.id)) {
-        return res.send({
-          state: false,
-          data: 'id的值不能为空'
-        })
+        return returnFalse(res, 'id的值不能为空')
       }
       if (req.$currentUserInfo.type === 'Student') {
-        return res.send({
-          state: false,
-          data: '你没用权限进行删除用户'
-        })
+        return returnFalse(res, '你没用权限进行删除用户')
       }
       cb(req, res, next)
     }
@@ -159,11 +126,7 @@ const sign = {
   post: cb => {
     return (req, res, next) => {
       if (empty(req.body.email) || empty(req.body.pass)) {
-        res.send({
-          state: false,
-          data: '账号或密码不能为空'
-        })
-        return false
+        return returnFalse(res, '账号或密码不能为空')
       }
       cb(req, res, next)
     }
