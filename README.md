@@ -23,10 +23,6 @@ npm stop
 
 Using `npm start`start project, will see an error, forget about it. The project can run normally. It should be pm2's bug.
 
-## Framework explain document
-
-Please moved [**Framework explain**](https://github.com/BlackHole1/Koler/blob/master/FrameworkDoc.md)
-
 ## License
 
 [GNU General Public License v3.0](https://github.com/BlackHole1/Koler/blob/master/LICENSE)

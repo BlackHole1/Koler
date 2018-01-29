@@ -23,10 +23,6 @@ npm stop
 
 使用`npm start`启动项目时，终端会报错，不用理会。项目能照常运行，应该是pm2的bug。
 
-## 架构说明
-
-请移步到[**架构说明文档**](https://github.com/BlackHole1/Koler/blob/master/FrameworkDoc-CN.md)
-
 ## 许可证
 
 [GNU General Public License v3.0](https://github.com/BlackHole1/Koler/blob/master/LICENSE)
