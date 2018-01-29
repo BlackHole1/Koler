@@ -12,7 +12,10 @@ const routes = {
   'Api': {
     'problemsWarehouse': {
       'get': problemsWarehouse.getInfo,
-      'post': problemsWarehouse.add,
+      'post': [
+        validate.problemsWarehouse.add,
+        problemsWarehouse.add
+      ],
       'del': [
         validate.problemsWarehouse.del,
         problemsWarehouse.del

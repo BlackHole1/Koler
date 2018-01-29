@@ -27,12 +27,6 @@ const resource = {
       })
   },
   add: (req, res, next) => {
-    if (empty(req.body.name)) {
-      return res.send({
-        state: false,
-        data: '请输入要创建的题库名称'
-      })
-    }
     const name = req.body.name
     const email = req.$getInfo.email
     PWMolde.findByEmailAndName(email, name)

@@ -125,6 +125,17 @@ const subject = {
 }
 
 const problemsWarehouse = {
+  add: cb => {
+    return (req, res, next) => {
+      if (empty(req.body.name)) {
+        return res.send({
+          state: false,
+          data: '请输入要创建的题库名称'
+        })
+      }
+      cb(req, res, next)
+    }
+  },
   update: cb => {
     return (req, res, next) => {
       if (empty(req.body.name) || empty(req.body.changeName)) {
@@ -133,7 +144,6 @@ const problemsWarehouse = {
           data: '值不能为空'
         })
       }
-      cb(req, res, next)
     }
   },
   del: cb => {
