@@ -1,5 +1,3 @@
-import { throws } from 'assert';
-
 const server = require('../lib/server')
 const common = require('../lib/common')
 
