@@ -21,7 +21,7 @@
 import common from '../../../../common/function'
 import { mapGetters } from 'vuex'
 export default {
-  name: 'delUser',
+  name: 'DelUser',
   created () {
     this.getUserList()
   },

@@ -30,7 +30,7 @@ export default {
       let activeName = ''
       if (this.$route.name === 'Main') {
         activeName = '/'
-      } else if (this.$route.name === 'addUser' || this.$route.name === 'delUser') {
+      } else if (this.$route.name === 'AddUser' || this.$route.name === 'DelUser') {
         activeName = '/UserManage'
       }
       return activeName

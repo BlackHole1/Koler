@@ -4,11 +4,11 @@
     <el-row type="flex" class="row" justify="center">
       <el-col :span="3">
          <el-menu :default-active="activeIndex" class="el-menu-vertical-demo" :router="true">
-          <el-menu-item index="/UserManage/addUser">
+          <el-menu-item index="/UserManage/AddUser">
             <i class="el-icon-menu"></i>
             <span slot="title">添加{{subName}}</span>
           </el-menu-item>
-          <el-menu-item index="/UserManage/delUser">
+          <el-menu-item index="/UserManage/DelUser">
             <i class="el-icon-setting"></i>
             <span slot="title">删除{{subName}}</span>
           </el-menu-item>
@@ -35,7 +35,7 @@ export default {
       this.$message.error('你无权限进入此页面')
       return this.$router.push('/')
     }
-    (this.$route.name === 'UserManage') ? this.$router.push('/UserManage/addUser') : ''
+    (this.$route.name === 'UserManage') ? this.$router.push('/UserManage/AddUser') : ''
     if (this.getUser.type === '') {
       this.$store.dispatch('navRight/getInfoBymodel', {
         model: 'user'
@@ -51,7 +51,7 @@ export default {
     },
     activeIndex () {
       let currentRouteName = this.$route.name
-      return (currentRouteName === 'addUser') ? '/UserManage/addUser' : '/UserManage/delUser'
+      return (currentRouteName === 'AddUser') ? '/UserManage/AddUser' : '/UserManage/DelUser'
     }
   },
   components: {
