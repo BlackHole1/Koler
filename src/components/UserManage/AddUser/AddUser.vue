@@ -17,7 +17,7 @@
 </template>
 
 <script>
-import { isEnAndCn, getSubName } from '../../../../common/function'
+import { isEnAndCn, getSubName } from '../../../../common/utils'
 import { mapGetters } from 'vuex'
 export default {
   name: 'AddUser',

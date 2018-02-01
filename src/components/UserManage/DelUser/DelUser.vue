@@ -21,7 +21,7 @@
 </template>
 
 <script>
-import { getSubName } from '../../../../common/function'
+import { getSubName } from '../../../../common/utils'
 import { mapGetters } from 'vuex'
 export default {
   name: 'DelUser',

@@ -66,7 +66,7 @@ import { mapGetters, mapActions } from 'vuex'
 import Header from '~/Header'
 import Jumbotron from '~/Jumbotron'
 import navRight from '~/NavRight'
-import { isNoSymbols } from '../../../common/function'
+import { isNoSymbols } from '../../../common/utils'
 export default {
   created () {
     this.getProblemsWarehouseList()

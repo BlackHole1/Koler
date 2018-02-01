@@ -25,7 +25,7 @@
 </template>
 
 <script>
-import { getSubName } from '../../../common/function'
+import { getSubName } from '../../../common/utils'
 import Header from '~/Header'
 import Jumbotron from '~/Jumbotron'
 import { mapGetters } from 'vuex'
