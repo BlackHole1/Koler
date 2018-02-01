@@ -21,7 +21,7 @@
 </template>
 
 <script>
-import common from '../../../../common/function'
+import { getSubName } from '../../../../common/function'
 import { mapGetters } from 'vuex'
 export default {
   name: 'DelUser',
@@ -47,7 +47,7 @@ export default {
       'getUser'
     ]),
     subName () {
-      return common.subName(this.getUser.type)
+      return getSubName(this.getUser.type)
     }
   },
   methods: {

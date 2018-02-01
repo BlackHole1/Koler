@@ -17,7 +17,7 @@
 </template>
 
 <script>
-import common from '../../../../common/function'
+import { isEnAndCn, getSubName } from '../../../../common/function'
 import { mapGetters } from 'vuex'
 export default {
   name: 'AddUser',
@@ -26,7 +26,7 @@ export default {
       'getUser'
     ]),
     subName () {
-      return common.subName(this.getUser.type)
+      return getSubName(this.getUser.type)
     }
   },
   data: () => {
@@ -56,7 +56,7 @@ export default {
           return false
         }
         const {name, email, password} = this.setUserInfo
-        if (!common.regx.englishAndChinese.test(name)) {
+        if (!isEnAndCn(name)) {
           return this.$message.error('姓名里只能输入英语和中文')
         }
         this.$http.post(`/Api/users`, {

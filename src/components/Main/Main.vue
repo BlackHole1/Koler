@@ -66,7 +66,7 @@ import { mapGetters, mapActions } from 'vuex'
 import Header from '~/Header'
 import Jumbotron from '~/Jumbotron'
 import navRight from '~/NavRight'
-import common from '../../../common/function'
+import { isNoSymbols } from '../../../common/function'
 export default {
   created () {
     this.getProblemsWarehouseList()
@@ -126,7 +126,7 @@ export default {
       const ajaxPromise = (model) => {
         switch (model) {
           case 'create':
-            if (common.regx.noSpecialSymbols.test(dialog.name)) {
+            if (isNoSymbols(dialog.name)) {
               request.data = this.$http.post(`/Api/problemsWarehouse/`, {
                 name: dialog.name
               })
@@ -139,7 +139,7 @@ export default {
             request.data = this.$http.delete(`/Api/problemsWarehouse/?name=${dialog.name}`)
             break
           case 'rename':
-            if (common.regx.noSpecialSymbols.test(dialog.changeName)) {
+            if (isNoSymbols(dialog.changeName)) {
               request.data = this.$http.put(`/Api/problemsWarehouse/`, {
                 name: dialog.name,
                 changeName: dialog.changeName
