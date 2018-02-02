@@ -19,6 +19,16 @@ const isEnAndCn = str => {
 }
 
 /**
+ * 判断字符串是否为邮箱格式
+ * @param {String} str 将要匹配的字符串
+ * @returns {Boolean} 是邮箱正则返回true
+ */
+const isEmail = str => {
+  let regx = /.+@.+\..+/
+  regx.test(str)
+}
+
+/**
  * 获取下级称谓
  * @param {String} type 当前级别名称
  * @returns {String} 返回"老师"、"学生"、""
@@ -42,5 +52,6 @@ const getSubName = type => {
 module.exports = {
   isNoSymbols,
   isEnAndCn,
+  isEmail,
   getSubName
 }
