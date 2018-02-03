@@ -9,7 +9,7 @@ const isNoSymbols = str => {
 }
 
 /**
- * 只包含字母、中文
+ * 判断字符串是否只包含字母、中文
  * @param {String} str 将要匹配的字符串
  * @returns {Boolean} 没有其他字符串时返回true
  */
