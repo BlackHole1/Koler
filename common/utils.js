@@ -1,4 +1,21 @@
 /**
+ * 判断字符串是否为数字，代码取自:https://github.com/jonschlinkert/is-number
+ * @param {String} str 将要检测的字符串
+ * @returns {Boolean} 为数字时返回true
+ */
+const isNumber = num => {
+  let type = typeof num
+  if (type === 'string') {
+    if (num.trim() === '') {
+      return false
+    }
+  } else if (type !== 'number') {
+    return false
+  }
+  return (num - num + 1) === 1
+}
+
+/**
  * 判断字符串是否只包含数字、字母、中文
  * @param {String} str 将要匹配的字符串
  * @returns {Boolean} 没有其他字符串时返回true
@@ -50,6 +67,7 @@ const getSubName = type => {
 }
 
 module.exports = {
+  isNumber,
   isNoSymbols,
   isEnAndCn,
   isEmail,
