@@ -26,11 +26,20 @@ const isObject = obj => {
 
 /**
  * 判断传值是否为数组
- * @param {Array} obj 要检测的数组
+ * @param {Array} arr 要检测的数组
  * @returns {Boolean} 为数组时返回true
  */
 const isArray = arr => {
   return Object.prototype.toString.call(arr) === '[object Array]'
+}
+
+/**
+ * 判断传值是否为字符串
+ * @param {String} str 要检测的字符
+ * @returns {Boolean} 为字符串时返回true
+ */
+const isString = str => {
+  return typeof str === str
 }
 
 /**
@@ -85,6 +94,7 @@ const getSubName = type => {
 }
 
 module.exports = {
+  isString,
   isNumber,
   isObject,
   isArray,
