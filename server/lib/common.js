@@ -2,12 +2,6 @@ const crypto = require('crypto')
 const jwt = require('jsonwebtoken')
 const config = require('../../common/config')
 const common = {
-  isObject: (obj) => {
-    return obj != null && typeof obj === 'object' && Array.isArray(obj) === false && Object.prototype.toString.call(obj) === '[object Object]'
-  },
-  isArray: (arr) => {
-    return Object.prototype.toString.call(arr) === '[object Array]'
-  },
   md5 (str) { // 单个字符串md5加密
     if (str) return crypto.createHash('md5').update(str, 'utf-8').digest('hex')
     return str

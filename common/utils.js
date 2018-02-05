@@ -16,6 +16,24 @@ const isNumber = num => {
 }
 
 /**
+ * 判断传值是否为Object对象
+ * @param {Object} obj 要检测的对象
+ * @returns {Boolean} 为对象时返回true
+ */
+const isObject = obj => {
+  return obj != null && typeof obj === 'object' && Array.isArray(obj) === false && Object.prototype.toString.call(obj) === '[object Object]'
+}
+
+/**
+ * 判断传值是否为数组
+ * @param {Array} obj 要检测的数组
+ * @returns {Boolean} 为数组时返回true
+ */
+const isArray = arr => {
+  return Object.prototype.toString.call(arr) === '[object Array]'
+}
+
+/**
  * 判断字符串是否只包含数字、字母、中文
  * @param {String} str 将要匹配的字符串
  * @returns {Boolean} 没有其他字符串时返回true
@@ -68,6 +86,8 @@ const getSubName = type => {
 
 module.exports = {
   isNumber,
+  isObject,
+  isArray,
   isNoSymbols,
   isEnAndCn,
   isEmail,
