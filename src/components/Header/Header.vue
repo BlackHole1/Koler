@@ -2,6 +2,7 @@
   <div class="header">
     <el-menu :default-active="activeIndex" class="el-menu-demo" mode="horizontal" menu-trigger="click" :router="true">
       <el-menu-item index="/" class="nav-left">我的题库</el-menu-item>
+      <el-menu-item index="/Exam">在线考试</el-menu-item>
       <el-menu-item index="/UserManage" v-if="userManageShow">用户管理</el-menu-item>
       <el-submenu index="2" class="nav-right">
         <template slot="title">{{getUser.name}}</template>
@@ -30,6 +31,8 @@ export default {
       let activeName = ''
       if (this.$route.name === 'Main') {
         activeName = '/'
+      } else if (this.$route.name === 'Exam') {
+        activeName = '/Exam'
       } else if (this.$route.name === 'AddUser' || this.$route.name === 'DelUser') {
         activeName = '/UserManage'
       }

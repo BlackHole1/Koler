@@ -8,6 +8,7 @@ const Login = () => import('@/components/Login')
 const UserManage = () => import('@/components/UserManage')
 const AddUser = () => import('@/components/UserManage/AddUser')
 const DelUser = () => import('@/components/UserManage/DelUser')
+const Exam = () => import('@/components/Exam')
 
 Vue.use(Router)
 export default new Router({
@@ -28,6 +29,11 @@ export default new Router({
       path: '/Setting',
       name: 'Setting',
       component: Setting
+    },
+    {
+      path: '/Exam',
+      name: 'Exam',
+      component: Exam
     },
     {
       path: '/UserManage',
