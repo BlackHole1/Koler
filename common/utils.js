@@ -69,7 +69,7 @@ const isEnAndCn = str => {
  */
 const isEmail = str => {
   let regx = /.+@.+\..+/
-  regx.test(str)
+  return regx.test(str)
 }
 
 /**
