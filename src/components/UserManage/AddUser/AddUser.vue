@@ -17,7 +17,7 @@
 </template>
 
 <script>
-import { isEnAndCn, getSubName } from '../../../../common/utils'
+import { isEmail, isEnAndCn, getSubName } from '../../../../common/utils'
 import { mapGetters } from 'vuex'
 export default {
   name: 'AddUser',
@@ -58,6 +58,12 @@ export default {
         const {name, email, password} = this.setUserInfo
         if (!isEnAndCn(name)) {
           return this.$message.error('姓名里只能输入英语和中文')
+        }
+        if (!isEmail(email)) {
+          return this.$message.error('邮箱格式不正确')
+        }
+        if (password.length < 6) {
+          return this.$message.error('密码长度小于6位')
         }
         this.$http.post(`/Api/users`, {
           name,
