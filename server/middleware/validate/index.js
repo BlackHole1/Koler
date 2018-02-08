@@ -1,5 +1,5 @@
 const empty = require('is-empty')
-const { isEmail } = require('../../../common/utils')
+const { isEmail, isEnAndCn } = require('../../../common/utils')
 
 /**
  * 向浏览器返回错误信息
@@ -103,6 +103,12 @@ const users = {
     return (req, res, next) => {
       if (empty(req.body.name) || empty(req.body.email) || empty(req.body.password)) {
         return returnFalse(res, '姓名、邮箱、密码等值不能为空，请检查后重新提交')
+      }
+      if (!isEnAndCn(req.body.nam)) {
+        return returnFalse(res, '姓名格式不正确，请确保姓名只包含中文、英文')
+      }
+      if (!isEmail(req.body.email)) {
+        return returnFalse(res, '邮箱格式不正确')
       }
       if (req.$currentUserInfo.type === 'Student') {
         return returnFalse(res, '很抱歉，你没用权限进行添加用户')
