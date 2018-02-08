@@ -101,6 +101,9 @@ const users = {
   },
   add: cb => {
     return (req, res, next) => {
+      if (req.$currentUserInfo.type === 'Student') {
+        return returnFalse(res, '很抱歉，你没用权限进行添加用户')
+      }
       if (empty(req.body.name) || empty(req.body.email) || empty(req.body.password)) {
         return returnFalse(res, '姓名、邮箱、密码等值不能为空，请检查后重新提交')
       }
@@ -110,8 +113,8 @@ const users = {
       if (!isEmail(req.body.email)) {
         return returnFalse(res, '邮箱格式不正确')
       }
-      if (req.$currentUserInfo.type === 'Student') {
-        return returnFalse(res, '很抱歉，你没用权限进行添加用户')
+      if (req.body.pass.length < 6) {
+        return returnFalse(res, '密码长度小于6位')
       }
       cb(req, res, next)
     }
@@ -137,6 +140,9 @@ const sign = {
       }
       if (!isEmail(req.body.email)) {
         return returnFalse(res, '邮箱格式不正确')
+      }
+      if (req.body.pass.length < 6) {
+        return returnFalse(res, '密码长度小于6位')
       }
       cb(req, res, next)
     }
