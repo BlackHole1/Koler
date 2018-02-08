@@ -1,4 +1,5 @@
 const empty = require('is-empty')
+const { isEmail } = require('../../../common/utils')
 
 /**
  * 向浏览器返回错误信息
@@ -126,7 +127,10 @@ const sign = {
   post: cb => {
     return (req, res, next) => {
       if (empty(req.body.email) || empty(req.body.pass)) {
-        return returnFalse(res, '账号或密码不能为空')
+        return returnFalse(res, '邮箱或密码不能为空')
+      }
+      if (!isEmail(req.body.email)) {
+        return returnFalse(res, '邮箱格式不正确')
       }
       cb(req, res, next)
     }
