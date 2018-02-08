@@ -20,6 +20,7 @@
 </template>
 
 <script>
+  const { isEmail } = require('../../../common/utils')
   export default {
     created () {
       if (this.$router.history.current.name === 'Logout') {
@@ -33,23 +34,17 @@
         if (!value) {
           return callback(new Error('请输入邮箱'))
         }
-        let matchingTimes = 0
-        const email = this.loginForm.email
-        const whiteList = '1234567890qwertyuiopasdfghjklzxcvbnmQWERTYUIOPASDFGHJKLZXCVBNM@-_.'
-        for (let i = 0; i < email.length; i++) {
-          if (whiteList.includes(email[i])) {
-            matchingTimes++
-          }
-        }
-        if (email.length === matchingTimes) {
-          callback()
-        } else {
+        if (!isEmail(value)) {
           return callback(new Error('邮箱不规范'))
         }
+        callback()
       }
       let checkPass = (rule, value, callback) => {
         if (value === '') {
           return callback(new Error('请输入密码'))
+        }
+        if (value.length < 6) {
+          return callback(new Error('密码长度小于6位'))
         }
         callback()
       }
