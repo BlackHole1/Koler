@@ -1,5 +1,5 @@
 <template>
-  <div class="main">
+  <div class="main C-main">
     <v-header></v-header>
     <el-row type="flex" class="row" justify="center">
       <!-- 判断数据库里是否有数据 -->
@@ -205,8 +205,10 @@ export default {
   }
 </style>
 
-<style>
-.jumbotron {
-  padding: 48px 60px 48px 70px !important;
+<style lang='less'>
+.C-main {
+  .jumbotron {
+    padding: 48px 60px 48px 70px !important;
+  }
 }
 </style>

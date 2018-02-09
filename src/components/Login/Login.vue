@@ -1,5 +1,5 @@
 <template>
-  <div class="login">
+  <div class="login C-login">
     <div class="main">
       <div class="form">
         <el-form :model="loginForm" :rules="rules" ref="loginForm" label-width="100px" class="demo-ruleForm">
@@ -117,8 +117,10 @@
 }
 </style>
 
-<style>
-.el-form-item__content {
-  margin-left: 61px !important;
+<style lang='less'>
+.C-login {
+  .el-form-item__content {
+    margin-left: 61px !important;
+  }
 }
 </style>

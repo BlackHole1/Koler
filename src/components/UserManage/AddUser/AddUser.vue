@@ -1,5 +1,5 @@
 <template>
-  <div class="add-user">
+  <div class="add-user C-add-user">
     <el-form label-width="80px" :model="setUserInfo" ref="updateAddUser" :rules="rulesUserInfo" label-position="left">
       <el-form-item label="设置姓名" prop="name">
         <el-input v-model="setUserInfo.name" size="medium"></el-input>
@@ -83,7 +83,8 @@ export default {
 </script>
 
 <style lang='less'>
-form {
+.C-add-user {
+  form {
     label, .el-form-item__content {
       float: left;
     }
@@ -94,4 +95,5 @@ form {
       margin-left: 0 !important;
     }
   }
+}
 </style>

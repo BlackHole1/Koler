@@ -1,5 +1,5 @@
 <template>
-  <div class="setting">
+  <div class="setting C-setting">
     <v-header></v-header>
     <el-row type="flex" class="row" justify="center">
       <el-col :span="12">
@@ -186,21 +186,23 @@ export default {
 </style>
 
 <style lang="less">
-.chang-password {
-  form {
-    label, .el-form-item__content {
-      float: left;
-    }
-    .el-form-item__content {
-      input {
-        width: 200%;
+.C-setting {
+  .chang-password {
+    form {
+      label, .el-form-item__content {
+        float: left;
       }
-      margin-left: 14px !important;
-    }
-    .el-form-item {
-      &:last-child {
-        .el-form-item__content {
-          margin-left: 0 !important;
+      .el-form-item__content {
+        input {
+          width: 200%;
+        }
+        margin-left: 14px !important;
+      }
+      .el-form-item {
+        &:last-child {
+          .el-form-item__content {
+            margin-left: 0 !important;
+          }
         }
       }
     }

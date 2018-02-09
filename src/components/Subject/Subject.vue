@@ -1,5 +1,5 @@
 <template>
-  <div class="subject" v-if="state">
+  <div class="subject C-subject" v-if="state">
     <v-jumbotron v-if="details.length === 0">
       <h1>Sorry</h1>
       <p>您还没有创建任何的题目</p>
@@ -421,6 +421,7 @@ export default {
 </style>
 
 <style lang="less">
+.C-subject {
   @import '~simplemde/dist/simplemde.min.css';
   @import '~github-markdown-css';
   @import '~highlight.js/styles/github.css';
@@ -496,4 +497,5 @@ export default {
       margin-left: 0 !important;
     }
   }
+}
 </style>
