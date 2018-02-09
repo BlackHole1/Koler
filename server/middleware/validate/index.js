@@ -113,7 +113,7 @@ const users = {
       if (!isEmail(req.body.email)) {
         return returnFalse(res, '邮箱格式不正确')
       }
-      if (req.body.pass.length < 6) {
+      if (req.body.password.length < 6) {
         return returnFalse(res, '密码长度小于6位')
       }
       cb(req, res, next)
