@@ -56,14 +56,17 @@ export default {
           return false
         }
         const {name, email, password} = this.setUserInfo
+        const msgError = text => {
+          this.$message.error(text)
+        }
         if (!isEnAndCn(name)) {
-          return this.$message.error('姓名里只能输入英语和中文')
+          return msgError('姓名里只能输入英语和中文')
         }
         if (!isEmail(email)) {
-          return this.$message.error('邮箱格式不正确')
+          return msgError('邮箱格式不正确')
         }
         if (password.length < 6) {
-          return this.$message.error('密码长度小于6位')
+          return msgError('密码长度小于6位')
         }
         this.$http.post(`/Api/users`, {
           name,
