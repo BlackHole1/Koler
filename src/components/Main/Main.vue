@@ -17,9 +17,9 @@
         <!-- 如果没有，则显示题库标题 -->
         <v-jumbotron v-if="!this.$route.params.name">
           <div class="pw-operation">
-            <el-button type="text" style="font-size: 16px;" @click="toggleDialog('create')">创建题库</el-button>
-            <el-button type="text" style="font-size: 16px;" @click="toggleDialog('delete')">删除题库</el-button>
-            <el-button type="text" style="font-size: 16px;" @click="toggleDialog('rename')">重命名题库</el-button>
+            <el-button type="text" @click="toggleDialog('create')">创建题库</el-button>
+            <el-button type="text" @click="toggleDialog('delete')">删除题库</el-button>
+            <el-button type="text" @click="toggleDialog('rename')">重命名题库</el-button>
           </div>
           <el-button type="primary" size="medium" icon="document" class="pw-button" v-for="name in getProblemsWarehouseInfo.names" :key="name.id" @click="showProblemsWarehouse">{{name}}</el-button>
           <span style="clear: both;"></span>
@@ -199,6 +199,9 @@ export default {
   }
   .pw-operation {
     margin-left: -10px;
+    button {
+      font-size: 16px;
+    }
   }
   .pw-button {
     margin: 20px 20px 0 -10px;
