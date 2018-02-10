@@ -1,5 +1,5 @@
 <template>
-  <div class="exam">
+  <div class="OnlineExam">
     <v-header></v-header>
     <el-row type="flex" class="row" justify="center">
       <el-col :span="14">
@@ -19,7 +19,7 @@
 import Header from '~/Header'
 import Jumbotron from '~/Jumbotron'
 export default {
-  name: 'Exam',
+  name: 'OnlineExam',
   components: {
     'v-header': Header,
     'v-jumbotron': Jumbotron

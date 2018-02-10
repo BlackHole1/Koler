@@ -8,7 +8,7 @@ const Login = () => import('@/components/Login')
 const UserManage = () => import('@/components/UserManage')
 const AddUser = () => import('@/components/UserManage/AddUser')
 const DelUser = () => import('@/components/UserManage/DelUser')
-const Exam = () => import('@/components/Exam')
+const OnlineExam = () => import('@/components/OnlineExam')
 
 Vue.use(Router)
 export default new Router({
@@ -31,9 +31,9 @@ export default new Router({
       component: Setting
     },
     {
-      path: '/Exam',
-      name: 'Exam',
-      component: Exam
+      path: '/OnlineExam',
+      name: 'OnlineExam',
+      component: OnlineExam
     },
     {
       path: '/UserManage',
