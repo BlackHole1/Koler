@@ -4,7 +4,13 @@
       <div class="form">
         <el-form :model="loginForm" :rules="rules" ref="loginForm" label-width="100px" class="demo-ruleForm">
         <el-form-item label="" prop="email">
-          <el-input type="text" v-model="loginForm.email" auto-complete="off" placeholder="邮箱" :autofocus="true" size="medium"></el-input>
+          <el-autocomplete
+            v-model="loginForm.email"
+            size="medium"
+            :fetch-suggestions="appendEmailSuffix"
+            :trigger-on-focus="false"
+            placeholder="邮箱"
+          ></el-autocomplete>
         </el-form-item>
         <el-form-item label="" prop="pass">
           <el-input type="password" v-model="loginForm.pass" auto-complete="off" placeholder="密码" size="medium"></el-input>
@@ -61,7 +67,13 @@
           pass: [
             { validator: checkPass, trigger: 'blur' }
           ]
-        }
+        },
+        emailSuffix: [
+          '@qq.com',
+          '@163.com',
+          '@126.com',
+          '@gmail.com'
+        ]
       }
     },
     methods: {
@@ -88,6 +100,16 @@
             })
           }
         })
+      },
+      appendEmailSuffix (queryString, cb) {
+        if (queryString.indexOf('@') !== -1) {
+          return cb([])
+        }
+        let triggerList = []
+        for (let i = 0; i < this.emailSuffix.length; i++) {
+          triggerList.push({value: queryString + this.emailSuffix[i]})
+        }
+        cb(triggerList)
       },
       resetForm (formName) {
         this.$refs[formName].resetFields()
@@ -121,6 +143,9 @@
 .C-login {
   .el-form-item__content {
     margin-left: 61px !important;
+  }
+  .el-autocomplete[role=combobox] {
+    display: block;
   }
 }
 </style>
