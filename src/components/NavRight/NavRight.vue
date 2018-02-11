@@ -24,12 +24,6 @@
         <div class="count">
           题目数量：{{getSubject.count}}
         </div>
-        <div class="practice">
-          练习次数：{{getSubject.practiceNumber}}
-        </div>
-        <div class="practice">
-          平均分：{{getSubject.average}}
-        </div>
       </div>
     </div>
   </div>

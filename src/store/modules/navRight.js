@@ -19,8 +19,6 @@ const state = {
     upper_name: ''
   },
   subjectData: {
-    practiceNumber: '',
-    average: '',
     count: ''
   },
   examData: ''
@@ -54,8 +52,6 @@ const actions = {
     }
 
     const setContent = (content, subjectInfo) => {
-      content.practiceNumber = subjectInfo.practiceNumber // 练习次数
-      content.average = subjectInfo.average // 练习平均分
       content.count = subjectInfo.details.length // 共多少道题目
     }
 
