@@ -3,7 +3,7 @@ const dateFormat = require('dateformat')
 
 const problemsWarehouse = new mongoose.Schema({
   email: String, // 所属哪个邮箱
-  name: String, // 所属哪个题库
+  name: String, // 题库名称
   details: [  // 题目详情
     {
       name: String, // 题目标题
