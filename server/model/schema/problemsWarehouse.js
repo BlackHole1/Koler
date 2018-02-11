@@ -4,10 +4,6 @@ const dateFormat = require('dateformat')
 const problemsWarehouse = new mongoose.Schema({
   email: String, // 所属哪个邮箱
   name: String, // 所属哪个题库
-  average: {  // 平均分
-    type: Number,
-    default: 0
-  },
   details: [  // 题目详情
     {
       name: String, // 题目标题
