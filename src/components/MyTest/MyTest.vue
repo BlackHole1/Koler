@@ -78,7 +78,7 @@ export default {
     sendRename () {
       const {name, newName} = this.dialog.rename
       if (!isNoSymbols(newName)) return this.$message.error('新的名字里只能包含英文、中文')
-      this.$http.post('/Api/exam', {
+      this.$http.put('/Api/exam', {
         name,
         newName
       })
