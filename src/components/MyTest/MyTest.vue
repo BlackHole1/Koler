@@ -11,19 +11,39 @@
           <div class="mytest-operation">
             <el-button type="text">创建试卷</el-button>
             <el-button type="text">删除试卷</el-button>
-            <el-button type="text">重命名试卷</el-button>
+            <el-button type="text" @click="rename">重命名试卷</el-button>
           </div>
           <el-button type="primary" size="medium" icon="document" class="mytest-button" v-for="name in examList" :key="name">{{name}}</el-button>
           <span style="clear: both;"></span>
         </v-jumbotron>
       </el-col>
     </el-row>
+    <el-dialog
+      :title="dialog.rename.title"
+      :visible.sync="dialog.rename.state"
+      width="22%">
+      <el-select v-model="dialog.rename.name" size="medium" placeholder="请选择您要重命名的试卷" style="width: 100%">
+        <el-option
+          v-for="item in examList"
+          :key="item"
+          :label="item"
+          :value="item">
+        </el-option>
+      </el-select>
+      <br><br>
+      <el-input  size="medium" placeholder="新名称" v-model="dialog.rename.newName"></el-input>
+      <span slot="footer">
+        <el-button size="small" icon="el-icon-close" @click="cancelDialog('rename')">取 消</el-button>
+        <el-button type="primary" size="small" icon="el-icon-check" @click="sendRename">确 定</el-button>
+      </span>
+    </el-dialog>
   </div>
 </template>
 
 <script>
 import Header from '~/Header'
 import Jumbotron from '~/Jumbotron'
+import { isNoSymbols } from '../../../common/utils'
 export default {
   created () {
     this.$http.get('/Api/exam')
@@ -37,7 +57,48 @@ export default {
   },
   data () {
     return {
-      examList: []
+      examList: [],
+      dialog: {
+        rename: {
+          state: false,
+          title: '重命名试卷',
+          name: '',
+          newName: ''
+        }
+      }
+    }
+  },
+  methods: {
+    rename () {
+      this.dialog.rename.state = true
+    },
+    cancelDialog (name) {
+      this.dialog[name].state = false
+    },
+    sendRename () {
+      const {name, newName} = this.dialog.rename
+      if (!isNoSymbols(newName)) return this.$message.error('新的名字里只能包含英文、中文')
+      this.$http.post('/Api/exam', {
+        name,
+        newName
+      })
+        .then(resp => {
+          const {state, data} = resp.data
+          this.$message[state ? 'success' : 'error'](data)
+          if (state) {
+            this.reset('rename')
+          }
+        })
+    },
+    reset (name) {
+      const modelInfo = this.dialog[name]
+      switch (name) {
+        case 'rename':
+          modelInfo.state = false
+          modelInfo.name = ''
+          modelInfo.newName = ''
+          break
+      }
     }
   },
   components: {
