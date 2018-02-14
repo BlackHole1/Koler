@@ -46,14 +46,7 @@ import Jumbotron from '~/Jumbotron'
 import { isNoSymbols } from '../../../common/utils'
 export default {
   created () {
-    this.$http.get('/Api/exam')
-      .then(resp => {
-        const {state, data} = resp.data
-        if (!state) {
-          return this.$message.error(data)
-        }
-        this.examList = data
-      })
+    this.getexamList()
   },
   data () {
     return {
@@ -69,6 +62,16 @@ export default {
     }
   },
   methods: {
+    getexamList () {
+      this.$http.get('/Api/exam')
+        .then(resp => {
+          const {state, data} = resp.data
+          if (!state) {
+            return this.$message.error(data)
+          }
+          this.examList = data
+        })
+    },
     rename () {
       this.dialog.rename.state = true
     },
@@ -87,6 +90,7 @@ export default {
           this.$message[state ? 'success' : 'error'](data)
           if (state) {
             this.reset('rename')
+            this.getexamList()
           }
         })
     },
