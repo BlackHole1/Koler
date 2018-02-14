@@ -74,7 +74,8 @@ const routes = {
       ]
     },
     'exam': {
-      get: exam.getList
+      get: exam.getList,
+      put: exam.update
     }
   }
 }
