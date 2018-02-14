@@ -74,8 +74,11 @@ const routes = {
       ]
     },
     'exam': {
-      get: exam.getList,
-      put: exam.update
+      'get': exam.getList,
+      'put': [
+        validate.exam.update,
+        exam.update
+      ]
     }
   }
 }

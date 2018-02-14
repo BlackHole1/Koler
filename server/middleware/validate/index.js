@@ -149,10 +149,20 @@ const sign = {
   }
 }
 
+const exam = {
+  update: cb => {
+    return (req, res, next) => {
+      if (empty(req.body.name) || empty(req.body.newName)) {
+        return returnFalse(res, '值不能为空')
+      }
+    }
+  }
+}
 module.exports = {
   problemsWarehouse,
   user,
   users,
   sign,
-  subject
+  subject,
+  exam
 }
