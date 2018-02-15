@@ -98,6 +98,8 @@
               this.loading = false
               this.$message.error('连接后端API失败，请确保后端服务器正常')
             })
+          } else {
+            this.loading = false
           }
         })
       },
