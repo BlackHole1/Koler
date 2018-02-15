@@ -13,7 +13,7 @@
           ></el-autocomplete>
         </el-form-item>
         <el-form-item label="" prop="pass">
-          <el-input type="password" v-model="loginForm.pass" auto-complete="off" placeholder="密码" size="medium"></el-input>
+          <el-input type="password" v-model="loginForm.pass" auto-complete="off" placeholder="密码" size="medium" @keyup.enter.native="submitForm('loginForm')"></el-input>
         </el-form-item>
         <el-form-item style="text-align: center;">
           <el-button type="primary" @click="submitForm('loginForm')" :loading="loading" icon="el-icon-check" size="medium">登录</el-button>
