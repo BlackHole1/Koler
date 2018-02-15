@@ -70,9 +70,10 @@
         },
         emailSuffix: [
           '@qq.com',
+          '@gmail.com',
+          '@hotmail.com',
           '@163.com',
-          '@126.com',
-          '@gmail.com'
+          '@126.com'
         ]
       }
     },
