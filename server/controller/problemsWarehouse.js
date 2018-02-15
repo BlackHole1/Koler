@@ -87,8 +87,6 @@ const resource = {
           $set: {
             name: changeName
           }
-        }, {
-          upsert: true
         })
           .catch(() => Promise.reject('重命名失败'))
           .then(() => Promise.resolve('重命名成功'))
