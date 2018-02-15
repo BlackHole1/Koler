@@ -78,8 +78,6 @@ const resource = {
             $set: {
               avatar_url: newFilePath
             }
-          }, {
-            upsert: true
           })
             .catch(() => Promise.reject('更新头像失败'))
             .then(() => Promise.resolve('更新头像成功'))
