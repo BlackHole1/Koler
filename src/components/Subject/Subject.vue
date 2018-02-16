@@ -172,7 +172,7 @@ export default {
       'getProblemsWarehouseInfo'
     ]),
     tagsMargin () {
-      return (this.create.tags.length === 0) ? 'margin-left: 0;' : ''
+      return (this.create.tags.length === 0) && 'margin-left: 0;'
     },
     checkLastPage () {
       const pageNum = this.$route.params.num
