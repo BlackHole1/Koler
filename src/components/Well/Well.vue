@@ -1,7 +1,7 @@
 <template>
   <div class="well">
     <el-button @click="toggle">显示/隐藏答案</el-button>
-    <div :class="toggleState ? 'answer' : ''">
+    <div :class="toggleState && 'answer'">
       <slot v-if="toggleState"></slot>
     </div>
   </div>
