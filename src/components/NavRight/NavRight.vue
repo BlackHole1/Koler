@@ -50,7 +50,7 @@ export default {
         : 'user'
       this.$store.dispatch('navRight/getInfoBymodel', {
         model: model,
-        subjectName: (this.$router.history.current.params.name) ? this.$router.history.current.params.name : ''
+        subjectName: (this.$router.history.current.params.name) && this.$router.history.current.params.name
       })
     }
   },
