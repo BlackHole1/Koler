@@ -105,14 +105,19 @@
         })
       },
       appendEmailSuffix (queryString, cb) {
-        if (queryString.indexOf('@') !== -1) {
-          return cb([])
-        }
         let triggerList = []
-        for (let i = 0; i < this.emailSuffix.length; i++) {
-          triggerList.push({value: queryString + this.emailSuffix[i]})
+        let emailSuffix = this.emailSuffix
+        if (queryString.indexOf('@') !== -1) {
+          let emailInfo = queryString.split('@')
+          emailSuffix.map(suffix => {
+            suffix.indexOf(emailInfo[1]) !== -1 && triggerList.push({value: emailInfo[0] + suffix})
+          })
+        } else {
+          emailSuffix.map(suffix => {
+            triggerList.push({value: queryString + suffix})
+          })
         }
-        cb(triggerList)
+        return cb(triggerList)
       },
       resetForm (formName) {
         this.$refs[formName].resetFields()
