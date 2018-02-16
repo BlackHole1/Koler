@@ -62,7 +62,7 @@ export default {
             .then(resp => {
               const { state, data } = resp.data
               this.$message[state ? 'success' : 'error'](data)
-              state ? this.getUserList() : ''
+              state && this.getUserList()
             })
         })
         .catch(() => {})  // 防止因点击取消，没有catch捕获。而报错
