@@ -41,15 +41,14 @@ export default {
   methods: {
     checkModel () {
       const routerName = this.$router.history.current.name
-      const model = (routerName === 'Main')
-        ? 'user'
-        : (routerName === 'ProblemsWarehouse')
-        ? 'subject'
-        : (routerName === 'Exam')
-        ? 'exem'
-        : 'user'
+      let routeToModel = {
+        'Main': 'user',
+        'ProblemsWarehouse': 'subject',
+        'Exam': 'exam'
+      }
+      let model = (routeToModel.hasOwnProperty(routerName)) ? routeToModel[routerName] : 'user'
       this.$store.dispatch('navRight/getInfoBymodel', {
-        model: model,
+        model,
         subjectName: (this.$router.history.current.params.name) && this.$router.history.current.params.name
       })
     }
