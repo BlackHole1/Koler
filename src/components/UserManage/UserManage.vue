@@ -35,7 +35,7 @@ export default {
       this.$message.error('你无权限进入此页面')
       return this.$router.push('/')
     }
-    (this.$route.name === 'UserManage') ? this.$router.push('/UserManage/AddUser') : ''
+    (this.$route.name === 'UserManage') && this.$router.push('/UserManage/AddUser')
     if (this.getUser.type === '') {
       this.$store.dispatch('navRight/getInfoBymodel', {
         model: 'user'
