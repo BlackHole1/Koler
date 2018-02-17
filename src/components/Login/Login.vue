@@ -110,7 +110,7 @@
         if (queryString.indexOf('@') !== -1) {
           let emailInfo = queryString.split('@')
           emailSuffix.map(suffix => {
-            suffix.indexOf(emailInfo[1]) !== -1 && triggerList.push({value: emailInfo[0] + suffix})
+            suffix.indexOf(emailInfo[1].toLowerCase()) !== -1 && triggerList.push({value: emailInfo[0] + suffix})
           })
         } else {
           emailSuffix.map(suffix => {
