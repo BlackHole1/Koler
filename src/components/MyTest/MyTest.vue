@@ -5,11 +5,11 @@
       <el-col :span="14">
         <v-jumbotron v-if="examList.length === 0">
           <p>您还没有创建任何的试卷</p>
-          <el-button type="primary" size="large">点我创建</el-button>
+          <el-button type="primary" size="large" @click="createTest">点我创建</el-button>
         </v-jumbotron>
         <v-jumbotron v-else>
           <div class="mytest-operation">
-            <el-button type="text">创建试卷</el-button>
+            <el-button type="text" @click="createTest">创建试卷</el-button>
             <el-button type="text">删除试卷</el-button>
             <el-button type="text" @click="rename">重命名试卷</el-button>
           </div>
@@ -44,6 +44,7 @@
 import Header from '~/Header'
 import Jumbotron from '~/Jumbotron'
 import { isNoSymbols } from '../../../common/utils'
+import { mapGetters, mapActions } from 'vuex'
 export default {
   created () {
     this.getexamList()
@@ -51,6 +52,7 @@ export default {
   data () {
     return {
       examList: [],
+      notify: {},
       dialog: {
         rename: {
           state: false,
@@ -62,6 +64,10 @@ export default {
     }
   },
   methods: {
+    ...mapActions('test', [
+      'create',
+      'end'
+    ]),
     getexamList () {
       this.$http.get('/Api/exam')
         .then(resp => {
@@ -71,6 +77,68 @@ export default {
           }
           this.examList = data
         })
+    },
+    createTest () {
+      if (this.getSituation === 'start') {
+        this.$notify.error({
+          title: '禁止创建',
+          message: '您目前已经处于创建试卷的过程中'
+        })
+        return false
+      }
+      this.end()
+      this.$confirm('创建试卷的过程中，请不要刷新网页、关闭浏览器，否则将重新创建试卷', '创建试卷', {
+        confirmButtonText: '我已了解',
+        cancelButtonText: '暂不创建',
+        type: 'warning'
+      })
+      .then(() => {
+        const h = this.$createElement
+        this.$router.push('/')
+        this.create()
+        this.notify = this.$notify({
+          title: '创建题库',
+          duration: 0,
+          showClose: false,
+          message: h('div', null, [
+            h('p', null, '您目前正处于创建试卷阶段。在此期间，请勿刷新网页、关闭浏览器'),
+            h('el-button', {
+              attrs: {
+                type: 'text'
+              },
+              on: {
+                click: this.startCreateTest
+              }
+            }, '生成试卷'),
+            h('el-button', {
+              attrs: {
+                type: 'text'
+              },
+              on: {
+                click: this.cancelCreateTest
+              }
+            }, '取消本次创建')
+          ])
+        })
+      })
+      .catch(() => {})  // 加入catch，防止没有捕获到数据而抱错
+    },
+    startCreateTest () {
+      console.log('成功创建')
+      this.end()
+    },
+    cancelCreateTest () {
+      this.$confirm('您确定要取消本次创建么？', '取消本次创建', {
+        confirmButtonText: '确定取消',
+        cancelButtonText: '点错了',
+        type: 'warning'
+      })
+      .then(() => {
+        this.end()
+        this.notify.close()
+        console.log('取消本次创建')
+      })
+      .catch(() => {})
     },
     rename () {
       this.dialog.rename.state = true
@@ -104,6 +172,11 @@ export default {
           break
       }
     }
+  },
+  computed: {
+    ...mapGetters('test', [
+      'getSituation'
+    ])
   },
   components: {
     'v-header': Header,
