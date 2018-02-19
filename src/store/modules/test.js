@@ -23,12 +23,12 @@ const mutations = {
   [types.START_TEST] (state) {
     state.situation = 'start'
     sessionStorage.setItem('Koler-test', 'start')
-    sessionStorage.setItem('Koler-testList', [])
+    sessionStorage.setItem('Koler-testList', '')
   },
   [types.END_TEST] (state) {
     state.situation = 'end'
     sessionStorage.setItem('Koler-test', 'end')
-    sessionStorage.setItem('Koler-testList', [])
+    sessionStorage.setItem('Koler-testList', '')
   }
 }
 
