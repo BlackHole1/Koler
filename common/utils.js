@@ -93,6 +93,53 @@ const getSubName = type => {
   return name
 }
 
+/**
+ * 向sessionStorage中原始的值追加数据
+ * @param {Strin || Number} key sessionStorage中将要追加的key
+ * @param {*} val 要追加的数据
+ * @returns {Object || Array || String} 如果成功将返回追加后的内容，如果
+ */
+const sessionStorageAppend = (key, val) => {
+  if ([isNumber, isString].every(type => !type(key))) return new ReferenceError('key is not Number or String')
+  if ([isNumber, isString, isArray, isObject].every(type => !type(val))) return new TypeError('value is not Number or String or Array or Object')
+
+  let StorageData = sessionStorage.getItem(key)
+  let newData = null
+
+  if (StorageData !== null) {
+    try {
+      newData = JSON.parse(StorageData)
+    } catch (e) {
+      return new SyntaxError(`in the sessionStorage, ${StorageData} is not a disqualification`)
+    }
+  }
+
+  if (isArray(val)) {
+    newData = (newData === null) ? [] : newData
+    newData.push.apply(newData, val)
+  }
+
+  if (isObject(val)) {
+    newData = (newData === null) ? {} : newData
+    for (let key in val) {
+      newData[key] = val[key]
+    }
+  }
+
+  if (isNumber(val)) {
+    newData = (newData === null) ? '' : newData
+    newData = Number(newData.toString() + val)
+  }
+
+  if (isString(val)) {
+    newData = (newData === null) ? '' : newData
+    newData = newData + val
+  }
+
+  sessionStorage.setItem(key, JSON.stringify(newData))
+  return newData
+}
+
 module.exports = {
   isString,
   isNumber,
@@ -101,5 +148,6 @@ module.exports = {
   isNoSymbols,
   isEnAndCn,
   isEmail,
-  getSubName
+  getSubName,
+  sessionStorageAppend
 }
