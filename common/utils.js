@@ -39,7 +39,7 @@ const isArray = arr => {
  * @returns {Boolean} 为字符串时返回true
  */
 const isString = str => {
-  return typeof str === str
+  return typeof str === 'string'
 }
 
 /**
