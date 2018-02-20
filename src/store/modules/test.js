@@ -1,12 +1,16 @@
 import * as types from '../mutation-types'
 
 const state = {
-  situation: ''
+  situation: '',
+  list: []
 }
 
 const getters = {
   getSituation: state => {
     return state.situation
+  },
+  getList: state => {
+    return state.list
   }
 }
 
@@ -16,6 +20,12 @@ const actions = {
   },
   end ({commit, state}) {
     commit(types.END_TEST)
+  },
+  add ({commit, state}, id) {
+    commit(types.ADD_TEST, id)
+  },
+  del ({commit, state}, id) {
+    commit(types.DEL_TEST, id)
   }
 }
 
@@ -27,6 +37,23 @@ const mutations = {
   [types.END_TEST] (state) {
     state.situation = 'end'
     sessionStorage.setItem('Koler-test', 'end')
+  },
+  [types.ADD_TEST] (state, id) {
+    if (id !== undefined) {
+      state.list.push(id)
+      state.list = [...new Set(state.list)]
+    }
+  },
+  [types.DEL_TEST] (state, id) {
+    state.list.map((item, index) => {
+      if (item === id) {
+        if (state.list.length === 0) {
+          state.list = []
+        } else {
+          state.list.splice(index, 1)
+        }
+      }
+    })
   }
 }
 
