@@ -19,6 +19,7 @@
         <el-card class="box-card" v-for="(subject, id) in details" :key="subject.id">
           <div slot="header" class="clearfix">
             <span class="subject-header">
+              <el-checkbox class="test-checkbox" v-if='toggleTestCheckbox' :data-id=subject._id :checked='isChecked(subject._id)' @change.native="addSubjectToTest"></el-checkbox>
               <span>{{id+1}}、{{subject.name}}</span>
             </span>
             <div class="subject-info">
@@ -111,6 +112,7 @@ export default {
       num: '',  // 要显示题目的数量(all: 全部显示)
       state: false, // 当前题库是否有题目，如果有题目则显示，没有则显示jumbotron
       details: [],  // 题目详情信息
+      testList: [], // 试卷选题列表
       simplemdeConfigs: { // simplemde配置
         spellChecker: false, // 禁用拼写检查
         status: false, // 禁用底部状态栏
@@ -171,6 +173,10 @@ export default {
       'getDetailsByName',
       'getProblemsWarehouseInfo'
     ]),
+    ...mapGetters('test', [
+      'getSituation',
+      'getList'
+    ]),
     tagsMargin () {
       return (this.create.tags.length === 0) && 'margin-left: 0;'
     },
@@ -190,11 +196,18 @@ export default {
     checkShowAllSubject () {
       let data = this.getProblemsWarehouseInfo[this.name].details
       return (data.length < 20)
+    },
+    toggleTestCheckbox () {
+      return (this.getSituation === 'start')
     }
   },
   methods: {
     ...mapActions('problemsWarehouse', [
       'getProblemsWarehouseList'
+    ]),
+    ...mapActions('test', [
+      'add',
+      'del'
     ]),
     subjectInfo () {
       const name = (this.name = this.$route.params.name)
@@ -352,6 +365,14 @@ export default {
           message: '已取消删除'
         })
       })
+    },
+    isChecked (id) {
+      return (this.getList.indexOf(id) !== -1)
+    },
+    addSubjectToTest (e) {
+      const state = !e.currentTarget.getAttribute('aria-checked')
+      const id = e.currentTarget.getAttribute('data-id')
+      state ? this.add(id) : this.del(id)
     }
   }
 }
@@ -371,6 +392,9 @@ export default {
       margin-bottom: 0;
     }
     .clearfix {
+      .test-checkbox {
+        margin-right: 10px; 
+      }
       .subject-header {
         line-height: 32px;
         font-size:17px;

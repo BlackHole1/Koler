@@ -47,11 +47,7 @@ const mutations = {
   [types.DEL_TEST] (state, id) {
     state.list.map((item, index) => {
       if (item === id) {
-        if (state.list.length === 0) {
-          state.list = []
-        } else {
-          state.list.splice(index, 1)
-        }
+        state.list.splice(index, 1)
       }
     })
   }
