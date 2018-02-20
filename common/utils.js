@@ -99,24 +99,25 @@ const getSubName = type => {
  * @param {*} val 要追加的数据
  * @returns {Object || Array || String} 如果成功将返回追加后的内容，如果
  */
-const sessionStorageAppend = (key, val) => {
-  if ([isNumber, isString].every(type => !type(key))) return new ReferenceError('key is not Number or String')
-  if ([isNumber, isString, isArray, isObject].every(type => !type(val))) return new TypeError('value is not Number or String or Array or Object')
+const sessionStorageAppend = (key, val, deDuplication = false) => {
+  if ([isNumber, isString].every(type => !type(key))) return console.error(new ReferenceError('key is not Number or String'))
+  if ([isNumber, isString, isArray, isObject].every(type => !type(val))) return console.error(new TypeError('value is not Number or String or Array or Object'))
 
   let StorageData = sessionStorage.getItem(key)
   let newData = null
 
-  if (StorageData !== null) {
+  if (StorageData !== null && StorageData !== '') {
     try {
       newData = JSON.parse(StorageData)
     } catch (e) {
-      return new SyntaxError(`in the sessionStorage, ${StorageData} is not a disqualification`)
+      return console.error(new SyntaxError(`in the sessionStorage, ${StorageData} is not a disqualification`))
     }
   }
 
   if (isArray(val)) {
     newData = (newData === null) ? [] : newData
     newData.push.apply(newData, val)
+    newData = deDuplication ? [...new Set(newData)] : newData
   }
 
   if (isObject(val)) {
