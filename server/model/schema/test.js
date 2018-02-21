@@ -1,7 +1,7 @@
 const mongoose = require('../../lib/mongoose')
 const dateFormat = require('dateformat')
 
-const exam = new mongoose.Schema({
+const test = new mongoose.Schema({
   name: String, // 试卷名称
   email: String, // 所属哪个邮箱
   practiceNumber: {  // 练习次数
@@ -36,4 +36,4 @@ const exam = new mongoose.Schema({
   }
 })
 
-module.exports = exam
+module.exports = test

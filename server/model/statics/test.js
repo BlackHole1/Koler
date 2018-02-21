@@ -1,7 +1,7 @@
 const mongoose = require('../../lib/mongoose')
-const examSchema = require('../schema/exam')
+const testSchema = require('../schema/test')
 
-examSchema.statics.findByEmail = function (email) {
+testSchema.statics.findByEmail = function (email) {
   return this.find({
     email: email
   }, {  // 不显示以下字段
@@ -10,7 +10,7 @@ examSchema.statics.findByEmail = function (email) {
   }).exec()
 }
 
-examSchema.statics.findByEmailAndName = function (email, name) {
+testSchema.statics.findByEmailAndName = function (email, name) {
   return this.find({
     email: email,
     name: name
@@ -20,4 +20,4 @@ examSchema.statics.findByEmailAndName = function (email, name) {
   }).exec()
 }
 
-module.exports = mongoose.model('Exam', examSchema)
+module.exports = mongoose.model('Test', testSchema)

@@ -3,7 +3,7 @@ const subject = require('../controller/subject')
 const user = require('../controller/user')
 const users = require('../controller/users')
 const sign = require('../controller/sign')
-const exam = require('../controller/exam')
+const test = require('../controller/test')
 const validate = require('../middleware/validate')
 
 const routes = {
@@ -73,11 +73,11 @@ const routes = {
         sign.login
       ]
     },
-    'exam': {
-      'get': exam.getList,
+    'test': {
+      'get': test.getList,
       'put': [
-        validate.exam.update,
-        exam.update
+        validate.test.update,
+        test.update
       ]
     }
   }

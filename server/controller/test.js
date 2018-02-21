@@ -1,10 +1,10 @@
 const M = require('../model')
-let ExamModel = M('exam')
+let TestModel = M('test')
 
 const resource = {
   getList: (req, res, next) => {
     const email = req.$currentUserInfo.email
-    ExamModel.findByEmail(email)
+    TestModel.findByEmail(email)
       .catch(() => Promise.reject('连接数据库失败'))
       .then(data => {
         // 把当前用户下所有的试卷名称提取出来
@@ -22,13 +22,13 @@ const resource = {
   update: (req, res, next) => {
     const email = req.$currentUserInfo.email
     const {name, newName} = req.body
-    ExamModel.findByEmailAndName(email, name)
+    TestModel.findByEmailAndName(email, name)
       .catch(() => Promise.reject('连接数据库失败'))
       .then(data => {
         if (data.length !== 1) {
           return Promise.reject('找不到此题库')
         }
-        return ExamModel.update({
+        return TestModel.update({
           email: email,
           name: name
         }, {
