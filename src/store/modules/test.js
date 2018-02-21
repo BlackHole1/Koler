@@ -32,10 +32,12 @@ const actions = {
 const mutations = {
   [types.START_TEST] (state) {
     state.situation = 'start'
+    state.list = []
     sessionStorage.setItem('Koler-test', 'start')
   },
   [types.END_TEST] (state) {
     state.situation = 'end'
+    state.list = []
     sessionStorage.setItem('Koler-test', 'end')
   },
   [types.ADD_TEST] (state, id) {

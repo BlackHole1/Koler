@@ -124,8 +124,10 @@ export default {
       .catch(() => {})  // 加入catch，防止没有捕获到数据而抱错
     },
     startCreateTest () {
-      console.log('成功创建')
+      const list = this.getList
+      console.log(list)
       this.end()
+      this.notify.close()
     },
     cancelCreateTest () {
       this.$confirm('您确定要取消本次创建么？', '取消本次创建', {
@@ -136,7 +138,6 @@ export default {
       .then(() => {
         this.end()
         this.notify.close()
-        console.log('取消本次创建')
       })
       .catch(() => {})
     },
@@ -175,7 +176,8 @@ export default {
   },
   computed: {
     ...mapGetters('test', [
-      'getSituation'
+      'getSituation',
+      'getList'
     ])
   },
   components: {
