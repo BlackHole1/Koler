@@ -69,7 +69,7 @@ const routes = {
     },
     'sign': {
       'post': [
-        validate.sign.post,
+        validate.sign.login,
         sign.login
       ]
     },

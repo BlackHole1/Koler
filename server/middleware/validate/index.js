@@ -133,7 +133,7 @@ const users = {
 }
 
 const sign = {
-  post: cb => {
+  login: cb => {
     return (req, res, next) => {
       if (empty(req.body.email) || empty(req.body.pass)) {
         return returnFalse(res, '邮箱或密码不能为空')
