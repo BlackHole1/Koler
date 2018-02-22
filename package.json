@@ -20,6 +20,7 @@
     "dev": "pm2 start pm2.json && pm2 logs /koler-.*/",
     "start": "npm run dev",
     "stop": "pm2 stop koler-app koler-server && pm2 delete koler-app koler-server && node build/deletePm2Logs.js",
+    "restart": "npm stop && npm start",
     "build": "node build/build.js",
     "lint": "eslint --ext .js,.vue src"
   },
