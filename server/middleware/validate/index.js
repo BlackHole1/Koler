@@ -150,6 +150,19 @@ const sign = {
 }
 
 const test = {
+  add: cb => {
+    return (req, res, next) => {
+      if (empty(req.body.lists) || empty(req.body.name)) {
+        return returnFalse(res, '值不能为空')
+      }
+      try {
+        req.body.lists = JSON.parse(req.body.lists)
+      } catch (e) {
+        return returnFalse(res, '传值不是正常的数组格式')
+      }
+      cb(req, res, next)
+    }
+  },
   update: cb => {
     return (req, res, next) => {
       if (empty(req.body.name) || empty(req.body.newName)) {

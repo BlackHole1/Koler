@@ -75,6 +75,10 @@ const routes = {
     },
     'test': {
       'get': test.getList,
+      'post': [
+        validate.test.add,
+        test.add
+      ],
       'put': [
         validate.test.update,
         test.update

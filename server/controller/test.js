@@ -19,6 +19,60 @@ const resource = {
         })
       })
   },
+  add: (req, res, next) => {
+    let PWMolde = M('problemsWarehouse')
+
+    const subjectIds = {}
+    const {lists, name} = req.body
+    const idsLength = lists.length
+    const email = req.$currentUserInfo.email
+
+    // 把数组转换对象，并以value当做key
+    lists.map(id => {
+      subjectIds[id] = ''
+    })
+
+    let testSave = () => PWMolde.findByEmail(email)
+      .catch(() => Promise.reject('连接题库数据库失败'))
+      .then(data => {
+        let subjectList = []  // 存放所有题目
+        let testList = [] // 存放匹配后的题目
+
+        // 把当前用户所有的题库里的题目放在一起
+        data.map(subject => subjectList.push.apply(subjectList, subject.details))
+
+        // 遍历数据库里的题目，把符合条件的提取出来
+        let num = 0
+        subjectList.some(subject => { // 这里使用some，是因为some可以使用返回true来终止循环
+          if (typeof subjectIds[subject._id] !== 'undefined') {
+            testList.push(subject)
+            num++ // 每次匹配成功后num+1
+          }
+
+          // 当num和lists数组长度一样是，使用返回true来终止循环，防止不必要的循环
+          if (idsLength === num) return true
+        })
+
+        const TestEntity = new TestModel({
+          name,
+          email,
+          details: testList
+        })
+        return TestEntity.save()
+          .catch(() => Promise.reject('保存试卷时出错'))
+          .then(() => Promise.resolve('创建试卷成功'))
+      })
+
+    TestModel.findByEmailAndName(email, name)
+      .catch(() => Promise.reject('连接试卷数据库失败'))
+      .then(data => {
+        if (data.length === 1) {
+          return Promise.reject('试卷名称已被使用')
+        }
+        return testSave
+      })
+      .unified((state, data) => res.send({state, data}))
+  },
   update: (req, res, next) => {
     const email = req.$currentUserInfo.email
     const {name, newName} = req.body
