@@ -124,8 +124,14 @@ export default {
       .catch(() => {})  // 加入catch，防止没有捕获到数据而抱错
     },
     startCreateTest () {
-      const list = this.getList
-      console.log(list)
+      const lists = JSON.stringify(this.getList)
+      this.$http.post('/Api/test', {
+        lists,
+        name: 'asd'
+      })
+        .then(resp => {
+          console.log(resp)
+        })
       this.end()
       this.notify.close()
     },

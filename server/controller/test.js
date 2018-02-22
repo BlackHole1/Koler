@@ -69,7 +69,7 @@ const resource = {
         if (data.length === 1) {
           return Promise.reject('试卷名称已被使用')
         }
-        return testSave
+        return testSave()
       })
       .unified((state, data) => res.send({state, data}))
   },
