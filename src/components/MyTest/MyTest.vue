@@ -34,7 +34,7 @@
       <el-input size="medium" placeholder="新名称" v-model="dialog.rename.newName"></el-input>
       <span slot="footer">
         <el-button size="small" icon="el-icon-close" @click="cancelDialog('rename')">取 消</el-button>
-        <el-button type="primary" size="small" icon="el-icon-check" @click="sendRename">确 定</el-button>
+        <el-button type="primary" size="small" icon="el-icon-check" @click="renameTest">确 定</el-button>
       </span>
     </el-dialog>
     <el-dialog
@@ -111,7 +111,7 @@ export default {
     cancelDialog (name) {
       this.dialog[name].state = false
     },
-    sendRename () {
+    renameTest () {
       const {name, newName} = this.dialog.rename
       if (!isNoSymbols(newName)) return this.$message.error('新的名字里只能包含英文、中文')
       this.$http.put('/Api/test', {
