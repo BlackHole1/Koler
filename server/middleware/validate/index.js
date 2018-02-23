@@ -1,5 +1,5 @@
 const empty = require('is-empty')
-const { isEmail, isEnAndCn } = require('../../../common/utils')
+const { isEmail, isEnAndCn, isNoSymbols } = require('../../../common/utils')
 
 /**
  * 向浏览器返回错误信息
@@ -152,13 +152,12 @@ const sign = {
 const test = {
   add: cb => {
     return (req, res, next) => {
-      if (empty(req.body.lists) || empty(req.body.name)) {
-        return returnFalse(res, '值不能为空')
+      let resBody = req.body || {}
+      if (!resBody.hasOwnProperty('name')) {
+        return returnFalse(res, '试卷名称不能为空')
       }
-      try {
-        req.body.lists = JSON.parse(req.body.lists)
-      } catch (e) {
-        return returnFalse(res, '传值不是正常的数组格式')
+      if (!isNoSymbols(req.body.name)) {
+        return returnFalse(res, '试卷名称里只能包含英文、中文')
       }
       cb(req, res, next)
     }
