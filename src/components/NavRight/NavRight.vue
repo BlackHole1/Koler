@@ -17,7 +17,7 @@
         </span>
       </div>
       <div class="subject" v-if="getModel === 'subject'">
-        <div class="subject">
+        <div class="name">
           题目名称：<br/><br/>
           {{$router.history.current.params.name}}
         </div>
@@ -76,7 +76,7 @@ export default {
   .userInfo, .subject {
     text-align: center;
     .header {
-      padding: 10px 0;
+      padding: 10px 0 0 0;
       border-bottom: 1px solid #d3dce6;
       img {
         width: 100px;
@@ -85,18 +85,17 @@ export default {
       }
       .name {
         display: block;
-        margin-top: 10px;
         font-size: 18px;
         font-weight: 500;
         letter-spacing: 2px;
       }
     }
-    .type, .upper, .upper_name, .created_date, .count, .practice, .subject {
+    .type, .upper, .upper_name, .created_date, .count, .practice, .name {
       display: block;
       padding: 10px 0;
       border-bottom: 1px solid #d3dce6;
     }
-    & > div:last-of-type, span:last-of-type {
+    & > div:last-of-type {
       border-bottom: none !important;
     }
   }
