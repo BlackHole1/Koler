@@ -1,8 +1,10 @@
 import * as types from '../mutation-types'
+import Vue from 'vue'
 
 const state = {
   situation: '',
-  list: []
+  list: [],
+  data: []
 }
 
 const getters = {
@@ -11,6 +13,9 @@ const getters = {
   },
   getList: state => {
     return state.list
+  },
+  getData: state => {
+    return state.data
   }
 }
 
@@ -26,6 +31,13 @@ const actions = {
   },
   del ({commit, state}, id) {
     commit(types.DEL_TEST, id)
+  },
+  data ({commit, state}, cb) {
+    new Vue().$http.get('/Api/test').then(resp => {
+      let content = resp.data.data
+      commit(types.TEST_DATA, content)
+      !(cb) ? '' : cb()
+    })
   }
 }
 
@@ -52,6 +64,9 @@ const mutations = {
         state.list.splice(index, 1)
       }
     })
+  },
+  [types.TEST_DATA] (state, content) {
+    state.data = content
   }
 }
 

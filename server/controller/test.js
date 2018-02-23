@@ -7,10 +7,7 @@ const resource = {
     TestModel.findByEmail(email)
       .catch(() => Promise.reject('连接数据库失败'))
       .then(data => {
-        // 把当前用户下所有的试卷名称提取出来
-        let nameArr = []
-        data.map(info => nameArr.push(info.name))
-        return Promise.resolve(nameArr)
+        return Promise.resolve(data)
       })
       .unified((state, data) => {
         res.send({

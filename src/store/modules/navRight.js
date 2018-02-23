@@ -4,7 +4,8 @@ import Vue from 'vue'
 const state = {
   /* 右侧边栏的模式，不同模式显示不同的数据。
       user => 主页默认数据（用户头像、名称、当前身份、上一级管理者的身份及名字）
-      subject => 题库数据（共有多少题、类型导航、）
+      subject => 题库数据（共有多少题、类型导航）
+      test => 试卷数据(共有多少题)
       exam => 考试数据（完成多少题、有多少题没有完成、还剩多少时间）
  */
   model: '',
@@ -21,6 +22,9 @@ const state = {
   subjectData: {
     count: ''
   },
+  testData: {
+    count: ''
+  },
   examData: ''
 }
 
@@ -33,6 +37,9 @@ const getters = {
   },
   getSubject: state => {
     return state.subjectData
+  },
+  getTest: state => {
+    return state.testData
   },
   getExam: state => {
     return state.examData
@@ -51,8 +58,8 @@ const actions = {
       })
     }
 
-    const setContent = (content, subjectInfo) => {
-      content.count = subjectInfo.details.length // 共多少道题目
+    const setCount = (content, model) => {
+      content.count = model.details.length // 共多少道题目
     }
 
     let content = {}
@@ -61,20 +68,40 @@ const actions = {
         content = resp.data
         setState(content)
       })
-    } else {
+    } else if (data.model === 'subject') {
       const subjectInfo = this.getters['problemsWarehouse/getProblemsWarehouseInfo'][data.subjectName] // 当前题目的详细信息
       if (subjectInfo || subjectInfo !== undefined) {
-        setContent(content, subjectInfo)
+        setCount(content, subjectInfo)
         setState(content)
       } else {
         this.dispatch('problemsWarehouse/getProblemsWarehouseList', () => {
-          const subjectInfo = this.getters['problemsWarehouse/getProblemsWarehouseInfo'][data.subjectName] // 当前题目的详细信息
           if (subjectInfo === undefined) {
             content = {}
           } else {
-            setContent(content, subjectInfo)
+            setCount(content, subjectInfo)
           }
           setState(content)
+        })
+      }
+    } else if (data.model === 'test') {
+      let content = {}
+      const testInfo = this.getters['test/getData']
+      if (testInfo.length !== 0) {
+        testInfo.some((test, index) => {
+          if (test.name === data.testName) {
+            setCount(content, testInfo[index])
+            setState(content)
+          }
+        })
+      } else {
+        this.dispatch('test/data', () => {
+          const testInfo = this.getters['test/getData']
+          testInfo.some((test, index) => {
+            if (test.name === data.testName) {
+              setCount(content, testInfo[index])
+              setState(content)
+            }
+          })
         })
       }
     }

@@ -1,7 +1,7 @@
 <template>
   <div class="nav-right">
     <div class="main">
-      <div class="userInfo" v-if="getModel === 'user'">
+      <div class="userInfo" v-if="model === 'user'">
         <div class="header">
           <img :src="getUser.avatar_url" alt="用户头像">
           <span class="name">{{getUser.name}}</span>
@@ -16,13 +16,22 @@
           上级用户：{{getUser.upper_name}}
         </span>
       </div>
-      <div class="subject" v-if="getModel === 'subject'">
+      <div class="subject" v-if="model === 'subject'">
         <div class="name">
           题目名称：<br/><br/>
           {{$route.params.name}}
         </div>
         <div class="count">
           题目数量：{{getSubject.count}}
+        </div>
+      </div>
+      <div class="testDetails" v-if="model === 'test'">
+        <div class="name">
+          试卷名称：<br/><br/>
+          {{$route.params.name}}
+        </div>
+        <div class="count">
+          试题数量：{{getTest.count}}
         </div>
       </div>
     </div>
@@ -38,18 +47,27 @@ export default {
   watch: {
     '$route': 'checkModel'
   },
+  data () {
+    return {
+      model: ''
+    }
+  },
   methods: {
     checkModel () {
       const routerName = this.$route.name
       let routeToModel = {
         'Main': 'user',
         'ProblemsWarehouse': 'subject',
+        'TestDetails': 'test',
         'Exam': 'exam'
       }
       let model = (routeToModel.hasOwnProperty(routerName)) ? routeToModel[routerName] : 'user'
+      this.model = model
+      let paramsName = (this.$route.params.name) ? this.$route.params.name : ''
       this.$store.dispatch('navRight/getInfoBymodel', {
         model,
-        subjectName: (this.$route.params.name) && this.$route.params.name
+        subjectName: paramsName,
+        testName: paramsName
       })
     }
   },
@@ -58,6 +76,7 @@ export default {
       'getModel',
       'getUser',
       'getSubject',
+      'getTest',
       'getExam'
     ])
   }
@@ -73,7 +92,7 @@ export default {
     border-radius: 4px;
     box-shadow: 0 2px 4px 0 rgba(0,0,0,.12), 0 0 6px 0 rgba(0,0,0,.04);
   }
-  .userInfo, .subject {
+  .userInfo, .subject, .testDetails {
     text-align: center;
     .header {
       padding: 10px 0 0 0;
