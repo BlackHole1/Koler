@@ -19,7 +19,7 @@
       <div class="subject" v-if="getModel === 'subject'">
         <div class="name">
           题目名称：<br/><br/>
-          {{$router.history.current.params.name}}
+          {{$route.params.name}}
         </div>
         <div class="count">
           题目数量：{{getSubject.count}}
@@ -40,7 +40,7 @@ export default {
   },
   methods: {
     checkModel () {
-      const routerName = this.$router.history.current.name
+      const routerName = this.$route.name
       let routeToModel = {
         'Main': 'user',
         'ProblemsWarehouse': 'subject',
@@ -49,7 +49,7 @@ export default {
       let model = (routeToModel.hasOwnProperty(routerName)) ? routeToModel[routerName] : 'user'
       this.$store.dispatch('navRight/getInfoBymodel', {
         model,
-        subjectName: (this.$router.history.current.params.name) && this.$router.history.current.params.name
+        subjectName: (this.$route.params.name) && this.$route.params.name
       })
     }
   },

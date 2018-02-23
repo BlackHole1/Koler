@@ -31,7 +31,7 @@ new Vue({
       let httpCommon = this.$http.defaults.headers.common
       httpCommon['Authorization'] = 'Bearer ' + sessionStorage.getItem('Koler-token')
       httpCommon['Accept'] = 'application/json'
-      let currentRouter = this.$router.history.current.name
+      let currentRouter = this.$route.name
       if (currentRouter === 'Login') {
         this.sendCheckLoginResp().then(() => {
           this.$message.success(`您已成功登录，无需多次登录`)

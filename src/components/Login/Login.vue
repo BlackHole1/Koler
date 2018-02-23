@@ -29,7 +29,7 @@
   const { isEmail } = require('../../../common/utils')
   export default {
     created () {
-      if (this.$router.history.current.name === 'Logout') {
+      if (this.$route.name === 'Logout') {
         this.$store.dispatch('login/delToken')
         this.$router.push('/Login')
         this.$message.success('您已成功退出登录')
