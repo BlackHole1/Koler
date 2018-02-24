@@ -36,7 +36,7 @@ const actions = {
     new Vue().$http.get('/Api/test').then(resp => {
       let content = resp.data.data
       commit(types.TEST_DATA, content)
-      !(cb) ? '' : cb()
+      !(cb) ? '' : cb(content)
     })
   }
 }
