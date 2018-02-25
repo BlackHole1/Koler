@@ -9,6 +9,7 @@
         <div v-else>
           <v-jumbotron class="test-operation">
             <el-button type="text">从题库拉入试题</el-button>
+            <el-button type="text">准备考试</el-button>
           </v-jumbotron>
           <br><br>
           <v-jumbotron>
