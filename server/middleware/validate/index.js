@@ -5,6 +5,7 @@ const { isEmail, isEnAndCn, isNoSymbols } = require('../../../common/utils')
  * 向浏览器返回错误信息
  * @param {Object res} res restify的res对象
  * @param {String} msg 返回错误的描述信息
+ * @returns {Boolean} 返回格式为json的错误信息
  */
 const returnFalse = (res, msg) => {
   res.send({
