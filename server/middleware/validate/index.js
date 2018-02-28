@@ -147,7 +147,7 @@ const users = {
 const sign = {
   login: cb => {
     return (req, res, next) => {
-      if (empty(req.body.email) || empty(req.body.pass)) {
+      if (!checkVal(req.body, 'email') || !checkVal(req.body, 'pass')) {
         return returnFalse(res, '邮箱或密码不能为空')
       }
       if (!isEmail(req.body.email)) {
