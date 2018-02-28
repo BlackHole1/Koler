@@ -14,6 +14,17 @@ const returnFalse = (res, msg) => {
   })
 }
 
+/**
+ * 检测是否存在某个参数
+ * @param {*} req 要检测的req对象
+ * @param {*} key 要判断的参数名
+ * @returns {Boolean} 如果存在则返回true，反之亦然
+ */
+const checkVal = (req, key) => {
+  req = req || {}
+  return req.hasOwnProperty(key)
+}
+
 const problemsWarehouse = {
   add: cb => {
     return (req, res, next) => {
@@ -153,8 +164,7 @@ const sign = {
 const test = {
   add: cb => {
     return (req, res, next) => {
-      let resBody = req.body || {}
-      if (!resBody.hasOwnProperty('name')) {
+      if (!checkVal(req.body, 'name')) {
         return returnFalse(res, '试卷名称不能为空')
       }
       if (!isNoSymbols(req.body.name)) {
