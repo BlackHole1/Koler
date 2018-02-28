@@ -175,7 +175,7 @@ const test = {
   },
   update: cb => {
     return (req, res, next) => {
-      if (empty(req.body.name) || empty(req.body.newName)) {
+      if (!checkVal(req.body, 'name') || !checkVal(req.body, 'newName')) {
         return returnFalse(res, '值不能为空')
       }
       cb(req, res, next)
