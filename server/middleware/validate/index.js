@@ -90,7 +90,7 @@ const user = {
     },
     password: cb => {
       return (req, res, next) => {
-        if (empty(req.body.oldPassword) || empty(req.body.newPassword) || empty(req.body.confirmPassword)) {
+        if (!checkVal(req.body, 'oldPassword') || !checkVal(req.body, 'newPassword') || !checkVal(req.body, 'confirmPassword')) {
           return returnFalse(res, '值不能为空')
         }
         if (req.body.newPassword !== req.body.confirmPassword) {
