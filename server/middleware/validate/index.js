@@ -133,7 +133,7 @@ const users = {
   },
   del: cb => {
     return (req, res, next) => {
-      if (empty(req.query.id)) {
+      if (!checkVal(req.query, 'id')) {
         return returnFalse(res, 'id的值不能为空')
       }
       if (req.$currentUserInfo.type === 'Student') {
