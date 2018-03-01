@@ -116,8 +116,8 @@ const users = {
       if (req.$currentUserInfo.type === 'Student') {
         return returnFalse(res, '很抱歉，你没用权限进行添加用户')
       }
-      if (empty(req.body.name) || empty(req.body.email) || empty(req.body.password)) {
-        return returnFalse(res, '姓名、邮箱、密码等值不能为空，请检查后重新提交')
+      if (!checkVal(req.body, 'name') || !checkVal(req.body, 'email') || !checkVal(req.body, 'password')) {
+        return returnFalse(res, '姓名、邮箱、密码值不能为空，请检查后重新提交')
       }
       if (!isEnAndCn(req.body.nam)) {
         return returnFalse(res, '姓名格式不正确，请确保姓名只包含中文、英文')
