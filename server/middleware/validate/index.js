@@ -62,7 +62,7 @@ const subject = {
   },
   del: cb => {
     return (req, res, next) => {
-      if (empty(req.query.name) || empty(req.query.id)) {
+      if (!checkVal(req.query, 'name') || !checkVal(req.query, 'id')) {
         return returnFalse(res, '请确认传入了值')
       }
       cb(req, res, next)
