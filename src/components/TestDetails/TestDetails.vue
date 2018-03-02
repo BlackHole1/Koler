@@ -1,5 +1,5 @@
 <template>
-  <div class="test-details">
+  <div class="test-details C-test">
     <el-row type="flex" class="row" justify="center" style="margin-top:20px">
       <el-col :span="11">
         <v-jumbotron v-if="getTestDetails.length === 0">
@@ -12,9 +12,27 @@
             <el-button type="text">准备考试</el-button>
           </v-jumbotron>
           <br><br>
-          <v-jumbotron>
-            试题列表
-          </v-jumbotron>
+          <el-card class="box-card" v-for="(test, id) in getTestDetails" :key="test.id">
+            <div slot="header" class="clearfix">
+              <span class="test-header">
+                <span>{{id+1}}、{{test.name}}</span>
+              </span>
+              <div class="test-info">
+                <div class="tag">
+                  <el-tag class="tag-item" v-for="tag in test.category" :key="tag">{{tag}}</el-tag>
+                </div>
+                <b>分值：{{test.score}}</b>
+              </div>
+            </div>
+            <div class="item">
+              <v-markdown class="test-content" :value="test.content" :configs="testSimplemdeConfigs" :highlight="true" ref="testContent" preview-class="markdown-body"></v-markdown>
+            </div>
+            <div class="card-foot">
+              <el-button type="info" class="note" @click="showAnswerOrNote('note', test.note)"  size="small" icon="el-icon-document">显示备注</el-button>
+              <el-button type="info" class="answer" @click="showAnswerOrNote('answer', test.answer)"  size="small" icon="el-icon-tickets">显示答案</el-button>
+              <el-button type="danger" @click="deleteTest(test._id)"  size="small" icon="el-icon-delete"> 删 除 </el-button>
+            </div>
+          </el-card>
         </div>
       </el-col>
       <el-col :span="1"></el-col>
@@ -30,6 +48,10 @@ import Header from '~/Header'
 import Jumbotron from '~/Jumbotron'
 import navRight from '~/NavRight'
 import {mapGetters, mapActions} from 'vuex'
+import markdownEditor from 'vue-simplemde/src/markdown-editor'
+import hljs from 'highlight.js'
+window.hljs = hljs
+
 export default {
   name: 'TestDetails',
   created () {
@@ -57,9 +79,18 @@ export default {
       })
     }
   },
+  updated () {
+    this.refreshTestContent()
+  },
   data () {
     return {
-      test: {}
+      test: {},
+      testSimplemdeConfigs: { // simplemde配置
+        spellChecker: false, // 禁用拼写检查
+        status: false, // 禁用底部状态栏
+        toolbar: false,
+        autoDownloadFontAwesome: false
+      }
     }
   },
   computed: {
@@ -73,12 +104,26 @@ export default {
   methods: {
     ...mapActions('test', [
       'data'
-    ])
+    ]),
+    refreshTestContent () {
+      if (this.$refs.testContent !== undefined) {
+        this.$refs.testContent.forEach(content => {
+          const simplemde = content.simplemde
+          if (!simplemde.isPreviewActive()) {
+            simplemde.togglePreview()
+          }
+        })
+      }
+    }
+  },
+  watch: {
+    '$refs': 'refreshTestContent'
   },
   components: {
     'v-header': Header,
     'v-jumbotron': Jumbotron,
-    'v-nav-right': navRight
+    'v-nav-right': navRight,
+    'v-markdown': markdownEditor
   }
 }
 </script>
@@ -90,4 +135,141 @@ export default {
       font-size: 15px;
     }
   }
+  .box-card {
+    background-color: rgba(255, 255, 255, 0.9215686274509803);
+    margin-bottom: 20px;
+    &:last-child {
+      margin-bottom: 0;
+    }
+    .clearfix {
+      .test-checkbox {
+        margin-right: 10px; 
+      }
+      .test-header {
+        line-height: 32px;
+        font-size:17px;
+      }
+      .test-info {
+        float: right;
+        .tag {
+          display: inline-block;
+        }
+        b {
+          display: inline-block;
+          margin: 5px 0 0 50px;
+          font-size:16px;
+          color: #EB9E05;
+        }
+      }
+    }
+    .item {
+      margin: 18px 0;
+      font-size: 18px;
+      &:first-of-type {
+        margin: 0;
+      }
+      .test-content {
+        line-height: 1.65;
+        font-size: 16px;
+      }
+    }
+    .card-foot {
+      text-align: right;
+      margin-top: 20px;
+      padding-top: 10px;
+      border-top: 1px solid #d1dbe5;
+      .answer, .note{
+        float: left;
+      }
+      .tag {
+        float: right;
+        .tag-item {
+          margin-right: 10px;
+          &:last-child {
+            margin-right: 0;
+          }
+        }
+      }
+    }
+  }
+</style>
+
+<style lang="less">
+.C-test {
+  @import '~simplemde/dist/simplemde.min.css';
+  @import '~github-markdown-css';
+  @import '~highlight.js/styles/github.css';
+  @import '~font-awesome/css/font-awesome.min.css';
+
+  textarea {
+    font-family: "Helvetica Neue", Helvetica, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "\5FAE\8F6F\96C5\9ED1", Arial,sans-serif !important;
+    height: 150px;
+  }
+  .el-tag + .el-tag {
+    margin-left: 10px;
+  }
+  .button-new-tag {
+    margin-left: 10px;
+    height: 32px;
+    line-height: 30px;
+    padding-top: 0;
+    padding-bottom: 0;
+  }
+  .input-new-tag {
+    width: 90px;
+    margin-left: 10px;
+    vertical-align: bottom;
+  }
+  .el-card__header {
+    padding: 10px 20px;
+  }
+  .el-card__body {
+    padding-top: 0;
+    padding-bottom: 10px;
+  }
+  .markdown-editor {
+    .editor-toolbar {
+      line-height: normal;
+    }
+    .CodeMirror-line {
+      font-size: 16px;
+      line-height: normal;
+    }
+    .cm-comment {
+      background: none !important;
+    }
+    pre code {
+      white-space: pre-wrap;
+      word-break: break-all;
+    }
+  }
+  .test-content {
+    .CodeMirror-wrap {
+      min-height: auto;
+      border: none;
+      background-color: rgba(255, 255, 255, 0);
+      .CodeMirror-sizer {
+        display: none;
+      }
+      .CodeMirror-scroll {
+        min-height: auto;
+        .CodeMirror-code {
+          opacity: 0;
+        }
+      }
+      .editor-preview {
+        position: static;
+      }
+      .markdown-body {
+        background-color: rgba(255, 255, 255, 0);
+        overflow: hidden;
+      }
+    }
+  }
+  .el-form-item {
+    .el-form-item__content {
+      margin-left: 0 !important;
+    }
+  }
+}
 </style>
