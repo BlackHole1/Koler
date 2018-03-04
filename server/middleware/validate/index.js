@@ -54,7 +54,7 @@ const problemsWarehouse = {
 const subject = {
   add: cb => {
     return (req, res, next) => {
-      if (empty(req.body.name) || empty(req.body.title) || empty(req.body.content) || empty(req.body.score)) {
+      if (!checkVal(req.body, 'name') || !checkVal(req.body, 'title') || !checkVal(req.body, 'content') || !checkVal(req.body, 'score')) {
         return returnFalse(res, '值不能为空')
       }
       cb(req, res, next)
