@@ -37,7 +37,7 @@ const problemsWarehouse = {
   update: cb => {
     return (req, res, next) => {
       if (!checkVal(req.body, 'name') || !checkVal(req.body, 'changeName')) {
-        return returnFalse(res, '值不能为空')
+        return returnFalse(res, '重命名所需参数不能为空')
       }
     }
   },
