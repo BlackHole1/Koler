@@ -36,7 +36,7 @@ const problemsWarehouse = {
   },
   update: cb => {
     return (req, res, next) => {
-      if (empty(req.body.name) || empty(req.body.changeName)) {
+      if (!checkVal(req.body, 'name') || !checkVal(req.body, 'changeName')) {
         return returnFalse(res, '值不能为空')
       }
     }
