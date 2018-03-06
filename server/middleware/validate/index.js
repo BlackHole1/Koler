@@ -44,7 +44,7 @@ const problemsWarehouse = {
   del: cb => {
     return (req, res, next) => {
       if (!checkVal(req.query, 'name')) {
-        return returnFalse(res, '请确保您要删除的题目是否存在')
+        return returnFalse(res, '请确保您要删除的题库是否存在')
       }
       cb(req, res, next)
     }
