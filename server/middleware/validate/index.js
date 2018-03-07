@@ -28,7 +28,7 @@ const checkVal = (req, key) => {
 const problemsWarehouse = {
   add: cb => {
     return (req, res, next) => {
-      if (empty(req.body.name)) {
+      if (!checkVal(req.body, 'name')) {
         return returnFalse(res, '请输入要创建的题库名称')
       }
       cb(req, res, next)
