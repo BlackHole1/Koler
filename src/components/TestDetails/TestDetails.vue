@@ -4,7 +4,7 @@
       <el-col :span="11">
         <v-jumbotron v-if="getTestDetails.length === 0">
           <p>您还没有给当前试卷添加试题</p>
-          <el-button type="primary" size="large">点我创建</el-button>
+          <el-button type="primary" size="large">从题库拉入试题</el-button>
         </v-jumbotron>
         <div v-else>
           <v-jumbotron class="test-operation">
