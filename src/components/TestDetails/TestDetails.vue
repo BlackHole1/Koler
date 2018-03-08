@@ -79,6 +79,9 @@ export default {
       })
     }
   },
+  mounted () {
+    this.refreshTestContent()
+  },
   updated () {
     this.refreshTestContent()
   },
@@ -115,9 +118,6 @@ export default {
         })
       }
     }
-  },
-  watch: {
-    '$refs': 'refreshTestContent'
   },
   components: {
     'v-header': Header,
