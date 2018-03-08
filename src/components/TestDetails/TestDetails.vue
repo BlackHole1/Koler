@@ -4,11 +4,11 @@
       <el-col :span="11">
         <v-jumbotron v-if="getTestDetails.length === 0">
           <p>您还没有给当前试卷添加试题</p>
-          <el-button type="primary" size="large">从题库拉入试题</el-button>
+          <el-button type="primary" size="large" @click="pullSubject">从题库拉入试题</el-button>
         </v-jumbotron>
         <div v-else>
           <v-jumbotron class="test-operation">
-            <el-button type="text">从题库拉入试题</el-button>
+            <el-button type="text" @click="pullSubject">从题库拉入试题</el-button>
             <el-button type="text">准备考试</el-button>
           </v-jumbotron>
           <br><br>
@@ -98,7 +98,8 @@ export default {
   },
   computed: {
     ...mapGetters('test', [
-      'getData'
+      'getData',
+      'getList'
     ]),
     getTestDetails () {
       return this.test.hasOwnProperty('name') ? this.test.details : []
@@ -106,7 +107,9 @@ export default {
   },
   methods: {
     ...mapActions('test', [
-      'data'
+      'data',
+      'create',
+      'end'
     ]),
     refreshTestContent () {
       if (this.$refs.testContent !== undefined) {
@@ -117,6 +120,75 @@ export default {
           }
         })
       }
+    },
+    pullSubject () {
+      if (this.getSituation === 'start') {
+        this.$notify.error({
+          title: '禁止重复点击',
+          message: '您目前已经处于拉入试题的过程中'
+        })
+        return false
+      }
+      this.end()
+      this.$confirm('拉入试题的过程中，请不要刷新网页、关闭浏览器，否则您将重新操作', '拉入试题', {
+        confirmButtonText: '我已了解',
+        cancelButtonText: '暂不创建',
+        type: 'warning'
+      })
+      .then(() => {
+        const h = this.$createElement
+        this.$router.push('/')
+        this.create()
+        this.notify = this.$notify({
+          title: '拉入试题',
+          duration: 0,
+          showClose: false,
+          message: h('div', null, [
+            h('p', null, '您目前正处于拉入试题阶段。在此期间，请勿刷新网页、关闭浏览器'),
+            h('el-button', {
+              attrs: {
+                type: 'text'
+              },
+              on: {
+                click: this.startCreateTest
+              }
+            }, '确认拉入'),
+            h('el-button', {
+              attrs: {
+                type: 'text'
+              },
+              on: {
+                click: this.cancelCreateTest
+              }
+            }, '取消本次拉入')
+          ])
+        })
+      })
+      .catch(() => {})  // 加入catch，防止没有捕获到数据而抱错
+    },
+    startCreateTest () {
+      const lists = JSON.stringify(this.getList)
+      this.$http.post('/Api/test', {
+        lists,
+        name: 'asd'
+      })
+        .then(resp => {
+          console.log(resp)
+        })
+      this.end()
+      this.notify.close()
+    },
+    cancelCreateTest () {
+      this.$confirm('您确定要取消本次拉入试题的操作么？', '取消本次拉入', {
+        confirmButtonText: '确认',
+        cancelButtonText: '点错了',
+        type: 'warning'
+      })
+      .then(() => {
+        this.end()
+        this.notify.close()
+      })
+      .catch(() => {})
     }
   },
   components: {
