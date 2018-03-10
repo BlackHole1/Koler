@@ -182,11 +182,29 @@ const test = {
     }
   }
 }
+
+const testSubject = {
+  update: cb => {
+    return (req, res, next) => {
+      if (!checkVal(req.body, 'name') || !checkVal(req.body, 'lists')) {
+        return returnFalse(res, '值不能为空')
+      }
+      try {
+        req.body.lists = JSON.parse(req.body.lists)
+      } catch (e) {
+        return returnFalse(res, 'lists传值错误，无法转换成JSON格式')
+      }
+      cb(req, res, next)
+    }
+  }
+}
+
 module.exports = {
   problemsWarehouse,
   user,
   users,
   sign,
   subject,
-  test
+  test,
+  testSubject
 }
