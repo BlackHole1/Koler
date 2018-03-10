@@ -168,9 +168,9 @@ export default {
     },
     startCreateTest () {
       const lists = JSON.stringify(this.getList)
-      this.$http.post('/Api/test', {
+      this.$http.put('/Api/testSubject', {
         lists,
-        name: 'asd'
+        name: this.test.name
       })
         .then(resp => {
           console.log(resp)
