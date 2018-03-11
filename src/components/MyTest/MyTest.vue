@@ -102,7 +102,7 @@ export default {
     },
     testEntry (name) {
       this.$router.push({
-        path: `MyTest/${name}/1`
+        path: `MyTest/${name}`
       })
     },
     create () {
