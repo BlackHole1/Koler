@@ -4,6 +4,7 @@ const user = require('../controller/user')
 const users = require('../controller/users')
 const sign = require('../controller/sign')
 const test = require('../controller/test')
+const testSubject = require('../controller/testSubject')
 const validate = require('../middleware/validate')
 
 const routes = {
@@ -82,6 +83,12 @@ const routes = {
       'put': [
         validate.test.update,
         test.update
+      ]
+    },
+    'testSubject': {
+      'put': [
+        validate.testSubject.update,
+        testSubject.update
       ]
     }
   }
