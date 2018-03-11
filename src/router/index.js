@@ -43,7 +43,7 @@ export default new Router({
       component: MyTest,
       children: [
         {
-          path: ':name/:num',
+          path: ':name',
           name: 'TestDetails',
           component: TestDetails
         }
