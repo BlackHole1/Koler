@@ -2,7 +2,7 @@
   <div class="test-details C-test">
     <el-row type="flex" class="row" justify="center" style="margin-top:20px">
       <el-col :span="11">
-        <v-jumbotron v-if="getTestDetails.length === 0">
+        <v-jumbotron v-if="details.length === 0">
           <p>您还没有给当前试卷添加试题</p>
           <el-button type="primary" size="large" @click="pullSubject">从题库拉入试题</el-button>
         </v-jumbotron>
@@ -12,7 +12,8 @@
             <el-button type="text">准备考试</el-button>
           </v-jumbotron>
           <br><br>
-          <el-card class="box-card" v-for="(test, id) in getTestDetails" :key="test.id">
+          {{details}}
+          <el-card class="box-card" v-for="(test, id) in details" :key="test.id">
             <div slot="header" class="clearfix">
               <span class="test-header">
                 <span>{{id+1}}、{{test.name}}</span>
@@ -55,28 +56,20 @@ window.hljs = hljs
 export default {
   name: 'TestDetails',
   created () {
+    this.testName = this.$route.params.name
     let testData = this.getData
     // 当用户刷新页面时，vuex里的试卷列表将为空，则需要重新发送请求
     // 而当用户进入一个不存在的试卷时，跳转到试卷列表
     // 如果是正常的跳转，则直接进入else
 
     if (testData.length === 0) {  // 当刷新页面或者请求一个不存在的试卷时
-      this.data(data => { // 发生获取试卷列表请求
-        let checkTestName = data.some(test => {
-          if (test.name === this.$route.params.name) {  // 如果存在当前试卷名
-            this.test = test
-            return true
-          }
-        })
+      this.data(data => { // 发送获取试卷列表请求
+        let checkTestName = this.setTestList(data)
         !checkTestName && this.$router.push('/MyTest')  // 如果发送请求后，还是没有匹配到试卷名，则跳转到试卷列表页面
       })
     } else {
       // 把当前试卷的信息赋值给test变量
-      testData.some(test => {
-        if (test.name === this.$route.params.name) {
-          this.test = test
-        }
-      })
+      this.setTestList(testData)
     }
   },
   mounted () {
@@ -87,7 +80,9 @@ export default {
   },
   data () {
     return {
-      test: {},
+      testName: {},
+      details: [],
+      refreshList: true,
       testSimplemdeConfigs: { // simplemde配置
         spellChecker: false, // 禁用拼写检查
         status: false, // 禁用底部状态栏
@@ -100,10 +95,7 @@ export default {
     ...mapGetters('test', [
       'getData',
       'getList'
-    ]),
-    getTestDetails () {
-      return this.test.hasOwnProperty('name') ? this.test.details : []
-    }
+    ])
   },
   methods: {
     ...mapActions('test', [
@@ -120,6 +112,14 @@ export default {
           }
         })
       }
+    },
+    setTestList (data) {
+      data.some(test => {
+        if (test.name === this.testName) {
+          this.details = test.details
+          return true
+        }
+      })
     },
     pullSubject () {
       if (this.getSituation === 'start') {
@@ -170,13 +170,26 @@ export default {
       const lists = JSON.stringify(this.getList)
       this.$http.put('/Api/testSubject', {
         lists,
-        name: this.test.name
+        name: this.testName
       })
         .then(resp => {
-          console.log(resp)
+          const {state, data} = resp.data
+          this.$message[state ? 'success' : 'error'](data)
+          if (state) {
+            this.$router.push(`/MyTest/${this.testName}`)
+            this.$http.get('/Api/test').then(resp => {
+              let content = resp.data.data
+              content.some(test => {
+                if (test.name === this.testName) {
+                  this.details.splice(0, this.details.length)
+                  this.details.push.apply(this.details, test.details)
+                }
+              })
+            })
+          }
+          this.end()
+          this.notify.close()
         })
-      this.end()
-      this.notify.close()
     },
     cancelCreateTest () {
       this.$confirm('您确定要取消本次拉入试题的操作么？', '取消本次拉入', {
