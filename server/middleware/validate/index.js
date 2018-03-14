@@ -1,4 +1,3 @@
-const empty = require('is-empty')
 const { isEmail, isEnAndCn, isNoSymbols } = require('../../../common/utils')
 
 /**
