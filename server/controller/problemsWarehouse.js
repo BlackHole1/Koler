@@ -4,7 +4,6 @@ let PWMolde = M('problemsWarehouse')
 const resource = {
   getInfo: (req, res, next) => {
     PWMolde.findByEmail(req.$getInfo.email)
-      .catch(() => Promise.reject('数据库查询错误'))
       .then(data => {
         const PWData = {}
         let names = []
@@ -29,7 +28,6 @@ const resource = {
     const name = req.body.name
     const email = req.$getInfo.email
     PWMolde.findByEmailAndName(email, name)
-      .catch(() => Promise.reject('连接数据库出错'))
       .then(data => {
         if (data.length === 1) {
           return Promise.reject('题库名称已被使用')
@@ -52,7 +50,6 @@ const resource = {
     const name = req.query.name
     const email = req.$getInfo.email
     PWMolde.findByEmailAndName(email, name)
-      .catch(() => Promise.reject('连接数据库出错'))
       .then(data => {
         if (data.length !== 1) {
           return Promise.reject('找不到此题库')
@@ -75,7 +72,6 @@ const resource = {
     const {name, changeName} = req.body
     const email = req.$getInfo.email
     PWMolde.findByEmailAndName(email, name)
-      .catch(() => Promise.reject('连接数据库出错'))
       .then(data => {
         if (data.length !== 1) {
           return Promise.reject('找不到此题库')
