@@ -28,7 +28,6 @@ const resource = {
         email: req.$getInfo.email,
         password: common.md5(req.body.oldPassword)
       })
-        .catch(() => Promise.reject('连接数据库失败'))
         .then(data => empty(data) ? Promise.reject('旧密码错误') : data)
         .then(data => {
           return UserModel.update({
@@ -57,7 +56,6 @@ const resource = {
        * 更新数据库里的头像url
        */
       UserModel.findByEmail(email)
-        .catch(() => Promise.reject('连接数据库失败'))
         .then(data => {
           const readStream = fs.createReadStream(uploadedFile.path)
           const writeStream = fs.createWriteStream('..' + newFilePath)
