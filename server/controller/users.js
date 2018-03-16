@@ -7,7 +7,6 @@ const UserModel = M('user')
 const resource = {
   getList: (req, res, next) => {
     UsersModel.findUnderByEmail(req.$currentUserInfo.email)
-      .catch(() => Promise.reject('连接数据库失败'))
       .then(data => Promise.resolve(data))
       .unified((state, data) => {
         return res.send({
@@ -19,7 +18,6 @@ const resource = {
   add: (req, res, next) => {
     const {name, email, password} = req.body
     UserModel.findByEmail(email)
-      .catch(() => Promise.reject('数据库查询出错'))
       .then(data => {
         if (!empty(data)) {
           return Promise.reject('用户已经存在，请更换邮箱重新添加')
@@ -51,8 +49,6 @@ const resource = {
       .catch(err => {
         if (err === null) {
           return Promise.reject('没有找到此用户')
-        } else {
-          return Promise.reject('连接数据库失败')
         }
       })
       .then(data => {
