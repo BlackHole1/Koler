@@ -30,7 +30,6 @@ const resource = {
       .then(() => Promise.resolve('创建试卷成功'))
 
     TestModel.findByEmailAndName(email, name)
-      .catch(() => Promise.reject('连接试卷数据库失败'))
       .then(data => {
         if (data.length === 1) {
           return Promise.reject('试卷名称已被使用')
