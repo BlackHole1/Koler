@@ -5,7 +5,6 @@ const resource = {
   getList: (req, res, next) => {
     const email = req.$currentUserInfo.email
     TestModel.findByEmail(email)
-      .catch(() => Promise.reject('连接数据库失败'))
       .then(data => {
         return Promise.resolve(data)
       })
