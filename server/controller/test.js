@@ -41,7 +41,6 @@ const resource = {
     const email = req.$currentUserInfo.email
     const {name, newName} = req.body
     TestModel.findByEmailAndName(email, name)
-      .catch(() => Promise.reject('连接数据库失败'))
       .then(data => {
         if (data.length !== 1) {
           return Promise.reject('找不到此题库')
