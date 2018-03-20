@@ -6,7 +6,6 @@ const resource = {
     const {name, title, content, score, tags, note, answer} = req.body
     const email = req.$getInfo.email
     PWMolde.findByEmailAndName(email, name)
-      .catch(() => Promise.reject('连接数据库出错'))
       .then(data => {
         if (data.length !== 1) {
           return Promise.reject('找不到此题库')
