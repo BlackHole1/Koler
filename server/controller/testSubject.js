@@ -16,7 +16,6 @@ const resource = {
     })
 
     let getListByEmail = () => PWMolde.findByEmail(email)
-      .catch(() => Promise.reject('连接题库数据库失败'))
       .then(data => {
         let subjectList = []  // 存放所有题目
         let testList = [] // 存放匹配后的题目
