@@ -73,7 +73,7 @@ const user = {
   update: {
     header: cb => {
       return (req, res, next) => {
-        if (!checkVal(req, 'files' || !checkVal(req.files, 'file') || !checkVal(req.files.file, 'name'))) {
+        if (!checkVal(req, 'files') || !checkVal(req.files, 'file') || !checkVal(req.files.file, 'name')) {
           return returnFalse(res, '请先上传你的图片')
         }
         const uploadedFile = req.files.file
