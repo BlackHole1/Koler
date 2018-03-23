@@ -12,7 +12,6 @@
             <el-button type="text">准备考试</el-button>
           </v-jumbotron>
           <br><br>
-          {{details}}
           <el-card class="box-card" v-for="(test, id) in details" :key="test.id">
             <div slot="header" class="clearfix">
               <span class="test-header">
