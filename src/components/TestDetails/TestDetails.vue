@@ -40,6 +40,18 @@
         <v-nav-right></v-nav-right>
       </el-col>
     </el-row>
+    <el-dialog
+      title="题目答案"
+      :visible.sync="answerDialog.state"
+      width="40%">
+      <v-markdown v-model="answerDialog.data" v-if="answerDialog.state" :configs="testSimplemdeConfigs" :highlight="true" ref="answerSimplemde" preview-class="markdown-body"></v-markdown>
+    </el-dialog>
+    <el-dialog
+      title="题目备注"
+      :visible.sync="noteDialog.state"
+      width="40%">
+      <v-markdown v-model="noteDialog.data" v-if="noteDialog.state" :configs="testSimplemdeConfigs" :highlight="true" ref="noteSimplemde" preview-class="markdown-body"></v-markdown>
+    </el-dialog>
   </div>
 </template>
 
@@ -87,6 +99,14 @@ export default {
         status: false, // 禁用底部状态栏
         toolbar: false,
         autoDownloadFontAwesome: false
+      },
+      answerDialog: {
+        state: false,  // 是否显示备注
+        data: ''  // 显示id的答案
+      },
+      noteDialog: {
+        state: false,  // 是否显示答案
+        data: ''  // 显示id的答案
       }
     }
   },
@@ -201,6 +221,17 @@ export default {
         this.notify.close()
       })
       .catch(() => {})
+    },
+    showAnswerOrNote (model, data) {
+      const answerOrNoteDialog = this[`${model}Dialog`]
+      answerOrNoteDialog.state = !answerOrNoteDialog.state
+      answerOrNoteDialog.data = data
+      this.$nextTick(() => {
+        const simplemde = this.$refs[`${model}Simplemde`].simplemde
+        if (!simplemde.isPreviewActive()) {
+          this.$refs[`${model}Simplemde`].simplemde.togglePreview()
+        }
+      })
     }
   },
   components: {
