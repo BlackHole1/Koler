@@ -68,6 +68,37 @@ const resource = {
         return getListByEmail()
       })
       .unified((state, data) => res.send({state, data}))
+  },
+  del: (req, res, next) => {
+    const { name, id } = req.query
+    const email = req.$getInfo.email
+
+    let delTestSubject = () => TestModel.update({
+      email: email,
+      name: name
+    }, {
+      '$pull': {
+        'details': {
+          _id: id
+        }
+      }
+    })
+      .catch(() => Promise.reject('删除失败'))
+      .then(() => Promise.resolve('删除成功'))
+
+    TestModel.findByEmailAndName(email, name)
+      .then(data => {
+        if (data.length !== 1) {
+          return Promise.reject('找不到此题目')
+        }
+        return delTestSubject()
+      })
+      .unified((state, data) => {
+        res.send({
+          state,
+          data
+        })
+      })
   }
 }
 

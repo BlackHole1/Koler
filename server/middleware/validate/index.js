@@ -195,6 +195,14 @@ const testSubject = {
       }
       cb(req, res, next)
     }
+  },
+  del: cb => {
+    return (req, res, next) => {
+      if (!checkVal(req.query, 'id') || !checkVal(req.query, 'name')) {
+        return returnFalse(res, 'id或name的值不能为空')
+      }
+      cb(req, res, next)
+    }
   }
 }
 
