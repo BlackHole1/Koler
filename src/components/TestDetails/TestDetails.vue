@@ -240,10 +240,22 @@ export default {
         type: 'warning'
       })
       .then(() => {
-        this.$message({
-          type: 'success',
-          message: '删除成功!'
-        })
+        this.$http.delete(`/Api/testSubject/?name=${this.testName}&id=${id}`)
+          .then(res => {
+            const {state, data} = res.data
+            this.$message[state ? 'success' : 'error'](data)
+            if (state) {
+              this.$http.get('/Api/test').then(resp => {
+                let content = resp.data.data
+                content.some(test => {
+                  if (test.name === this.testName) {
+                    this.details.splice(0, this.details.length)
+                    this.details.push.apply(this.details, test.details)
+                  }
+                })
+              })
+            }
+          })
       })
       .catch(() => {})
     }
