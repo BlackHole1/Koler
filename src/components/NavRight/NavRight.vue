@@ -113,9 +113,9 @@ export default {
       display: block;
       padding: 10px 0;
       border-bottom: 1px solid #d3dce6;
-    }
-    & > div:last-of-type {
-      border-bottom: none !important;
+      &:last-of-type {
+        border-bottom: none !important;
+      }
     }
   }
 </style>
