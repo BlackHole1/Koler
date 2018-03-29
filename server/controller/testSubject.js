@@ -71,7 +71,7 @@ const resource = {
   },
   del: (req, res, next) => {
     const { name, id } = req.query
-    const email = req.$getInfo.email
+    const email = req.$currentUserInfo.email
 
     let delTestSubject = () => TestModel.update({
       email: email,

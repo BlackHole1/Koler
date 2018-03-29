@@ -3,7 +3,7 @@ let PWMolde = M('problemsWarehouse')
 
 const resource = {
   getInfo: (req, res, next) => {
-    PWMolde.findByEmail(req.$getInfo.email)
+    PWMolde.findByEmail(req.$currentUserInfo.email)
       .then(data => {
         const PWData = {}
         let names = []
@@ -26,7 +26,7 @@ const resource = {
   },
   add: (req, res, next) => {
     const name = req.body.name
-    const email = req.$getInfo.email
+    const email = req.$currentUserInfo.email
     PWMolde.findByEmailAndName(email, name)
       .then(data => {
         if (data.length === 1) {
@@ -48,7 +48,7 @@ const resource = {
   },
   del: (req, res, next) => {
     const name = req.query.name
-    const email = req.$getInfo.email
+    const email = req.$currentUserInfo.email
     PWMolde.findByEmailAndName(email, name)
       .then(data => {
         if (data.length !== 1) {
@@ -70,7 +70,7 @@ const resource = {
   },
   update: (req, res, next) => {
     const {name, changeName} = req.body
-    const email = req.$getInfo.email
+    const email = req.$currentUserInfo.email
     PWMolde.findByEmailAndName(email, name)
       .then(data => {
         if (data.length !== 1) {

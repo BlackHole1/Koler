@@ -9,7 +9,7 @@ const resource = {
   getInfo: (req, res, next) => {
     res.contentType = 'json'
     const result = {}
-    UserModel.findByName(req.$getInfo.name)
+    UserModel.findByName(req.$currentUserInfo.name)
       .then(function (data) {
         result.state = true
         result.data = data
@@ -25,13 +25,13 @@ const resource = {
   update: {
     password: (req, res, next) => {
       UserModel.findByEmailAndPassword({
-        email: req.$getInfo.email,
+        email: req.$currentUserInfo.email,
         password: common.md5(req.body.oldPassword)
       })
         .then(data => empty(data) ? Promise.reject('旧密码错误') : data)
         .then(data => {
           return UserModel.update({
-            email: req.$getInfo.email,
+            email: req.$currentUserInfo.email,
             password: common.md5(req.body.oldPassword)
           }, {
             password: common.md5(req.body.newPassword)
@@ -50,7 +50,7 @@ const resource = {
       const uploadedFile = req.files.file
       const suffix = uploadedFile.name.split('.').pop()
       const newFilePath = `/static/userHeader/${uuidv1()}.${suffix}`
-      const email = req.$getInfo.email
+      const email = req.$currentUserInfo.email
       /**
        * 上传新的头像文件，删除旧的文件
        * 更新数据库里的头像url

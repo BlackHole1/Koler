@@ -4,7 +4,7 @@ let PWMolde = M('problemsWarehouse')
 const resource = {
   add: (req, res, next) => {
     const {name, title, content, score, tags, note, answer} = req.body
-    const email = req.$getInfo.email
+    const email = req.$currentUserInfo.email
     PWMolde.findByEmailAndName(email, name)
       .then(data => {
         if (data.length !== 1) {
@@ -39,7 +39,7 @@ const resource = {
   },
   del: (req, res, next) => {
     const { name, id } = req.query
-    const email = req.$getInfo.email
+    const email = req.$currentUserInfo.email
     PWMolde.findByEmailAndName(email, name)
       .then(data => {
         if (data.length !== 1) {
