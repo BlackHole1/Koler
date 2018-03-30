@@ -37,6 +37,31 @@ const resource = {
       })
       .unified((state, data) => res.send({state, data}))
   },
+  del: (req, res, next) => {
+    const email = req.$currentUserInfo.email
+    const name = req.query.name
+
+    let testDel = () => TestModel.remove({
+      email,
+      name
+    })
+    .catch(() => Promise.reject('删除失败'))
+    .then(data => Promise.resolve('删除成功'))
+
+    TestModel.findByEmailAndName(email, name)
+      .then(data => {
+        if (data.length !== 1) {
+          return Promise.reject('不存在此试卷')
+        }
+        return testDel()
+      })
+      .unified((state, data) => {
+        res.send({
+          state,
+          data
+        })
+      })
+  },
   update: (req, res, next) => {
     const email = req.$currentUserInfo.email
     const {name, newName} = req.body

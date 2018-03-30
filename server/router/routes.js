@@ -83,6 +83,10 @@ const routes = {
       'put': [
         validate.test.update,
         test.update
+      ],
+      'del': [
+        validate.test.del,
+        test.del
       ]
     },
     'testSubject': {
