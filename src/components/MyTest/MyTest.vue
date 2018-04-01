@@ -11,7 +11,7 @@
           <v-jumbotron v-else>
             <div class="mytest-operation">
               <el-button type="text" @click="create">创建试卷</el-button>
-              <el-button type="text">删除试卷</el-button>
+              <el-button type="text" @click="del">删除试卷</el-button>
               <el-button type="text" @click="rename">重命名试卷</el-button>
             </div>
             <el-button type="primary" size="medium" icon="document" class="mytest-button" v-for="name in getList" :key="name" @click="testEntry(name)">{{name}}</el-button>
@@ -48,6 +48,16 @@
           <el-button type="primary" size="small" icon="el-icon-check" @click="createTest">确 定</el-button>
         </span>
       </el-dialog>
+      <el-dialog
+        :title="dialog.del.title"
+        :visible.sync="dialog.del.state"
+        width="22%">
+        <el-input size="medium" v-model="dialog.del.name" placeholder="请输入要删除试卷的名称"></el-input>
+        <span slot="footer" class="dialog-footer">
+          <el-button size="small" icon="el-icon-close" @click="cancelDialog('del')">取 消</el-button>
+          <el-button type="primary" size="small" icon="el-icon-check" @click="delTest">确 定</el-button>
+        </span>
+      </el-dialog>
     </div>
     <router-view v-else></router-view>
   </div>
@@ -75,6 +85,11 @@ export default {
           title: '重命名试卷',
           name: '',
           newName: ''
+        },
+        del: {
+          state: false,
+          title: '删除试卷',
+          name: ''
         }
       }
     }
@@ -111,6 +126,9 @@ export default {
     rename () {
       this.dialog.rename.state = true
     },
+    del () {
+      this.dialog.del.state = true
+    },
     createTest () {
       const name = this.dialog.create.name
       if (!isNoSymbols(name)) return this.$message.error('试卷名称里只能包含英文、中文')
@@ -142,6 +160,19 @@ export default {
           }
         })
     },
+    delTest () {
+      const name = this.dialog.del.name
+      if (!isNoSymbols(name)) return this.$message.error('试卷名称里只能包含英文、中文')
+      this.$http.delete('/Api/test/?name=' + name)
+        .then(resp => {
+          const {state, data} = resp.data
+          this.$message[state ? 'success' : 'error'](data)
+          if (state) {
+            this.reset('del')
+            this.gettestList()
+          }
+        })
+    },
     cancelDialog (name) {
       this.dialog[name].state = false
     },
@@ -156,6 +187,11 @@ export default {
         case 'create':
           modelInfo.state = false
           modelInfo.name = ''
+          break
+        case 'del':
+          modelInfo.state = false
+          modelInfo.name = ''
+          break
       }
     }
   },
