@@ -502,6 +502,7 @@ export default {
         display: none;
       }
       .CodeMirror-scroll {
+        opacity: 0;
         min-height: auto;
         .CodeMirror-code {
           opacity: 0;
