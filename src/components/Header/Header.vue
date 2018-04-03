@@ -30,9 +30,9 @@ export default {
     ]),
     activeIndex () {
       let activeName = ''
-      if (this.$route.name === 'Main') {
+      if (this.$route.name === 'Main' || this.$route.name === 'ProblemsWarehouse') {
         activeName = '/'
-      } else if (this.$route.name === 'MyTest') {
+      } else if (this.$route.name === 'MyTest' || this.$route.name === 'TestDetails') {
         activeName = '/MyTest'
       } else if (this.$route.name === 'onlineExam') {
         activeName = '/onlineExam'

@@ -67,6 +67,7 @@ window.hljs = hljs
 export default {
   name: 'TestDetails',
   created () {
+    console.log(this.$route)
     this.testName = this.$route.params.name
     let testData = this.getData
     // 当用户刷新页面时，vuex里的试卷列表将为空，则需要重新发送请求
