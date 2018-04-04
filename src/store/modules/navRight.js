@@ -65,7 +65,7 @@ const actions = {
     let content = {}
     if (data.model === 'user') {
       new Vue().$http.get('/Api/user').then(resp => {
-        content = resp.data
+        content = resp.data.data
         setState(content)
       })
     } else if (data.model === 'subject') {

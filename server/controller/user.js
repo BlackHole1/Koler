@@ -7,19 +7,13 @@ let UserModel = M('user')
 
 const resource = {
   getInfo: (req, res, next) => {
-    res.contentType = 'json'
-    const result = {}
     UserModel.findByName(req.$currentUserInfo.name)
-      .then(function (data) {
-        result.state = true
-        result.data = data
-      })
-      .catch(function (error) {
-        result.state = false
-        result.data = error
-      })
-      .then(function () {
-        res.send(result.data)
+      .unified((state, data) => {
+        console.log(state, data)
+        res.send({
+          state,
+          data
+        })
       })
   },
   update: {
