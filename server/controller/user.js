@@ -9,7 +9,6 @@ const resource = {
   getInfo: (req, res, next) => {
     UserModel.findByName(req.$currentUserInfo.name)
       .unified((state, data) => {
-        console.log(state, data)
         res.send({
           state,
           data
