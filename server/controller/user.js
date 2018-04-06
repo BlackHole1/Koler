@@ -17,20 +17,22 @@ const resource = {
   },
   update: {
     password: (req, res, next) => {
+      let updatePassword = () => UserModel.update({
+        email: req.$currentUserInfo.email,
+        password: common.md5(req.body.oldPassword)
+      }, {
+        password: common.md5(req.body.newPassword)
+      })
+        .catch(() => Promise.reject('更新数据时失败'))
+        .then(data => Promise.resolve('修改密码成功'))
+
       UserModel.findByEmailAndPassword({
         email: req.$currentUserInfo.email,
         password: common.md5(req.body.oldPassword)
       })
         .then(data => empty(data) ? Promise.reject('旧密码错误') : data)
         .then(data => {
-          return UserModel.update({
-            email: req.$currentUserInfo.email,
-            password: common.md5(req.body.oldPassword)
-          }, {
-            password: common.md5(req.body.newPassword)
-          })
-            .catch(() => Promise.reject('更新数据时失败'))
-            .then(data => Promise.resolve('修改密码成功'))
+          return updatePassword()
         })
         .unified((state, data) => {
           res.send({
