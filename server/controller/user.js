@@ -50,6 +50,16 @@ const resource = {
        * 上传新的头像文件，删除旧的文件
        * 更新数据库里的头像url
        */
+      let updateHeader = () => UserModel.update({
+        email
+      }, {
+        $set: {
+          avatar_url: newFilePath
+        }
+      })
+        .catch(() => Promise.reject('更新头像失败'))
+        .then(() => Promise.resolve('更新头像成功'))
+
       UserModel.findByEmail(email)
         .then(data => {
           const readStream = fs.createReadStream(uploadedFile.path)
@@ -65,15 +75,7 @@ const resource = {
             }
           })
           // 更新数据库里的头像信息
-          return UserModel.update({
-            email
-          }, {
-            $set: {
-              avatar_url: newFilePath
-            }
-          })
-            .catch(() => Promise.reject('更新头像失败'))
-            .then(() => Promise.resolve('更新头像成功'))
+          return updateHeader()
         })
         .unified((state, data) => {
           res.send({
