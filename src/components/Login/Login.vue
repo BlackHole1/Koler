@@ -94,6 +94,7 @@
               this.$store.dispatch((data.state) ? 'login/addToken' : 'login/delToken', data.token)
               this.$message[data.state ? 'success' : 'warning'](data.data)
               data.state && this.$router.push('/')
+              this.loginForm.pass = ''
             })
             .catch(() => {
               this.loading = false
