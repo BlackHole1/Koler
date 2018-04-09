@@ -106,6 +106,7 @@ export default {
         })
           .then(resp => {
             this.$message[resp.data.state ? 'success' : 'error'](resp.data.data)
+            this.resetForm('updateUserInfo')
           })
       })
     },
