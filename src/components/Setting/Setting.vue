@@ -27,7 +27,7 @@
                 <el-input v-model="userInfo.newPassword" size="medium" type="password"></el-input>
               </el-form-item>
               <el-form-item label="确认密码" prop="confirmPassword">
-                <el-input v-model="userInfo.confirmPassword" size="medium" type="password"></el-input>
+                <el-input v-model="userInfo.confirmPassword" size="medium" type="password" @keyup.enter.native="updatePassWord()"></el-input>
               </el-form-item>
             </el-form>
             <div class="operation">
