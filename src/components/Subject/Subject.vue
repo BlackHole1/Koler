@@ -51,13 +51,13 @@
             <el-input v-model="create.title" :autofocus="true" size="medium"></el-input>
           </el-form-item>
           <el-form-item label="题目内容" prop="content">
-            <v-markdown v-model="create.content" :configs="simplemdeConfigs" :highlight="true" preview-class="markdown-body"></v-markdown>
+            <v-markdown v-model="create.content" :configs="simplemdeConfigs" :highlight="true" preview-class="markdown-body" ref="createSimplemdeContent"></v-markdown>
           </el-form-item>
           <el-form-item label="题目备注" prop="note">
-            <v-markdown v-model="create.note" :configs="simplemdeConfigs" :highlight="true" preview-class="markdown-body"></v-markdown>
+            <v-markdown v-model="create.note" :configs="simplemdeConfigs" :highlight="true" preview-class="markdown-body" ref="createSimplemdeNote"></v-markdown>
           </el-form-item>
           <el-form-item label="题目答案" prop="answer">
-            <v-markdown v-model="create.answer" :configs="simplemdeConfigs" :highlight="true" preview-class="markdown-body"></v-markdown>
+            <v-markdown v-model="create.answer" :configs="simplemdeConfigs" :highlight="true" preview-class="markdown-body" ref="createSimplemdeAnswer"></v-markdown>
           </el-form-item>
           <el-form-item label="题目分值" prop="score">
             <el-input-number v-model="create.score" size="small" :min="1" :max="1000"></el-input-number>
@@ -104,6 +104,13 @@ import Jumbotron from '~/Jumbotron'
 import markdownEditor from 'vue-simplemde/src/markdown-editor'
 import hljs from 'highlight.js'
 window.hljs = hljs
+window.addEventListener('drop', e => {
+  e = e || event
+  e.preventDefault()
+  if (e.target.tagName === 'CodeMirror-scroll') {  // check wich element is our target
+    e.preventDefault()
+  }
+}, false)
 
 export default {
   data () {
@@ -166,7 +173,8 @@ export default {
     'v-markdown': markdownEditor
   },
   watch: {
-    '$route': 'subjectInfo'
+    '$route': 'subjectInfo',
+    'dialog.model': 'editCopyImage'
   },
   computed: {
     ...mapGetters('problemsWarehouse', [
@@ -373,6 +381,60 @@ export default {
       const state = !e.currentTarget.getAttribute('aria-checked')
       const id = e.currentTarget.getAttribute('data-id')
       state ? this.add(id) : this.del(id)
+    },
+    editCopyImage () {
+      if (this.dialog.model !== 'create') return true
+
+      this.$nextTick(() => {
+        [this.$refs.createSimplemdeContent, this.$refs.createSimplemdeNote, this.$refs.createSimplemdeAnswer].map(({simplemde}) => {
+          simplemde.codemirror.on('drop', (editor, e) => {
+            if (!(e.dataTransfer && e.dataTransfer.files)) {
+              this.$message({
+                message: '该浏览器不支持操作',
+                type: 'error'
+              })
+              return
+            }
+            let dataList = e.dataTransfer.files
+            let imageFiles = []
+            for (let i = 0; i < dataList.length; i++) {
+              if (dataList[i].type.indexOf('image') === -1) {
+                this.$message({
+                  message: '仅支持图片拖拽',
+                  type: 'error'
+                })
+                continue
+              }
+              imageFiles.push(dataList[i])
+            }
+            this.uploadImagesFile(imageFiles)
+          })
+
+          simplemde.codemirror.on('paste', (editor, e) => {
+            if (!(e.clipboardData && e.clipboardData.items)) {
+              this.$message({
+                message: '该浏览器不支持操作',
+                type: 'error'
+              })
+              return
+            }
+            try {
+              let dataList = e.clipboardData.items
+              if (dataList[0].kind === 'file' && dataList[0].getAsFile().type.indexOf('image') !== -1) {
+                this.uploadImagesFile([dataList[0].getAsFile()])
+              }
+            } catch (e) {
+              this.$message({
+                message: '请确定你粘贴板是图片，而不是文件',
+                type: 'error'
+              })
+            }
+          })
+        })
+      })
+    },
+    uploadImagesFile (files) {
+      console.log(files)
     }
   }
 }
