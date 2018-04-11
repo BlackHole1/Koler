@@ -423,7 +423,6 @@ export default {
                 type: 'error'
               })
             }
-            e.preventDefault()
           })
         })
       })
