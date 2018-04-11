@@ -66,6 +66,22 @@ const subject = {
       }
       cb(req, res, next)
     }
+  },
+  upload: {
+    post: cb => {
+      return (req, res, next) => {
+        console.log(req.body)
+        if (!checkVal(req, 'files') || !checkVal(req.files, 'file') || !checkVal(req.files.file, 'name')) {
+          return returnFalse(res, '请先上传你的图片')
+        }
+        const uploadedFile = req.files.file
+        const suffix = uploadedFile.name.split('.').pop()
+        if (!/(jpg|jpeg|png)$/.test(suffix)) {
+          return returnFalse(res, '上传的图片后缀必须为jpg、jpeg、png')
+        }
+        cb(req, res, next)
+      }
+    }
   }
 }
 

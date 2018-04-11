@@ -35,7 +35,13 @@ const routes = {
       'del': [
         validate.subject.del,
         subject.del
-      ]
+      ],
+      'upload': {
+        'post': [
+          validate.subject.upload.post,
+          subject.upload.post
+        ]
+      }
     },
     // 只针对当前用户的操作
     'user': {

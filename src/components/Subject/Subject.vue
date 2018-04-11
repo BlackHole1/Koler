@@ -104,13 +104,6 @@ import Jumbotron from '~/Jumbotron'
 import markdownEditor from 'vue-simplemde/src/markdown-editor'
 import hljs from 'highlight.js'
 window.hljs = hljs
-window.addEventListener('drop', e => {
-  e = e || event
-  e.preventDefault()
-  if (e.target.tagName === 'CodeMirror-scroll') {  // check wich element is our target
-    e.preventDefault()
-  }
-}, false)
 
 export default {
   data () {
@@ -386,8 +379,8 @@ export default {
       if (this.dialog.model !== 'create') return true
 
       this.$nextTick(() => {
-        [this.$refs.createSimplemdeContent, this.$refs.createSimplemdeNote, this.$refs.createSimplemdeAnswer].map(({simplemde}) => {
-          simplemde.codemirror.on('drop', (editor, e) => {
+        [this.$refs.createSimplemdeContent, this.$refs.createSimplemdeNote, this.$refs.createSimplemdeAnswer].map(({simplemde}) => {  // 一共有三个编辑窗口，所以需要循环监听事件
+          simplemde.codemirror.on('drop', (editor, e) => {  // 拖拽图片的触发函数
             if (!(e.dataTransfer && e.dataTransfer.files)) {
               this.$message({
                 message: '该浏览器不支持操作',
@@ -407,10 +400,11 @@ export default {
               }
               imageFiles.push(dataList[i])
             }
-            this.uploadImagesFile(imageFiles)
+            this.uploadImagesFile(simplemde.codemirror, imageFiles)
+            e.preventDefault()
           })
 
-          simplemde.codemirror.on('paste', (editor, e) => {
+          simplemde.codemirror.on('paste', (editor, e) => { // 粘贴图片的触发函数
             if (!(e.clipboardData && e.clipboardData.items)) {
               this.$message({
                 message: '该浏览器不支持操作',
@@ -421,7 +415,7 @@ export default {
             try {
               let dataList = e.clipboardData.items
               if (dataList[0].kind === 'file' && dataList[0].getAsFile().type.indexOf('image') !== -1) {
-                this.uploadImagesFile([dataList[0].getAsFile()])
+                this.uploadImagesFile(simplemde.codemirror, [dataList[0].getAsFile()])
               }
             } catch (e) {
               this.$message({
@@ -429,12 +423,43 @@ export default {
                 type: 'error'
               })
             }
+            e.preventDefault()
           })
         })
       })
     },
-    uploadImagesFile (files) {
-      console.log(files)
+    uploadImagesFile (simplemde, files) {
+      let params = files.map(file => {
+        let param = new FormData()
+        param.append('file', file, file.name)
+        return param
+      })
+      let makeRequest = params => {
+        return this.$http.post('/Api/subject/upload', params)
+      }
+      let requests = params.map(makeRequest)
+      // 因为我是把axiox封装成vue插件来使用，这样会导致，this.$http是实例化后的，而不是他本身
+      // axios维护者说的解决方案是，重新引入axios包，来使用。
+      // 但是我觉得没有必要。axios.all内部是Promise.all。axios.spread实现代码比较少，就直接拿过来，重新赋值给axios就好了
+      // https://forum.vuejs.org/t/axios-all-is-not-a-function-inside-vue-component/15601
+      this.$http.spread = callback => {
+        return arr => {
+          return callback.apply(null, arr)
+        }
+      }
+      Promise.all(requests)
+        .then(this.$http.spread((...resps) => {
+          for (let i = 0; i < resps.length; i++) {
+            let {state, data} = resps[i].data
+            if (!state) { // 如果不是图片文件，则跳过
+              this.$message.error(data)
+              continue
+            }
+            let url = `![](${location.origin + data})`  // 拼接成markdown语法
+            let content = simplemde.getValue()
+            simplemde.setValue(content + url + '\n')  // 和编辑框之前的内容进行拼接
+          }
+        }))
     }
   }
 }

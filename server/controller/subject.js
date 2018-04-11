@@ -1,5 +1,7 @@
 const M = require('../model')
 let PWMolde = M('problemsWarehouse')
+const uuidv1 = require('uuid/v1')
+const fs = require('fs')
 
 const resource = {
   add: (req, res, next) => {
@@ -64,6 +66,21 @@ const resource = {
           data
         })
       })
+  },
+  upload: {
+    post: (req, res, next) => {
+      const uploadedFile = req.files.file
+      const suffix = uploadedFile.name.split('.').pop()
+      const newFilePath = `/static/subject/${uuidv1()}.${suffix}`
+
+      const readStream = fs.createReadStream(uploadedFile.path)
+      const writeStream = fs.createWriteStream('..' + newFilePath)
+      readStream.pipe(writeStream)
+      res.send({
+        state: true,
+        data: newFilePath
+      })
+    }
   }
 }
 

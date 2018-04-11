@@ -15,3 +15,7 @@ yarn-error.log*
 
 /static/userHeader/*
 !/static/userHeader/defaultUserHeader.png
+!/static/userHeader/README.md
+
+/static/subject/*
+!/static/subject/README.md
