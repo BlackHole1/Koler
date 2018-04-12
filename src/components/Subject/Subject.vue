@@ -149,7 +149,18 @@ export default {
       },
       rules: {
         create: {
-          title: [{required: true, message: '请输入标题', trigger: 'blur'}],
+          title: [{
+            validator: (rule, value, callback) => {
+              if (!value) {
+                return callback(new Error('请输入标题'))
+              }
+              if (value[0] === ' ' || value[value.length - 1] === ' ') {
+                return callback(new Error('标题的开始处或结尾不能有空格'))
+              }
+              callback()
+            },
+            trigger: 'blur'
+          }],
           content: [{required: true, message: '请输入题目内容', trigger: 'blur'}]
         }
       }
