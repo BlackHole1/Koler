@@ -70,7 +70,6 @@ const subject = {
   upload: {
     post: cb => {
       return (req, res, next) => {
-        console.log(req.body)
         if (!checkVal(req, 'files') || !checkVal(req.files, 'file') || !checkVal(req.files.file, 'name')) {
           return returnFalse(res, '请先上传你的图片')
         }
