@@ -437,16 +437,8 @@ export default {
         return this.$http.post('/Api/subject/upload', params)
       }
       let requests = params.map(makeRequest)
-      // 因为我是把axiox封装成vue插件来使用，这样会导致，this.$http是实例化后的，而不是他本身
-      // axios维护者说的解决方案是，重新引入axios包，来使用。
-      // 但是我觉得没有必要。axios.all内部是Promise.all。axios.spread实现代码比较少，就直接拿过来，重新赋值给axios就好了
-      // https://forum.vuejs.org/t/axios-all-is-not-a-function-inside-vue-component/15601
-      this.$http.spread = callback => {
-        return arr => {
-          return callback.apply(null, arr)
-        }
-      }
-      Promise.all(requests)
+
+      this.$http.all(requests)
         .then(this.$http.spread((...resps) => {
           for (let i = 0; i < resps.length; i++) {
             let {state, data} = resps[i].data
