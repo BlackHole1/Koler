@@ -9,7 +9,7 @@
         <div v-else>
           <v-jumbotron class="test-operation">
             <el-button type="text" @click="pullSubject">从题库拉入试题</el-button>
-            <el-button type="text">准备考试</el-button>
+            <el-button type="text" @click="startExamDialog.state = true">准备考试</el-button>
           </v-jumbotron>
           <br><br>
           <el-card class="box-card" v-for="(test, id) in details" :key="test.id">
@@ -52,13 +52,38 @@
       width="40%">
       <v-markdown v-model="noteDialog.data" v-if="noteDialog.state" :configs="testSimplemdeConfigs" :highlight="true" ref="noteSimplemde" preview-class="markdown-body"></v-markdown>
     </el-dialog>
+    <el-dialog
+      title="选中要考试的学生"
+      :visible.sync="startExamDialog.state"
+      width="1200px">
+      <el-row class="user-list">
+        <el-col :span=4 v-for="(item, index) in userList" :key="index" class="card">
+          <div class="user" :class="{'selectUser': item.selectUser}" @click="selectUser(item, index)">
+            <el-card :body-style="{ padding: '0px' }">
+              <img :src="item.avatar_url" class="image">
+              <div class="footer">
+                <span>{{item.name}}</span>
+                <div class="bottom clearfix">
+                  <time class="email">{{ item.email }}</time>
+                </div>
+              </div>
+            </el-card>
+          </div>
+        </el-col>
+      </el-row>
+      <span slot="footer" class="dialog-footer">
+        <el-button type="primary">确 定</el-button>
+      </span>
+    </el-dialog>
   </div>
 </template>
 
 <script>
+import Vue from 'vue'
 import Header from '~/Header'
 import Jumbotron from '~/Jumbotron'
 import navRight from '~/NavRight'
+import {arrayRemove} from '../../../common/utils'
 import {mapGetters, mapActions} from 'vuex'
 import markdownEditor from 'vue-simplemde/src/markdown-editor'
 import hljs from 'highlight.js'
@@ -67,7 +92,9 @@ window.hljs = hljs
 export default {
   name: 'TestDetails',
   created () {
-    console.log(this.$route)
+    // 获取用户列表
+    this.getUserList()
+
     this.testName = this.$route.params.name
     let testData = this.getData
     // 当用户刷新页面时，vuex里的试卷列表将为空，则需要重新发送请求
@@ -95,6 +122,16 @@ export default {
       testName: {},
       details: [],
       refreshList: true,
+      userList: [{
+        name: '',
+        email: '',
+        type: '',
+        upper: '',
+        upper_name: '',
+        under: '',
+        avatar_url: '',
+        created_date: ''
+      }],
       testSimplemdeConfigs: { // simplemde配置
         spellChecker: false, // 禁用拼写检查
         status: false, // 禁用底部状态栏
@@ -108,6 +145,10 @@ export default {
       noteDialog: {
         state: false,  // 是否显示答案
         data: ''  // 显示id的答案
+      },
+      startExamDialog: {
+        state: false, // 是否显示下属列表
+        data: []  // 已经选中的学生
       }
     }
   },
@@ -259,6 +300,26 @@ export default {
           })
       })
       .catch(() => {})
+    },
+    getUserList () {
+      this.$http.get('/Api/users')
+        .then(resp => {
+          let { state, data } = resp.data
+          if (!state) {
+            this.$message.error(data)
+          }
+          this.userList = data
+        })
+    },
+    selectUser (item, index) {
+      let userList = this.startExamDialog.data
+      if (item.selectUser) {
+        arrayRemove(userList, item._id)
+        Vue.set(item, 'selectUser', false)
+      } else {
+        userList.push(item._id)
+        Vue.set(item, 'selectUser', true)
+      }
     }
   },
   components: {
@@ -332,6 +393,53 @@ export default {
           }
         }
       }
+    }
+  }
+  .user-list {
+    .card {
+      margin-bottom: 30px;
+      margin-right: 30px;
+      &:last-child {
+        margin-right: 0;
+      }
+      &:hover {
+        .selectUser
+      }
+      .footer{
+        padding: 14px;
+      }
+    }
+    .email {
+      font-size: 13px;
+      color: #999;
+    }
+    .bottom {
+      margin-top: 13px;
+      line-height: 12px;
+    }
+    .button {
+      padding: 0;
+      float: right;
+      color: #f56c6c;
+    }
+    .image {
+      width: 100%;
+      display: block;
+    }
+    .clearfix:before,
+    .clearfix:after {
+        display: table;
+        content: "";
+    }
+    .clearfix:after {
+        clear: both
+    }
+  }
+  .selectUser {
+    * {
+      background-color: #0366d6;
+      color: #fff;
+      cursor: pointer;
     }
   }
 </style>
