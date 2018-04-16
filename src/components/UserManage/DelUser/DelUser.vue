@@ -94,6 +94,7 @@ export default {
   .email {
     font-size: 13px;
     color: #999;
+    word-wrap:break-word;
   }
   .bottom {
     margin-top: 13px;
