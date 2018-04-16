@@ -8,7 +8,7 @@
         <el-input v-model="setUserInfo.email" size="medium"></el-input>
       </el-form-item>
       <el-form-item label="设置密码" prop="password">
-        <el-input v-model="setUserInfo.password" size="medium"></el-input>
+        <el-input v-model="setUserInfo.password" size="medium" @keyup.enter.native="updateAddUser"></el-input>
       </el-form-item>
     </el-form>
     <el-button size="small" icon="el-icon-refresh" @click="resetForm('updateAddUser')">重置</el-button>
