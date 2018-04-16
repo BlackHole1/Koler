@@ -437,9 +437,11 @@ export default {
   }
   .selectUser {
     * {
+      cursor: pointer;
+    }
+    .footer {
       background-color: #0366d6;
       color: #fff;
-      cursor: pointer;
     }
   }
 </style>
