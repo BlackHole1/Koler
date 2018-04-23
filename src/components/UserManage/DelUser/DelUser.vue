@@ -3,12 +3,14 @@
     <el-row class="user-list">
       <el-col :span=5 v-for="(o) in userList" :key="o._id" class="card">
         <el-card :body-style="{ padding: '0px' }">
-          <img :src="o.avatar_url" class="image">
+          <div class="image">
+            <img :src="o.avatar_url">
+            <el-button type="danger" icon="el-icon-delete" circle @click="delUser(o._id)"></el-button>
+          </div>
           <div style="padding: 14px;">
             <span>{{o.name}}</span>
             <div class="bottom clearfix">
               <time class="email">{{ o.email }}</time>
-              <el-button type="text" class="button" @click="delUser(o._id)">删除</el-button>
             </div>
           </div>
         </el-card>
@@ -90,6 +92,16 @@ export default {
     &:last-child {
       margin-right: 0;
     }
+    &:hover {
+      .image {
+        img {
+          background: rgba(248, 218, 218, 0.137);
+        }
+        button {
+          opacity: 1;
+        }
+      }
+    }
   }
   .email {
     font-size: 13px;
@@ -106,8 +118,18 @@ export default {
     color: #f56c6c;
   }
   .image {
-    width: 100%;
-    display: block;
+    position: relative;
+    width:100%;
+    img {
+      width: 100%;
+      z-index: -1;
+    }
+    button {
+      position: absolute;
+      top: 50%;
+      left: 40%;
+      opacity: 0;
+    }
   }
   .clearfix:before,
   .clearfix:after {
