@@ -72,7 +72,7 @@
         </el-col>
       </el-row>
       <span slot="footer" class="dialog-footer">
-        <el-button type="primary">确 定</el-button>
+        <el-button type="primary" @click="startExam">确 定</el-button>
       </span>
     </el-dialog>
   </div>
@@ -320,6 +320,29 @@ export default {
         userList.push(item._id)
         Vue.set(item, 'selectUser', true)
       }
+    },
+    startExam () {
+      let userList = this.startExamDialog.data
+      if (userList.length === 0) {
+        return this.$message.error('请至少选择一名用户进行考试')
+      }
+      this.$prompt('请为此次考试起个名字', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消'
+      }).then(({ value }) => {
+        if (value == null) {
+          return this.$message.error('名称不能为空')
+        }
+        // this.$http.post('/Api/exam')
+        //   .then(resp => {
+        //     const {state, data} = resp.data
+        //     this.$message[state](data)
+        //     if (state) {
+        //       this.startExamDialog.state = false
+        //       this.startExamDialog.data = []
+        //     }
+        //   })
+      }).catch(() => {})
     }
   },
   components: {
