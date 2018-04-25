@@ -83,7 +83,6 @@ import Vue from 'vue'
 import Header from '~/Header'
 import Jumbotron from '~/Jumbotron'
 import navRight from '~/NavRight'
-import {arrayRemove} from '../../../common/utils'
 import {mapGetters, mapActions} from 'vuex'
 import markdownEditor from 'vue-simplemde/src/markdown-editor'
 import hljs from 'highlight.js'
@@ -314,7 +313,7 @@ export default {
     selectUser (item, index) {
       let userList = this.startExamDialog.data
       if (item.selectUser) {
-        arrayRemove(userList, item._id)
+        this.$array(userList).remove([item.id])
         Vue.set(item, 'selectUser', false)
       } else {
         userList.push(item._id)

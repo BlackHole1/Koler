@@ -141,15 +141,6 @@ const sessionStorageAppend = (key, val, deDuplication = false) => {
   return newData
 }
 
-const arrayRemove = (arr1, arr2) => {
-  let len = arr1.length
-  for (let i = 0; i < len; i++) {
-    if (arr2.indexOf(arr1[i]) !== -1) {
-      arr1.splice(i, 1)
-    }
-  }
-}
-
 module.exports = {
   isString,
   isNumber,
@@ -159,6 +150,5 @@ module.exports = {
   isEnAndCn,
   isEmail,
   getSubName,
-  sessionStorageAppend,
-  arrayRemove
+  sessionStorageAppend
 }

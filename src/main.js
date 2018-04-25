@@ -9,12 +9,14 @@ import ElementUI from 'element-ui'
 import 'element-ui/lib/theme-chalk/index.css'
 import axios from './extensions/axios'
 import store from './store'
+import vueArray from 'vue-array'
 
 Vue.config.productionTip = false
 
 Vue.use(Vuex)
 Vue.use(ElementUI)
 Vue.use(axios)
+Vue.use(vueArray)
 
 /* eslint-disable no-new */
 new Vue({
