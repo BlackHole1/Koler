@@ -62,10 +62,10 @@
         },
         rules: {
           email: [
-            { validator: checkUser, trigger: 'blur' }
+            { validator: checkUser, trigger: 'change' }
           ],
           pass: [
-            { validator: checkPass, trigger: 'blur' }
+            { validator: checkPass, trigger: 'change' }
           ]
         },
         emailSuffix: [
