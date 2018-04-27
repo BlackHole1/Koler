@@ -62,7 +62,7 @@ export default {
               callback()
             }
           },
-          trigger: 'blur'
+          trigger: 'change'
         }],
         newPassword: [{
           validator: (rule, value, callback) => {
@@ -75,7 +75,7 @@ export default {
               callback()
             }
           },
-          trigger: 'blur'
+          trigger: 'change'
         }],
         confirmPassword: [{
           validator: (rule, value, callback) => {
@@ -87,7 +87,7 @@ export default {
               callback()
             }
           },
-          trigger: 'blur'
+          trigger: 'change'
         }]
       }
     }
