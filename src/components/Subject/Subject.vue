@@ -159,7 +159,7 @@ export default {
               }
               callback()
             },
-            trigger: 'blur'
+            trigger: 'change'
           }],
           content: [{required: true, message: '请输入题目内容', trigger: 'blur'}]
         }
