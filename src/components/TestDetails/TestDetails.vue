@@ -174,7 +174,7 @@ export default {
       }
     },
     setTestList (data) {
-      data.some(test => {
+      return data.some(test => {
         if (test.name === this.testName) {
           this.details = test.details
           return true
