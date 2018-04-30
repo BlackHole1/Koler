@@ -38,7 +38,6 @@
             <el-button type="danger" @click="deleteSubject(subject._id)"  size="small" icon="el-icon-delete"> 删 除 </el-button>
           </div>
         </el-card>
-        <br><br><br>
       </div>
     </div>
     <el-dialog
@@ -477,9 +476,6 @@ export default {
   .box-card {
     background-color: rgba(255, 255, 255, 0.9215686274509803);
     margin-bottom: 20px;
-    &:last-child {
-      margin-bottom: 0;
-    }
     .clearfix {
       .test-checkbox {
         margin-right: 10px; 
