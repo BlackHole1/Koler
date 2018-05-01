@@ -360,12 +360,9 @@ export default {
       font-size: 15px;
     }
   }
-  .box-card {
+  .C-test .box-card {
     background-color: rgba(255, 255, 255, 0.9215686274509803);
     margin-bottom: 20px;
-    &:last-child {
-      margin-bottom: 0;
-    }
     .clearfix {
       .test-checkbox {
         margin-right: 10px; 
