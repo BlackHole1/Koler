@@ -32,7 +32,7 @@
           </el-option>
         </el-select>
         <br><br>
-        <el-input size="medium" placeholder="新名称" v-model="dialog.rename.newName"></el-input>
+        <el-input size="medium" placeholder="新名称" v-model="dialog.rename.newName" @keyup.enter.native="renameTest"></el-input>
         <span slot="footer">
           <el-button size="small" icon="el-icon-close" @click="cancelDialog('rename')">取 消</el-button>
           <el-button type="primary" size="small" icon="el-icon-check" @click="renameTest">确 定</el-button>
