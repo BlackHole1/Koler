@@ -52,7 +52,7 @@
         :title="dialog.del.title"
         :visible.sync="dialog.del.state"
         width="22%">
-        <el-input size="medium" v-model="dialog.del.name" placeholder="请输入要删除试卷的名称"></el-input>
+        <el-input size="medium" v-model="dialog.del.name" placeholder="请输入要删除试卷的名称" @keyup.enter.native="delTest"></el-input>
         <span slot="footer" class="dialog-footer">
           <el-button size="small" icon="el-icon-close" @click="cancelDialog('del')">取 消</el-button>
           <el-button type="primary" size="small" icon="el-icon-check" @click="delTest">确 定</el-button>
