@@ -11,14 +11,24 @@
           <v-jumbotron v-else>
             <div class="mytest-operation">
               <el-button type="text" @click="create">创建试卷</el-button>
-              <el-button type="text" @click="del">删除试卷</el-button>
               <el-button type="text" @click="rename">重命名试卷</el-button>
+              <el-button type="text" @click="del">删除试卷</el-button>
             </div>
             <el-button type="primary" size="medium" icon="document" class="mytest-button" v-for="name in getList" :key="name" @click="testEntry(name)">{{name}}</el-button>
             <span style="clear: both;"></span>
           </v-jumbotron>
         </el-col>
       </el-row>
+      <el-dialog
+        :title="dialog.create.title"
+        :visible.sync="dialog.create.state"
+        width="22%">
+        <el-input size="medium" v-model="dialog.create.name" placeholder="请输入要创建试卷的名称" @keyup.enter.native="createTest"></el-input>
+        <span slot="footer" class="dialog-footer">
+          <el-button size="small" icon="el-icon-close" @click="cancelDialog('create')">取 消</el-button>
+          <el-button type="primary" size="small" icon="el-icon-check" @click="createTest">确 定</el-button>
+        </span>
+      </el-dialog>
       <el-dialog
         :title="dialog.rename.title"
         :visible.sync="dialog.rename.state"
@@ -36,16 +46,6 @@
         <span slot="footer">
           <el-button size="small" icon="el-icon-close" @click="cancelDialog('rename')">取 消</el-button>
           <el-button type="primary" size="small" icon="el-icon-check" @click="renameTest">确 定</el-button>
-        </span>
-      </el-dialog>
-      <el-dialog
-        :title="dialog.create.title"
-        :visible.sync="dialog.create.state"
-        width="22%">
-        <el-input size="medium" v-model="dialog.create.name" placeholder="请输入要创建试卷的名称" @keyup.enter.native="createTest"></el-input>
-        <span slot="footer" class="dialog-footer">
-          <el-button size="small" icon="el-icon-close" @click="cancelDialog('create')">取 消</el-button>
-          <el-button type="primary" size="small" icon="el-icon-check" @click="createTest">确 定</el-button>
         </span>
       </el-dialog>
       <el-dialog
