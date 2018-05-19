@@ -313,7 +313,7 @@ export default {
     selectUser (item, index) {
       let userList = this.startExamDialog.data
       if (item.selectUser) {
-        this.$array(userList).remove([item.id])
+        this.$array(userList).remove([item._id])
         Vue.set(item, 'selectUser', false)
       } else {
         userList.push(item._id)
