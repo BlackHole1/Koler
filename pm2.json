@@ -13,7 +13,8 @@
       "model",
       "lib",
       "router",
-      "middleware"
+      "middleware",
+      "socket"
     ],
     "watch_options": {
       "followSymlinks": false
