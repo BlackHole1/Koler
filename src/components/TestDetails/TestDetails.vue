@@ -9,7 +9,7 @@
         <div v-else>
           <v-jumbotron class="test-operation">
             <el-button type="text" @click="pullSubject">从题库拉入试题</el-button>
-            <el-button type="text" @click="startExamDialog.state = true">准备考试</el-button>
+            <el-button type="text" @click="readyExamDialog.state = true">准备考试</el-button>
           </v-jumbotron>
           <br><br>
           <el-card class="box-card" v-for="(test, id) in details" :key="test.id">
@@ -54,8 +54,26 @@
     </el-dialog>
     <el-dialog
       title="选中要考试的学生"
-      :visible.sync="startExamDialog.state"
+      :visible.sync="readyExamDialog.state"
       width="1200px">
+      <el-dialog
+        width="20%"
+        title="考试信息填写"
+        :visible.sync="startExamDialog.state"
+        append-to-body>
+        <el-input v-model="startExamDialog.data.name" placeholder="考试名称"></el-input>
+        <el-date-picker
+          v-model="startExamDialog.data.time"
+          type="datetime"
+          placeholder="请选择考试时间"
+          :default-time="getFutureHMS()"
+          time-arrow-control
+          style="margin-top: 20px; width: 100%">
+        </el-date-picker>
+        <span slot="footer" class="dialog-footer">
+          <el-button type="primary" @click="startExam">确 定</el-button>
+        </span>
+      </el-dialog>
       <el-row class="user-list">
         <el-col :span=4 v-for="(item, index) in userList" :key="index" class="card">
           <div class="user" :class="{'selectUser': item.selectUser}" @click="selectUser(item, index)">
@@ -72,7 +90,7 @@
         </el-col>
       </el-row>
       <span slot="footer" class="dialog-footer">
-        <el-button type="primary" @click="startExam">确 定</el-button>
+        <el-button type="primary" @click="readyExam">确 定</el-button>
       </span>
     </el-dialog>
   </div>
@@ -145,9 +163,16 @@ export default {
         state: false,  // 是否显示答案
         data: ''  // 显示id的答案
       },
-      startExamDialog: {
+      readyExamDialog: {
         state: false, // 是否显示下属列表
         data: []  // 已经选中的学生
+      },
+      startExamDialog: {
+        state: false, // 是否显示开始考试时的信息
+        data: {
+          name: '', // 考试名称
+          time: '' // 考试时间
+        }
       }
     }
   },
@@ -311,7 +336,7 @@ export default {
         })
     },
     selectUser (item, index) {
-      let userList = this.startExamDialog.data
+      let userList = this.readyExamDialog.data
       if (item.selectUser) {
         this.$array(userList).remove([item._id])
         Vue.set(item, 'selectUser', false)
@@ -320,28 +345,19 @@ export default {
         Vue.set(item, 'selectUser', true)
       }
     },
-    startExam () {
-      let userList = this.startExamDialog.data
+    readyExam () {
+      let userList = this.readyExamDialog.data
       if (userList.length === 0) {
         return this.$message.error('请至少选择一名用户进行考试')
       }
-      this.$prompt('请为此次考试起个名字', '提示', {
-        confirmButtonText: '确定',
-        cancelButtonText: '取消'
-      }).then(({ value }) => {
-        if (value == null) {
-          return this.$message.error('名称不能为空')
-        }
-        // this.$http.post('/Api/exam')
-        //   .then(resp => {
-        //     const {state, data} = resp.data
-        //     this.$message[state](data)
-        //     if (state) {
-        //       this.startExamDialog.state = false
-        //       this.startExamDialog.data = []
-        //     }
-        //   })
-      }).catch(() => {})
+      this.startExamDialog.state = true
+    },
+    startExam () {
+      // Todo
+    },
+    getFutureHMS () {
+      let date = new Date(Date.now() + 1800000) // 提前30分钟
+      return date.getHours() + ':' + date.getMinutes() + ':' + '00'
     }
   },
   components: {
