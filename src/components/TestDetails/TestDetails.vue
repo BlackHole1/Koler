@@ -90,6 +90,7 @@
         </el-col>
       </el-row>
       <span slot="footer" class="dialog-footer">
+        <el-button @click="resetExamDialog">重 置</el-button>
         <el-button type="primary" @click="readyExam">确 定</el-button>
       </span>
     </el-dialog>
@@ -353,7 +354,25 @@ export default {
       this.startExamDialog.state = true
     },
     startExam () {
-      // Todo
+      let {name, time} = this.startExamDialog.data
+      if (name === '' || name == null) {
+        return this.$message.error('名称不能为空')
+      }
+      if (time === '' || time == null) {
+        return this.$message.error('必须选择一个日期')
+      }
+      if (Date.now() > time.valueOf()) {
+        return this.$message.error('选择的日期不能是过去的时间')
+      }
+      // TODO
+    },
+    resetExamDialog () {
+      this.userList.map(item => {
+        item.selectUser = false
+      })
+      this.$array(this.readyExamDialog.data).replace([])
+      this.startExamDialog.data.name = ''
+      this.startExamDialog.data.time = ''
     },
     getFutureHMS () {
       let date = new Date(Date.now() + 1800000) // 提前30分钟
