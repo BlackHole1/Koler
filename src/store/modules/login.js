@@ -6,7 +6,7 @@ const state = {
 
 const getters = {
   getToken: state => {
-    return state.token
+    return sessionStorage.getItem('Koler-token')
   }
 }
 

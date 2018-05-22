@@ -98,11 +98,13 @@
 </template>
 
 <script>
+import io from 'socket.io-client'
 import Vue from 'vue'
 import Header from '~/Header'
 import Jumbotron from '~/Jumbotron'
 import navRight from '~/NavRight'
 import {mapGetters, mapActions} from 'vuex'
+import {serverAddress} from '../../../common/config.js'
 import markdownEditor from 'vue-simplemde/src/markdown-editor'
 import hljs from 'highlight.js'
 window.hljs = hljs
@@ -181,6 +183,9 @@ export default {
     ...mapGetters('test', [
       'getData',
       'getList'
+    ]),
+    ...mapGetters('login', [
+      'getToken'
     ])
   },
   methods: {
@@ -364,7 +369,20 @@ export default {
       if (Date.now() > time.valueOf()) {
         return this.$message.error('选择的日期不能是过去的时间')
       }
-      // TODO
+
+      const createData = {
+        token: this.getToken,
+        data: {
+          name: this.startExamDialog.data.name,
+          time: this.startExamDialog.data.time.valueOf(),
+          users: this.readyExamDialog.data
+        }
+      }
+
+      const wsExam = io(`${serverAddress}/exam`)
+      wsExam.emit('create', createData, data => {
+        // TODO
+      })
     },
     resetExamDialog () {
       this.userList.map(item => {
