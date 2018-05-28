@@ -70,13 +70,14 @@
           time-arrow-control
           style="margin-top: 20px; width: 100%">
         </el-date-picker>
+        <el-input v-model="startExamDialog.data.timeRange" placeholder="考试限定时间(单位: 分)" style="margin-top: 20px;"></el-input>
         <span slot="footer" class="dialog-footer">
           <el-button type="primary" @click="startExam">确 定</el-button>
         </span>
       </el-dialog>
       <el-row class="user-list">
         <el-col :span=4 v-for="(item, index) in userList" :key="index" class="card">
-          <div class="user" :class="{'selectUser': item.selectUser}" @click="selectUser(item, index)">
+          <div class="user" :class="{selectUser: item.selectUser}" @click="selectUser(item, index)">
             <el-card :body-style="{ padding: '0px' }">
               <img :src="item.avatar_url" class="image">
               <div class="footer">
@@ -98,13 +99,11 @@
 </template>
 
 <script>
-import io from 'socket.io-client'
 import Vue from 'vue'
 import Header from '~/Header'
 import Jumbotron from '~/Jumbotron'
 import navRight from '~/NavRight'
 import {mapGetters, mapActions} from 'vuex'
-import {serverAddress} from '../../../common/config.js'
 import markdownEditor from 'vue-simplemde/src/markdown-editor'
 import hljs from 'highlight.js'
 window.hljs = hljs
@@ -140,6 +139,7 @@ export default {
   data () {
     return {
       testName: {},
+      testId: '',
       details: [],
       refreshList: true,
       userList: [{
@@ -174,7 +174,8 @@ export default {
         state: false, // 是否显示开始考试时的信息
         data: {
           name: '', // 考试名称
-          time: '' // 考试时间
+          time: '', // 考试时间
+          timeRange: '' // 考试限定时间
         }
       }
     }
@@ -208,6 +209,7 @@ export default {
       return data.some(test => {
         if (test.name === this.testName) {
           this.details = test.details
+          this.testId = test._id
           return true
         }
       })
@@ -370,27 +372,32 @@ export default {
         return this.$message.error('选择的日期不能是过去的时间')
       }
 
-      const createData = {
-        token: this.getToken,
-        data: {
-          name: this.startExamDialog.data.name,
-          time: this.startExamDialog.data.time.valueOf(),
-          users: this.readyExamDialog.data
-        }
-      }
-
-      const wsExam = io(`${serverAddress}/exam`)
-      wsExam.emit('create', createData, data => {
-        // TODO
+      this.$http.post('/Api/exam', {
+        name: this.startExamDialog.data.name,
+        time: this.startExamDialog.data.time.valueOf(),
+        users: this.readyExamDialog.data,
+        testId: this.testId,
+        timeRange: this.startExamDialog.data.timeRange
       })
+        .then(resp => {
+          let { state, data } = resp.data
+          this.$message[state ? 'success' : 'error'](data)
+          if (state) {
+            this.resetExamDialog()
+            this.startExamDialog.state = false
+            this.readyExamDialog.state = false
+          }
+        })
     },
     resetExamDialog () {
       this.userList.map(item => {
         item.selectUser = false
+        delete item.selectUser
       })
       this.$array(this.readyExamDialog.data).replace([])
       this.startExamDialog.data.name = ''
       this.startExamDialog.data.time = ''
+      this.startExamDialog.data.timeRange = ''
     },
     getFutureHMS () {
       let date = new Date(Date.now() + 1800000) // 提前30分钟

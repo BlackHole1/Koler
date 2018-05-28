@@ -4,6 +4,7 @@ const user = require('../controller/user')
 const users = require('../controller/users')
 const sign = require('../controller/sign')
 const test = require('../controller/test')
+const exam = require('../controller/exam')
 const testSubject = require('../controller/testSubject')
 const validate = require('../middleware/validate')
 
@@ -103,6 +104,12 @@ const routes = {
       'del': [
         validate.testSubject.del,
         testSubject.del
+      ]
+    },
+    'exam': {
+      'post': [
+        validate.exam.create,
+        exam.create
       ]
     }
   }

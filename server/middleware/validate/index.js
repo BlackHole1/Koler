@@ -229,6 +229,17 @@ const testSubject = {
   }
 }
 
+const exam = {
+  create: cb => {
+    return (req, res, next) => {
+      if (!checkVal(req.body, 'name') || !checkVal(req.body, 'time') || !checkVal(req.body, 'users') || !checkVal(req.body, 'testId') || !checkVal(req.body, 'timeRange')) {
+        return returnFalse(res, '值不能为空')
+      }
+      cb(req, res, next)
+    }
+  }
+}
+
 module.exports = {
   problemsWarehouse,
   user,
@@ -236,5 +247,6 @@ module.exports = {
   sign,
   subject,
   test,
-  testSubject
+  testSubject,
+  exam
 }
