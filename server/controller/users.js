@@ -1,8 +1,7 @@
-const M = require('../model')
 const common = require('../lib/common')
 const empty = require('is-empty')
-const UsersModel = M('users')
-const UserModel = M('user')
+const UsersModel = require('../model/statics/users')
+const UserModel = require('../model/statics/user')
 
 const resource = {
   getList: (req, res, next) => {
@@ -52,7 +51,6 @@ const resource = {
         }
       })
       .then(data => {
-        const UserModel = M('user')
         return UserModel.remove({
           email: data.email,
           _id: id

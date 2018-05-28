@@ -2,8 +2,7 @@ const jwt = require('jsonwebtoken')
 const empty = require('is-empty')
 const common = require('../lib/common')
 const constant = require('../../common/config')
-const M = require('../model')
-const UserModel = M('user')
+const UserModel = require('../model/statics/user')
 
 const resource = {
   login: (req, res, next) => {

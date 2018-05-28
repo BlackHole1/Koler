@@ -1,5 +1,4 @@
-const M = require('../model')
-let PWMolde = M('problemsWarehouse')
+let PWMolde = require('../model/statics/problemsWarehouse')
 
 const resource = {
   getInfo: (req, res, next) => {

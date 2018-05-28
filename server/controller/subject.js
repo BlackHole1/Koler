@@ -1,5 +1,4 @@
-const M = require('../model')
-let PWMolde = M('problemsWarehouse')
+let PWMolde = require('../model/statics/problemsWarehouse')
 const uuidv1 = require('uuid/v1')
 const fs = require('fs')
 

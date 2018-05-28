@@ -1,11 +1,10 @@
-const M = require('../model')
-let TestModel = M('test')
+let TestModel = require('../model/statics/test')
 
 const resource = {
   update: (req, res, next) => {
-    let PWMolde = M('problemsWarehouse')
+    let PWMolde = require('../model/statics/problemsWarehouse')
 
-    const subjectIds = {}
+    const subjectIds = Object.create(null)
     const {lists, name} = req.body
     const idsLength = lists.length
     const email = req.$currentUserInfo.email

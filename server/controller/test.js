@@ -1,5 +1,4 @@
-const M = require('../model')
-let TestModel = M('test')
+let TestModel = require('../model/statics/test')
 
 const resource = {
   getList: (req, res, next) => {

@@ -1,9 +1,8 @@
 const fs = require('fs')
 const uuidv1 = require('uuid/v1')
-const M = require('../model')
 const common = require('../lib/common')
 const empty = require('is-empty')
-let UserModel = M('user')
+let UserModel = require('../model/statics/users')
 
 const resource = {
   getInfo: (req, res, next) => {
