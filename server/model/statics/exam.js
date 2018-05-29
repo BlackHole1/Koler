@@ -47,4 +47,58 @@ examSchema.statics.findByTaskId = function (id) {
   }).exec()
 }
 
+examSchema.statics.checkCreateState = function (createEmail, timestamp, timeRange, members) {
+  return this.find({
+    email: createEmail
+  }).exec()
+    .then(function (data) {
+      if (data.length === 0) {
+        return {
+          state: true
+        }
+      }
+
+      let dataArr = []
+      for (let i = 0; i < data.length; i++) {
+        let exmaStartTime = data[i].time * 1
+        let examEndTime = exmaStartTime + data[i].time_range * 60000
+        let currentStartTime = timestamp * 1
+        let currentEndTime = currentStartTime + timeRange * 60000
+        if (currentStartTime === exmaStartTime || currentStartTime > exmaStartTime && currentStartTime < examEndTime) {
+          dataArr.push(data[i])
+        }
+        if (currentEndTime === examEndTime || currentEndTime > exmaStartTime && currentEndTime < examEndTime) {
+          dataArr.push(data[i])
+        }
+      }
+
+      return dataArr.length === 0 ? [] : dataArr
+    })
+    .then(data => {
+      if (data.length === 0) {
+        return {
+          state: true
+        }
+      }
+
+      for (let i = 0; i < data.length; i++) {
+        let users = data[i].users
+        for (let x = 0; x < users.length; x++) {
+          let user = users[x]
+          for (let y = 0; y < members.length; y++) {
+            if (user === members[y]) {
+              return {
+                state: false,
+                data: data[i].name
+              }
+            }
+          }
+        }
+      }
+      return {
+        state: true
+      }
+    })
+}
+
 module.exports = mongoose.model('Exam', examSchema)
