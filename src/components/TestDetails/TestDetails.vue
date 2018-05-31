@@ -361,7 +361,7 @@ export default {
       this.startExamDialog.state = true
     },
     startExam () {
-      let {name, time} = this.startExamDialog.data
+      let {name, time, timeRange} = this.startExamDialog.data
       if (name === '' || name == null) {
         return this.$message.error('名称不能为空')
       }
@@ -370,6 +370,9 @@ export default {
       }
       if (Date.now() > time.valueOf()) {
         return this.$message.error('选择的日期不能是过去的时间')
+      }
+      if (timeRange === '' || timeRange == null) {
+        return this.$message.error('限定时间不能为空')
       }
 
       this.$http.post('/Api/exam', {

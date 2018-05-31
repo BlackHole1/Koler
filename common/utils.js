@@ -53,6 +53,16 @@ const isNoSymbols = str => {
 }
 
 /**
+ * 判断字符串是否只包含数字、字母
+ * @param {String} str 将要匹配的字符串
+ * @returns {Boolean} 没有其他字符串时返回true
+ */
+const isEnAndNum = str => {
+  let regx = /^[\d|A-z]+$/
+  return regx.test(str)
+}
+
+/**
  * 判断字符串是否只包含字母、中文
  * @param {String} str 将要匹配的字符串
  * @returns {Boolean} 没有其他字符串时返回true
@@ -150,5 +160,6 @@ module.exports = {
   isEnAndCn,
   isEmail,
   getSubName,
+  isEnAndNum,
   sessionStorageAppend
 }

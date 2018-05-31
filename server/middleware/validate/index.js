@@ -1,4 +1,4 @@
-const { isEmail, isEnAndCn, isNoSymbols } = require('../../../common/utils')
+const { isEmail, isEnAndCn, isNoSymbols, isNumber, isArray, isEnAndNum } = require('../../../common/utils')
 
 /**
  * 向浏览器返回错误信息
@@ -234,6 +234,21 @@ const exam = {
     return (req, res, next) => {
       if (!checkVal(req.body, 'name') || !checkVal(req.body, 'time') || !checkVal(req.body, 'users') || !checkVal(req.body, 'testId') || !checkVal(req.body, 'timeRange')) {
         return returnFalse(res, '值不能为空')
+      }
+      if (!isNoSymbols(req.body.name)) {
+        return returnFalse(res, '名称只能为数字、字母、中文')
+      }
+      if (!isNumber(req.body.time)) {
+        return returnFalse(res, '选择的时间戳类型错误，请重新选择时间')
+      }
+      if (!isArray(req.body.users)) {
+        return returnFalse(res, '用户类型错误，请重新选择要考试的用户')
+      }
+      if (!isEnAndNum(req.body.testId)) {
+        return returnFalse(res, '考试id错误，请重新刷新页面')
+      }
+      if (!isNumber(req.body.timeRange)) {
+        return returnFalse(res, '考试时间范围必须为数字，请重新选择限定时间')
       }
       cb(req, res, next)
     }
