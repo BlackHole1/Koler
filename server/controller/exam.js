@@ -4,7 +4,7 @@ const resource = {
   create: (req, res, next) => {
     let {name, time, users, testId, timeRange} = req.body
 
-    ExamModel.checkCreateState(req.$currentUserInfo.email, time, timeRange, users)
+    ExamModel.checkCreateTime(req.$currentUserInfo.email, time, timeRange, users)
       .then(data => {
         if (data.state) return Promise.resolve()
 

@@ -47,7 +47,7 @@ examSchema.statics.findByTaskId = function (id) {
   }).exec()
 }
 
-examSchema.statics.checkCreateState = function (createEmail, timestamp, timeRange, members) {
+examSchema.statics.checkCreateTime = function (createEmail, timestamp, timeRange, members) {
   return this.find({
     email: createEmail
   }).exec()
