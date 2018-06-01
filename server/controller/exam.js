@@ -1,4 +1,5 @@
 const ExamModel = require('../model/statics/exam')
+const UsersModel = require('../model/statics/users')
 
 const resource = {
   create: (req, res, next) => {
@@ -10,7 +11,21 @@ const resource = {
 
         return Promise.reject(`当前时间与${data.data}考试时间重合，请重新选择时间点`)
       })
-      .then(data => {
+      .then(() => UsersModel.findUnderByEmail(req.$currentUserInfo.email) // 检查所选用户，是否为当前用户的下属用户
+          .then(members => {
+            let membersMap = new Map()
+            members.forEach(member => {
+              membersMap.set(member._id.toString(), true)
+            })
+            for (let i = 0; i < users.length; i++) {
+              if (!membersMap.has(users[i])) {
+                return Promise.reject('选择的用户，不属于你当前用户的下属用户，请重新选择')
+              }
+            }
+            return Promise.resolve()
+          })
+      )
+      .then(() => {
         let ExamEntity = new ExamModel({
           name: name,
           email: req.$currentUserInfo.email,
