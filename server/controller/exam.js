@@ -1,5 +1,6 @@
 const ExamModel = require('../model/statics/exam')
 const UsersModel = require('../model/statics/users')
+const TestModel = require('../model/statics/test')
 
 const resource = {
   create: (req, res, next) => {
@@ -25,13 +26,22 @@ const resource = {
             return Promise.resolve()
           })
       )
-      .then(() => {
+      .then(() => TestModel.findById(testId)
+        .then(test => {
+          if (test === null) {
+            return Promise.reject('没有找到此试卷id，请确定试卷id是否正确')
+          }
+          return Promise.resolve(test.name)
+        })
+      )
+      .then(testName => {
         let ExamEntity = new ExamModel({
           name: name,
           email: req.$currentUserInfo.email,
           time: time,
           users: users,
           test_id: testId,
+          test_name: testName,
           time_range: timeRange,
           timing_task_id: 1
         })

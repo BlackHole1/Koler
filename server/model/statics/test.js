@@ -9,6 +9,13 @@ testSchema.statics.findByEmail = function (email) {
   }).exec()
 }
 
+testSchema.statics.findById = function (id) {
+  return this.findOne({
+    _id: id
+  }, {  // 不显示以下字段
+  }).exec()
+}
+
 testSchema.statics.findByEmailAndName = function (email, name) {
   return this.find({
     email: email,

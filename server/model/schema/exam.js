@@ -11,6 +11,7 @@ const exam = new mongoose.Schema({
     default: 0
   },
   test_id: String, // 试卷id
+  test_name: String, // 试卷名称
   time_range: Number, // 考试限定时间 (单位: 分)
   time_use: Number, // 考试所用时间
   timing_task_id: Number, // 定时任务id
