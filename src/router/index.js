@@ -9,6 +9,7 @@ const UserManage = () => import('@/components/UserManage')
 const AddUser = () => import('@/components/UserManage/AddUser')
 const DelUser = () => import('@/components/UserManage/DelUser')
 const OnlineExam = () => import('@/components/OnlineExam')
+const ExamManage = () => import('@/components/ExamManage')
 const MyTest = () => import('@/components/MyTest')
 const TestDetails = () => import('@/components/TestDetails')
 
@@ -36,6 +37,11 @@ export default new Router({
       path: '/OnlineExam',
       name: 'OnlineExam',
       component: OnlineExam
+    },
+    {
+      path: '/ExamManage',
+      name: 'ExamManage',
+      component: ExamManage
     },
     {
       path: '/MyTest',

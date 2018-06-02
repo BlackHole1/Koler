@@ -5,6 +5,7 @@
       <el-menu-item index="/OnlineExam" v-if="onlineExamShow">在线考试</el-menu-item>
       <el-menu-item index="/MyTest" v-if="myTest">我的试卷</el-menu-item>
       <el-menu-item index="/UserManage" v-if="userManageShow">用户管理</el-menu-item>
+      <el-menu-item index="/ExamManage" v-if="myTest">考试管理</el-menu-item>
       <el-submenu index="2" class="nav-right">
         <template slot="title">{{getUser.name}}</template>
         <el-menu-item index="/Setting">设置</el-menu-item>
@@ -34,6 +35,8 @@ export default {
         activeName = '/'
       } else if (this.$route.name === 'MyTest' || this.$route.name === 'TestDetails') {
         activeName = '/MyTest'
+      } else if (this.$route.name === 'ExamManage') {
+        activeName = '/ExamManage'
       } else if (this.$route.name === 'onlineExam') {
         activeName = '/onlineExam'
       } else if (this.$route.name === 'AddUser' || this.$route.name === 'DelUser') {
