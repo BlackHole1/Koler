@@ -5,7 +5,6 @@ examSchema.statics.findByEmail = function (email) {
   return this.find({
     email: email
   }, {  // 不显示以下字段
-    '_id': 0,
     '__v': 0
   }).exec()
 }
