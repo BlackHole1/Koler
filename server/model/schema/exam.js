@@ -6,6 +6,7 @@ const exam = new mongoose.Schema({
   email: String,  // 考试安排人邮箱
   time: String, // 开始考试时间
   users: Array,  // 要考试的人员
+  users_name: Array, // 要考试的人员的名称
   score: { // 考试分数
     type: Number,
     default: 0
@@ -13,7 +14,10 @@ const exam = new mongoose.Schema({
   test_id: String, // 试卷id
   test_name: String, // 试卷名称
   time_range: Number, // 考试限定时间 (单位: 分)
-  time_use: Number, // 考试所用时间
+  time_use: { // 考试所用时间
+    type: Number,
+    default: 0
+  },
   timing_task_id: Number, // 定时任务id
   created_date: { // 考试创建时间
     type: String,
