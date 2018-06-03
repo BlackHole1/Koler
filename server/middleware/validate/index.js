@@ -232,6 +232,9 @@ const testSubject = {
 const exam = {
   create: cb => {
     return (req, res, next) => {
+      if (req.$currentUserInfo.type === 'Student') {
+        return returnFalse(res, '抱歉，你没有权限进行操作')
+      }
       if (!checkVal(req.body, 'name') || !checkVal(req.body, 'time') || !checkVal(req.body, 'users') || !checkVal(req.body, 'testId') || !checkVal(req.body, 'timeRange')) {
         return returnFalse(res, '值不能为空')
       }
