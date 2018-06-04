@@ -14,32 +14,38 @@ const resource = {
       })
       .then(() => UsersModel.findUnderByEmail(req.$currentUserInfo.email) // 检查所选用户，是否为当前用户的下属用户
           .then(members => {
+            let usersName = []
             let membersMap = new Map()
             members.forEach(member => {
-              membersMap.set(member._id.toString(), true)
+              membersMap.set(member._id.toString(), member.name)
             })
             for (let i = 0; i < users.length; i++) {
               if (!membersMap.has(users[i])) {
                 return Promise.reject('选择的用户，不属于你当前用户的下属用户，请重新选择')
               }
+              usersName.push(membersMap.get(users[i]))
             }
-            return Promise.resolve()
+            return Promise.resolve(usersName)
           })
       )
-      .then(() => TestModel.findById(testId)
+      .then(usersName => TestModel.findById(testId)
         .then(test => {
           if (test === null) {
             return Promise.reject('没有找到此试卷id，请确定试卷id是否正确')
           }
-          return Promise.resolve(test.name)
+          return Promise.resolve({
+            testName: test.name,
+            usersName
+          })
         })
       )
-      .then(testName => {
+      .then(({testName, usersName}) => {
         let ExamEntity = new ExamModel({
           name: name,
           email: req.$currentUserInfo.email,
           time: time,
           users: users,
+          users_name: usersName,
           test_id: testId,
           test_name: testName,
           time_range: timeRange,
