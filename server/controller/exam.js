@@ -61,6 +61,15 @@ const resource = {
           data
         })
       })
+  },
+  getList: (req, res, next) => {
+    ExamModel.findByEmail(req.$currentUserInfo.email)
+    .unified((state, data) => {
+      return res.send({
+        state,
+        data
+      })
+    })
   }
 }
 

@@ -255,6 +255,11 @@ const exam = {
       }
       cb(req, res, next)
     }
+  },
+  getList: cb => {
+    return (req, res, next) => {
+      cb(req, res, next)
+    }
   }
 }
 

@@ -110,6 +110,10 @@ const routes = {
       'post': [
         validate.exam.create,
         exam.create
+      ],
+      'get': [
+        validate.exam.getList,
+        exam.getList
       ]
     }
   }
