@@ -10,6 +10,12 @@ usersSchema.statics.findUnderByEmail = function (email) {
   }).exec()
 }
 
+usersSchema.static.findById = function (id) {
+  return this.find({
+    _id: id
+  }).exec()
+}
+
 usersSchema.statics.findUnderByEmailAndId = function (email, id) {
   return this.findOne({
     upper_email: email,

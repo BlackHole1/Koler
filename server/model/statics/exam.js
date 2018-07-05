@@ -88,7 +88,10 @@ examSchema.statics.checkCreateTime = function (createEmail, timestamp, timeRange
             if (user === members[y]) {
               return {
                 state: false,
-                data: data[i].name
+                data: {
+                  examName: data[i].name,
+                  userId: user
+                }
               }
             }
           }

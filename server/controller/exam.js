@@ -10,7 +10,8 @@ const resource = {
       .then(data => {
         if (data.state) return Promise.resolve()
 
-        return Promise.reject(`当前时间与${data.data}考试时间重合，请重新选择时间点`)
+        return UsersModel.findById(data.data.userId)
+          .then(userInfo => Promise.reject(`选择的 ${userInfo.name} 用户已经参加了 ${data.data.examName} 考试，与当前时间重合，请重新选择时间点`)).catch()
       })
       .then(() => UsersModel.findUnderByEmail(req.$currentUserInfo.email) // 检查所选用户，是否为当前用户的下属用户
           .then(members => {
