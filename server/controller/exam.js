@@ -6,12 +6,16 @@ const resource = {
   create: (req, res, next) => {
     let {name, time, users, testId, timeRange} = req.body
 
-    ExamModel.checkCreateTime(req.$currentUserInfo.email, time, timeRange, users)
+    ExamModel.findByEmailAndName(req.$currentUserInfo.email, name)
+      .then(examInfo => {
+        return (examInfo === null) ? Promise.resolve() : Promise.reject('考试名称不能重复')
+      })
+      .then(() => ExamModel.checkCreateTime(req.$currentUserInfo.email, time, timeRange, users))
       .then(data => {
         if (data.state) return Promise.resolve()
 
         return UsersModel.findById(data.data.userId)
-          .then(userInfo => Promise.reject(`选择的 ${userInfo.name} 用户已经参加了 ${data.data.examName} 考试，与当前时间重合，请重新选择时间点`)).catch()
+          .then(userInfo => Promise.reject(`选择的 ${userInfo.name} 用户已经参加了 ${data.data.examName} 考试，与当前时间重合，请重新选择时间点`))
       })
       .then(() => UsersModel.findUnderByEmail(req.$currentUserInfo.email) // 检查所选用户，是否为当前用户的下属用户
           .then(members => {

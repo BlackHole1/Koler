@@ -19,6 +19,13 @@ examSchema.statics.findByEmailAndId = function (email, id) {
   }).exec()
 }
 
+examSchema.statics.findByEmailAndName = function (email, name) {
+  return this.findOne({
+    email: email,
+    name: name
+  }).exec()
+}
+
 examSchema.statics.findByTestId = function (id) {
   return this.findOne({
     test_id: id
