@@ -5,7 +5,7 @@ const constant = require('../../common/config')
 const UserModel = require('../model/statics/user')
 
 const resource = {
-  login: (req, res, next) => {
+  login: (req, res) => {
     UserModel.userDataCount({}) // 此处会先跳转到下一个catach，再由下一个catch进入到unified
       .then(count => {  // 如果数据库里没有用户，则当前登录用户为管理员账户
         if (count === 0) {
@@ -50,7 +50,7 @@ const resource = {
         token: data.token
       }))
   },
-  check: (req, res, next) => {
+  check: (req, res) => {
     res.send({
       'state': true,
       'data': '登陆状态'

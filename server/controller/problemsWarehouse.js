@@ -1,7 +1,7 @@
 let PWMolde = require('../model/statics/problemsWarehouse')
 
 const resource = {
-  getInfo: (req, res, next) => {
+  getInfo: (req, res) => {
     PWMolde.findByEmail(req.$currentUserInfo.email)
       .then(data => {
         const PWData = {}
@@ -23,7 +23,7 @@ const resource = {
         res.send(data)
       })
   },
-  add: (req, res, next) => {
+  add: (req, res) => {
     const name = req.body.name
     const email = req.$currentUserInfo.email
     PWMolde.findByEmailAndName(email, name)
@@ -45,7 +45,7 @@ const resource = {
         data
       }))
   },
-  del: (req, res, next) => {
+  del: (req, res) => {
     const name = req.query.name
     const email = req.$currentUserInfo.email
     PWMolde.findByEmailAndName(email, name)
@@ -58,7 +58,7 @@ const resource = {
           name: name
         })
         .catch(() => Promise.reject('删除失败'))
-        .then(data => Promise.resolve('删除成功'))
+        .then(() => Promise.resolve('删除成功'))
       })
       .unified((state, data) => {
         res.send({
@@ -67,7 +67,7 @@ const resource = {
         })
       })
   },
-  update: (req, res, next) => {
+  update: (req, res) => {
     const {name, changeName} = req.body
     const email = req.$currentUserInfo.email
     PWMolde.findByEmailAndName(email, name)

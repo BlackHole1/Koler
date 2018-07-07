@@ -5,7 +5,7 @@ const empty = require('is-empty')
 let UserModel = require('../model/statics/user')
 
 const resource = {
-  getInfo: (req, res, next) => {
+  getInfo: (req, res) => {
     UserModel.findByName(req.$currentUserInfo.name)
       .unified((state, data) => {
         res.send({
@@ -15,7 +15,7 @@ const resource = {
       })
   },
   update: {
-    password: (req, res, next) => {
+    password: (req, res) => {
       let updatePassword = () => UserModel.update({
         email: req.$currentUserInfo.email,
         password: common.md5(req.body.oldPassword)
@@ -30,7 +30,7 @@ const resource = {
         password: common.md5(req.body.oldPassword)
       })
         .then(data => empty(data) ? Promise.reject('旧密码错误') : data)
-        .then(data => {
+        .then(() => {
           return updatePassword()
         })
         .unified((state, data) => {
@@ -40,7 +40,7 @@ const resource = {
           })
         })
     },
-    header: (req, res, next) => {
+    header: (req, res) => {
       const uploadedFile = req.files.file
       const suffix = uploadedFile.name.split('.').pop()
       const newFilePath = `/static/userHeader/${uuidv1()}.${suffix}`

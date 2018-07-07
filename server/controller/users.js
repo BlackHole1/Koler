@@ -4,7 +4,7 @@ const UsersModel = require('../model/statics/users')
 const UserModel = require('../model/statics/user')
 
 const resource = {
-  getList: (req, res, next) => {
+  getList: (req, res) => {
     UsersModel.findUnderByEmail(req.$currentUserInfo.email)
       .then(data => Promise.resolve(data))
       .unified((state, data) => {
@@ -14,7 +14,7 @@ const resource = {
         })
       })
   },
-  add: (req, res, next) => {
+  add: (req, res) => {
     const {name, email, password} = req.body
     UserModel.findByEmail(email)
       .then(data => {
@@ -42,7 +42,7 @@ const resource = {
         })
       })
   },
-  del: (req, res, next) => {
+  del: (req, res) => {
     const id = req.query.id
     UsersModel.findUnderByEmailAndId(req.$currentUserInfo.email, id)
       .catch(err => {

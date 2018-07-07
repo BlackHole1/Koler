@@ -1,7 +1,7 @@
 let TestModel = require('../model/statics/test')
 
 const resource = {
-  getList: (req, res, next) => {
+  getList: (req, res) => {
     const email = req.$currentUserInfo.email
     TestModel.findByEmail(email)
       .then(data => {
@@ -14,7 +14,7 @@ const resource = {
         })
       })
   },
-  add: (req, res, next) => {
+  add: (req, res) => {
     const name = req.body.name
     const email = req.$currentUserInfo.email
 
@@ -36,7 +36,7 @@ const resource = {
       })
       .unified((state, data) => res.send({state, data}))
   },
-  del: (req, res, next) => {
+  del: (req, res) => {
     const email = req.$currentUserInfo.email
     const name = req.query.name
 
@@ -45,7 +45,7 @@ const resource = {
       name
     })
     .catch(() => Promise.reject('删除失败'))
-    .then(data => Promise.resolve('删除成功'))
+    .then(() => Promise.resolve('删除成功'))
 
     TestModel.findByEmailAndName(email, name)
       .then(data => {
@@ -61,7 +61,7 @@ const resource = {
         })
       })
   },
-  update: (req, res, next) => {
+  update: (req, res) => {
     const email = req.$currentUserInfo.email
     const {name, newName} = req.body
     TestModel.findByEmailAndName(email, name)

@@ -3,7 +3,7 @@ const uuidv1 = require('uuid/v1')
 const fs = require('fs')
 
 const resource = {
-  add: (req, res, next) => {
+  add: (req, res) => {
     const {name, title, content, score, tags, note, answer} = req.body
     const email = req.$currentUserInfo.email
     PWMolde.findByEmailAndName(email, name)
@@ -29,7 +29,7 @@ const resource = {
           enable: false
         })
           .catch(() => Promise.reject('添加题目失败'))
-          .then(data => Promise.resolve('添加题目成功'))
+          .then(() => Promise.resolve('添加题目成功'))
       })
       .unified((state, data) => {
         res.send({
@@ -38,7 +38,7 @@ const resource = {
         })
       })
   },
-  del: (req, res, next) => {
+  del: (req, res) => {
     const { name, id } = req.query
     const email = req.$currentUserInfo.email
     PWMolde.findByEmailAndName(email, name)
@@ -67,7 +67,7 @@ const resource = {
       })
   },
   upload: {
-    post: (req, res, next) => {
+    post: (req, res) => {
       const uploadedFile = req.files.file
       const suffix = uploadedFile.name.split('.').pop()
       const newFilePath = `/static/subject/${uuidv1()}.${suffix}`

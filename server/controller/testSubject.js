@@ -1,7 +1,7 @@
 let TestModel = require('../model/statics/test')
 
 const resource = {
-  update: (req, res, next) => {
+  update: (req, res) => {
     let PWMolde = require('../model/statics/problemsWarehouse')
 
     const subjectIds = Object.create(null)
@@ -68,7 +68,7 @@ const resource = {
       })
       .unified((state, data) => res.send({state, data}))
   },
-  del: (req, res, next) => {
+  del: (req, res) => {
     const { name, id } = req.query
     const email = req.$currentUserInfo.email
 

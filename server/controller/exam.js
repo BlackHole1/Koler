@@ -3,7 +3,7 @@ const UsersModel = require('../model/statics/users')
 const TestModel = require('../model/statics/test')
 
 const resource = {
-  create: (req, res, next) => {
+  create: (req, res) => {
     let {name, time, users, testId, timeRange} = req.body
 
     ExamModel.findByEmailAndName(req.$currentUserInfo.email, name)
@@ -67,7 +67,7 @@ const resource = {
         })
       })
   },
-  getList: (req, res, next) => {
+  getList: (req, res) => {
     ExamModel.findByEmail(req.$currentUserInfo.email)
     .unified((state, data) => {
       return res.send({
