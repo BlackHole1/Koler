@@ -1,3 +1,4 @@
+const dateFormat = require('dateformat')
 const ExamModel = require('../model/statics/exam')
 const UsersModel = require('../model/statics/users')
 const TestModel = require('../model/statics/test')
@@ -54,7 +55,8 @@ const resource = {
           test_id: testId,
           test_name: testName,
           time_range: timeRange,
-          timing_task_id: 1
+          timing_task_id: 1,
+          created_date: dateFormat(new Date(), `yyyy-mm-dd HH:MM:ss`)
         })
         return ExamEntity.save()
           .catch(() => Promise.reject('创建考试出错'))
