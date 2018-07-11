@@ -1,3 +1,4 @@
+const dateFormat = require('dateformat')
 let PWMolde = require('../model/statics/problemsWarehouse')
 
 const resource = {
@@ -34,7 +35,8 @@ const resource = {
         const PWEntity = new PWMolde({
           email: email,
           name: name,
-          details: []
+          details: [],
+          created_date: dateFormat(new Date(), `yyyy-mm-dd HH:MM:ss`)
         })
         return PWEntity.save()
           .catch(() => Promise.reject('保存数据时出错'))
