@@ -1,6 +1,7 @@
-let PWMolde = require('../model/statics/problemsWarehouse')
 const uuidv1 = require('uuid/v1')
 const fs = require('fs')
+const dateFormat = require('dateformat')
+let PWMolde = require('../model/statics/problemsWarehouse')
 
 const resource = {
   add: (req, res) => {
@@ -22,7 +23,8 @@ const resource = {
               answer: answer,
               note: note,
               category: tags,
-              score: score
+              score: score,
+              created_date: dateFormat(new Date(), `yyyy-mm-dd HH:MM:ss`)
             }
           }
         }, {
