@@ -1,3 +1,4 @@
+const dateFormat = require('dateformat')
 let TestModel = require('../model/statics/test')
 
 const resource = {
@@ -21,7 +22,8 @@ const resource = {
     let testSave = () => new TestModel({
       name,
       email,
-      details: []
+      details: [],
+      created_date: dateFormat(new Date(), `yyyy-mm-dd HH:MM:ss`)
     })
     .save()
       .catch(() => Promise.reject('保存试卷时出错'))
