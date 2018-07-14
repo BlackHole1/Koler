@@ -1,5 +1,6 @@
-const common = require('../lib/common')
 const empty = require('is-empty')
+const dateFormat = require('dateformat')
+const common = require('../lib/common')
 const UsersModel = require('../model/statics/users')
 const UserModel = require('../model/statics/user')
 
@@ -29,7 +30,8 @@ const resource = {
           upper: req.$currentUserInfo.type,
           upper_email: req.$currentUserInfo.email,
           upper_name: req.$currentUserInfo.name,
-          under: (req.$currentUserInfo.type === 'Admin') ? 'Student' : '无'
+          under: (req.$currentUserInfo.type === 'Admin') ? 'Student' : '无',
+          created_date: dateFormat(new Date(), `yyyy-mm-dd HH:MM:ss`)
         })
         return UserEntity.save()
           .catch(() => Promise.reject('添加用户出错'))
